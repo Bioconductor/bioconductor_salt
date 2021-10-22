@@ -1,0 +1,3 @@
+.vagrant
+
+saltstack/salt/common/files/*
