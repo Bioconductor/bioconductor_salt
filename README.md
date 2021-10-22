@@ -65,7 +65,6 @@ so that only the packages you're interested will be build. You should include th
 package and its dependencies. The following example assumes you're running 3.14
 software builds.
 
-    ```
     sudo su - biocbuild
     cd ~/bbs-3.14-bioc/manifest
     # edit ~/bbs-3.14-bioc/manifest/software.txt
@@ -81,7 +80,6 @@ software builds.
 
     # You may want to check the log of each section; for example
     tail -f ~/bbs-3.14-bioc/log/nebbiolo2-20211022-run.log
-    ```
 
 See `https://github.com/Bioconductor/BBS/blob/master/Doc/Prepare-Ubuntu-20.04-HOWTO.md`
 for more information on builds.
