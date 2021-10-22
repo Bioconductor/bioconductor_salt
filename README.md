@@ -10,16 +10,21 @@
 
 2. To start the VM from the Bioconductor Vagrant repository
 
+    ```
     vagrant up
+    ```
 
 3. To access the VM
 
+    ```
     vagrant ssh
+    ```
 
 4. Before running any builds, you should change the configuration for your
    system. For example, to configure the 3.14 `bioc` software builds,
    edit the following lines in `BBS/3.14/bioc/nebbiolo2/config.sh`:
 
+    ```
     export BBS_DEBUG="0"
 
     export BBS_NODE_HOSTNAME="nebbiolo2"
@@ -42,6 +47,7 @@
     export BBS_REPORT_CSS="$BBS_HOME/$BBS_BIOC_VERSION/report.css"
     export BBS_REPORT_BGIMG="$BBS_HOME/images/DEVEL3b.png"
     export BBS_REPORT_JS="$BBS_HOME/$BBS_BIOC_VERSION/report.js"
+    ```
 
 5. Depending on the number of cores on your system, the build process requires
    a lot of resources and power. Change the CPU lines above for your machine.
@@ -59,6 +65,7 @@ so that only the packages you're interested will be build. You should include th
 package and its dependencies. The following example assumes you're running 3.14
 software builds.
 
+    ```
     sudo su - biocbuild
     cd ~/bbs-3.14-bioc/manifest
     # edit ~/bbs-3.14-bioc/manifest/software.txt
@@ -74,6 +81,7 @@ software builds.
 
     # You may want to check the log of each section; for example
     tail -f ~/bbs-3.14-bioc/log/nebbiolo2-20211022-run.log
+    ```
 
 See `https://github.com/Bioconductor/BBS/blob/master/Doc/Prepare-Ubuntu-20.04-HOWTO.md`
 for more information on builds.
@@ -82,7 +90,9 @@ for more information on builds.
 
 1. On the build machine, install the Salt minion
 
+    ```
     sudo apt install salt-minion
+    ```
 
 2. Copy the files in `/saltstack` to `/srv`.
 
@@ -96,7 +106,9 @@ for more information on builds.
 
 6. Run salt, with debug or testing (`test=True`) if desired:
 
+    ```
     sudo salt-call --local state.highstate -l debug
+    ```
 
 7. Configure the BBS configuration files.
 
