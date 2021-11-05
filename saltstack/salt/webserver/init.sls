@@ -21,3 +21,7 @@ configure_apache:
 enable_site:
   apache_site.enabled:
     - name: 000-default
+
+restart_apache2:
+  cmd.run:
+    - name: service apache2 restart

@@ -2,6 +2,7 @@
 
 {% set branch = 'release' %} {# Use 'release' or 'devel' #}
 {% set version = '3.14' %} 
+{% set manifest_branch = 'RELEASE_3_14' %}
 {% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
 {% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.1.1.tar.gz' %}
 {% set r_version = 'R-4.1.1' %}
@@ -80,17 +81,17 @@ machine:
       groups:
         - biocbuild
       authorized_keys:
-        - {{ biocbuild_authorized_key }} 
+        - {{ biocbuild_authorized_key }}
     - name: biocpush
       key: {{ biocpush_key }}
       password: {{ biocpush_password }}
       groups:
         - biocpush
       authorized_keys:
-        - {{ biocpush_authorized_key }} 
+        - {{ biocpush_authorized_key }}
       {# Add more users using the same pattern as above
     - name: member
-      pub-key: "ssh-dss AAAAB3NzaCL0sQ9fJ5bYTEyY== user@domain" 
+      pub-key: "ssh-dss AAAAB3NzaCL0sQ9fJ5bYTEyY== user@domain"
       password: some password
       groups:
         - sudo
@@ -98,7 +99,7 @@ machine:
       #}
 
 r:
-  download: {{ r_download }} 
+  download: {{ r_download }}
   version: {{ r_version }}
 
 repo:
@@ -109,7 +110,7 @@ repo:
   manifest:
     name: manifest
     github: https://git.bioconductor.org/admin/manifest
-    branch: master
+    branch: {{ manifest_branch }}
 
 {# Bioc package dependencies #}
 
