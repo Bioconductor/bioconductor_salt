@@ -325,11 +325,11 @@ make_{{ build_type }}_src_contrib:
       - user
       - group
       - mode
+{%- endfor %}
 
-git_{{ build_type }}_manifest:
+git_bioc_manifest:
   git.cloned:
     - name: {{ repo.manifest.github }}
-    - target: /home/biocbuild/bbs-{{ build.version }}-{{ build_type }}/{{ repo.manifest.name }}
+    - target: /home/biocbuild/bbs-{{ build.version }}-bioc/{{ repo.manifest.name }}
     - user: biocbuild 
     - branch: {{ repo.manifest.branch }}
-{%- endfor %}

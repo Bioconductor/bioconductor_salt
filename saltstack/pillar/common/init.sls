@@ -1,11 +1,11 @@
 {# Change configuration as needed #}
 
-{% set branch = 'devel' %} {# Use 'release' or 'devel' #}
+{% set branch = 'release' %} {# Use 'release' or 'devel' #}
 {% set version = '3.14' %} 
 {% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
-{% set password = 'CHANGE' %}
 {% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.1.1.tar.gz' %}
-{% set cycle = 'devel' %} {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
+{% set r_version = 'R-4.1.1' %}
+{% set cycle = 'patch' %} {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
 {% set name = 'nebbiolo2' %}
 {% set immunespace_pwd = 'CHANGE' %}
 {% set biocbuild_password = 'CHANGE' %}
@@ -22,7 +22,7 @@ build:
   cycle: {{ cycle }}
   version: {{ version }}
   types:
-    - bioc
+    - bioc                  {# always required #}
     - workflows
     - books
     - data-experiment
@@ -98,8 +98,8 @@ machine:
       #}
 
 r:
-  download: https://cran.r-project.org/src/base/R-4/R-4.1.1.tar.gz 
-  version: R-4.1.1
+  download: {{ r_download }} 
+  version: {{ r_version }}
 
 repo:
   bbs:
