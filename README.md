@@ -78,7 +78,8 @@
 After the VM is running and Salt has reached a high state, you can run a build;
 however, you may want to edit file in the manifest for the packages you want to
 build. You should include the package and its dependencies. The following example
-assumes you're running 3.14 software builds.
+assumes you're running 3.14 software builds.  Be sure that environment variable
+`BBS_HOME` is set, probably to `$HOME/BBS`.
 
     sudo su - biocbuild
     cd ~/bbs-3.14-bioc/manifest
