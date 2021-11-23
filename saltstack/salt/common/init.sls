@@ -18,13 +18,13 @@ change_host:
       - {{ machine.name }}
     - clean: True
 
-{%- for group in machine.groups %}
+{%- for group in machine.groups + machine.additional.groups %}
 make_group_{{ group }}:
   group.present:
     - name: {{ group }}
 {%- endfor %}
 
-{%- for user in machine.users %}
+{%- for user in machine.users + machine.additional.users %}
 make_user_{{ user.name }}:
   user.present:
     - name: {{ user.name }}
@@ -36,7 +36,7 @@ make_user_{{ user.name }}:
       - {{ group }}
     {%- endfor %}
 
-{%- if user.key is defined and user.key|length %}
+{%- if user.key is defined %}
 copy_{{ user.name }}_ssh_key:
   file.managed:
     - name: /home/{{ user.name }}/.ssh/{{ user.name }}
@@ -47,6 +47,7 @@ copy_{{ user.name }}_ssh_key:
     - mode: 500
 {%- endif %}
 
+{%- if user.authorized_key is defined %}
 copy_{{ user.name }}_authorized_keys:
   ssh_auth.manage:
     - user: {{ user.name }}
@@ -55,6 +56,7 @@ copy_{{ user.name }}_authorized_keys:
     {%- for authorized_key in user.authorized_keys %}
       - {{ authorized_key }}
     {%- endfor %}
+{%- endif %}
 
 {%- if user.name in ('biocbuild', 'biocpush') %}
 git_clone_{{ repo.bbs.name }}_to_/home/{{ user.name }}:

@@ -1,20 +1,8 @@
-{# Change configuration as needed #}
+{% from '../custom/init.sls' import branch, version, manifest_branch,
+   environment, r_download, r_version, cycle, name, immunespace_pwd,
+   biocbuild_password, biocbuild_key, biocbuild_authorized_key,
+   biocpush_password, biocpush_key, biocpush_authorized_key %}
 
-{% set branch = 'release' %} {# Use 'release' or 'devel' #}
-{% set version = '3.14' %} 
-{% set manifest_branch = 'RELEASE_3_14' %}
-{% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
-{% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.1.1.tar.gz' %}
-{% set r_version = 'R-4.1.1' %}
-{% set cycle = 'patch' %} {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
-{% set name = 'nebbiolo2' %}
-{% set immunespace_pwd = 'CHANGE' %}
-{% set biocbuild_password = 'CHANGE' %}
-{% set biocbuild_key = 'salt://common/files/id_rsa' %}
-{% set biocbuild_authorized_key = 'CHANGE' %}
-{% set biocpush_password = 'CHANGE' %}
-{% set biocpush_key = 'salt://common/files/id_rsa' %}
-{% set biocpush_authorized_key = 'CHANGE' %}
 
 {# See machine.users below to add more users #}
 
@@ -28,7 +16,7 @@ build:
     - books
     - data-experiment
     - data-annotation
-    #- bioc-longtests
+    - bioc-longtests
   cron:
     user: biocbuild
     path: /usr/local/bin:/usr/bin:/bin
@@ -89,14 +77,14 @@ machine:
         - biocpush
       authorized_keys:
         - {{ biocpush_authorized_key }}
-      {# Add more users using the same pattern as above
+    {# Add more users using the same pattern as above
     - name: member
       pub-key: "ssh-dss AAAAB3NzaCL0sQ9fJ5bYTEyY== user@domain"
-      password: some password
+      password: PASSWORD
       groups:
         - sudo
         - bioconductor
-      #}
+    #}
 
 r:
   download: {{ r_download }}
