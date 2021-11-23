@@ -10,7 +10,10 @@
 
 2. Configure the settings in the `Vagrantfile` for your system.
 
-3. Configure the settings in `saltstack/pillar/common/init.sls`.
+3. Copy `saltstack/pillar/custom/example.sls` to
+   `saltstack/pillar/custom/init.sls` and edit the settings for
+   your build system. Any added pillars in this file can overwrite
+   other pillar values.
 
 4. To start the VM from the repository. This step will take time if
    it is the first time.
@@ -113,21 +116,20 @@ for more information on builds.
 
 4. Copy ssh keys to `/srv/salt/common/files`.
 
-5. Add key names and users to the pillar at `/srv/pillar/common/init.sls`.
+5. Copy `/srv/pillar/custom/example.sls` to `/srv/pillar/custom/init.sls`.
+   Configure additional settings in the `custom/init.sls` pillar. Some states
+   for specific Bioc packages are defined in the pillar. If they are no longer
+   needed, they maybe set to `False`.
 
-6. Configure additional settings in the pillar. Some states for specific Bioc
-   packages are defined in the pillar. If they are no longer needed, they
-   maybe set to `False`.
-
-7. Run salt, with debug or testing (`test=True`) if desired:
+6. Run salt, with debug or testing (`test=True`) if desired:
 
     ```
     sudo salt-call --local state.highstate -l debug
     ```
 
-8. Configure the `BBS` configuration files.
+7. Configure the `BBS` configuration files.
 
-9. Uncomment the desired builds in the crontab as `biocbuild`.
+8. Uncomment the desired builds in the crontab as `biocbuild`.
 
 ## Notes
 

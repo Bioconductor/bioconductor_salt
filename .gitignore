@@ -1,3 +1,4 @@
 .vagrant
 
 saltstack/salt/common/files/*
+saltstack/pillar/custom/init.sls
