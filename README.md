@@ -102,6 +102,34 @@ assumes you're running 3.14 software builds.
 See `https://github.com/Bioconductor/BBS/blob/master/Doc/Prepare-Ubuntu-20.04-HOWTO.md`
 for more information on builds.
 
+## Updating R
+
+Replace the url for `r_download` with the new version of
+R in `saltstack/pillar/custom/init.sls`:
+
+    ```
+    {% set branch = 'dev' %} {# Use 'release' or 'devel' #}
+    {% set version = '3.15' %}
+    {% set manifest_branch = 'master' %}
+    {% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
+    {% set r_download = 'https://stat.ethz.ch/R/daily/R-devel_2021-11-16.tar.gz' %}
+    {% set r_version = 'R-4.1.2' %}
+    {% set cycle = 'patch' %} {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
+    ```
+
+Update any related variables, such as `r_version`. To perform the update, run
+
+    ```
+    sudo salt-call --local state.apply common/r
+    ```
+
+Confirm that your version of R has been updated
+
+    ```
+    vagrant@nebbiolo2-dev:~$ /home/biocbuild/bbs-3.15-bioc/R/bin/R --version
+    R Under development (unstable) (2021-11-16 r81199) -- "Unsuffered Consequences"
+    ```
+
 ## Using Salt to Configure a Build Machine
 
 1. On the build machine, install the Salt minion and clone the repository:

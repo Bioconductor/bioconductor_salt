@@ -1,6 +1,7 @@
 base:
   '*':
     - common
+    - common/r
   'machine:type:primary':
     - match: pillar 
     - webserver
