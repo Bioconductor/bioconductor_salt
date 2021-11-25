@@ -1,8 +1,13 @@
-{% from '../custom/init.sls' import branch, version, manifest_branch,
-   environment, r_download, r_version, cycle, name, immunespace_pwd,
+{% from '../custom/init.sls' import branch, version, environment,
+   r_download, r_version, cycle, name, immunespace_pwd,
    biocbuild_password, biocbuild_key, biocbuild_authorized_key,
    biocpush_password, biocpush_key, biocpush_authorized_key %}
 
+{%- if branch == 'release' %}
+{% set current_branch = 'RELEASE_' ~ version.replace(".", "_") %}
+{% else %}
+{% set current_branch = 'master' %}
+{%- endif %}
 
 {# See machine.users below to add more users #}
 
@@ -52,9 +57,6 @@ build:
 machine:
   name: {{ name }} 
   env: {{ environment }}
-  os:
-    name: Ubuntu
-    version: 20.04
   ip: 127.0.1.1
   cores: 8 {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
   type: primary
@@ -98,7 +100,7 @@ repo:
   manifest:
     name: manifest
     github: https://git.bioconductor.org/admin/manifest
-    branch: {{ manifest_branch }}
+    branch: {{ current_branch }}
 
 {# Bioc package dependencies #}
 

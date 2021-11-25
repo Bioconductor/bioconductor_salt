@@ -26,3 +26,6 @@ base:
   'dependencies:dotnet:True':			    # For rmspc 
     - match: pillar
     - dotnet
+  'machine:env:dev':
+    - match: pillar
+    - common/bbs

@@ -69,20 +69,20 @@ git_clone_{{ repo.bbs.name }}_to_/home/{{ user.name }}:
 # Echo apt packages to install
 echo_apt_pkgs:
   cmd.run:
-    - name: echo apt-get -y install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ machine.os.name }}-files/{{ machine.os.version }}/apt_*.txt | awk '/^[^#]/ {print $1}')
+    - name: echo apt-get -y install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
 
 install_apt_pkgs:
   cmd.run:
-    - name: apt-get -y install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ machine.os.name }}-files/{{ machine.os.version }}/apt_*.txt | awk '/^[^#]/ {print $1}')
+    - name: apt-get -y install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
 
 # Echo pip packages to install
 echo_pip_pkgs:
   cmd.run:
-    - name: echo python3 -m pip install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ machine.os.name }}-files/{{ machine.os.version }}/pip_*.txt | awk '/^[^#]/ {print $1}')
+    - name: echo python3 -m pip install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/pip_*.txt | awk '/^[^#]/ {print $1}')
 
 install_pip_pkgs:
   cmd.run:
-    - name: python3 -m pip install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ machine.os.name }}-files/{{ machine.os.version }}/pip_*.txt | awk '/^[^#]/ {print $1}')
+    - name: python3 -m pip install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/pip_*.txt | awk '/^[^#]/ {print $1}')
 
 check_locale:
   locale.present:
