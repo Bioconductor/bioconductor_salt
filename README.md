@@ -31,45 +31,11 @@
    You will start as the `vagrant` user in the vagrant directory.
 
 6. Before running any builds, you should change the `BBS` configuration for
-   your system.
+   your system. If the variable `environment` is set to `dev` in the pillar,
+   the BBS will automatically be configured
 
-   ```
-   sudo su - biocbuild
-   cd /home/biocbuild/BBS
-   ```
-
-   Edit the configuration files for the version of Bioconductor you will
-   set up. For example, to configure the 3.14 `bioc` software builds,
-   edit the following lines in `BBS/3.14/bioc/nebbiolo2/config.sh`:
-
-    ```
-    export BBS_DEBUG="0"
-
-    export BBS_NODE_HOSTNAME="nebbiolo2"
-    export BBS_USER="biocbuild"
-    export BBS_WORK_TOPDIR="/home/biocbuild/bbs-3.14-bioc"
-    export BBS_R_HOME="$BBS_WORK_TOPDIR/R"
-    export BBS_NB_CPU=8        # change to a reasonable value for your system
-    export BBS_CHECK_NB_CPU=8  # change to a reasonable value for your system
-    
-    export BBS_CENTRAL_RHOST="localhost"
-    export BBS_CENTRAL_ROOT_URL="http://$BBS_CENTRAL_RHOST"
-    ...
-    # Control propagation:
-    #export BBS_OUTGOING_MAP="source:nebbiolo2/buildsrc" # comment out
-    export BBS_FINAL_REPO="file://home/biocpush/PACKAGES/$BBS_BIOC_VERSION/bioc"
-    
-    # Control generation of the report:
-    export BBS_REPORT_NODES="nebbiolo2" # leave only nebbiolo2
-    export BBS_REPORT_PATH="$BBS_CENTRAL_RDIR/report"
-    export BBS_REPORT_CSS="$BBS_HOME/$BBS_BIOC_VERSION/report.css"
-    export BBS_REPORT_BGIMG="$BBS_HOME/images/DEVEL3b.png"
-    export BBS_REPORT_JS="$BBS_HOME/$BBS_BIOC_VERSION/report.js"
-    ```
-
-   Depending on the number of cores on your system, the build process requires
-   a lot of resources and power. Change the CPU lines above for your machine.
-   Comment out the `BBS_OUTGOING_MAP` as we will not perform propagation.
+   Set the number of `cores` on your system. The build process requires
+   a lot of resources and power.
 
 7. Add the builds you wish to test to the `BBS/BBSreportutils.py` function
    `display_propagation_status` to prevent propagation.
@@ -109,7 +75,6 @@ R in `saltstack/pillar/custom/init.sls`:
 
     {% set branch = 'dev' %} {# Use 'release' or 'devel' #}
     {% set version = '3.15' %}
-    {% set manifest_branch = 'master' %}
     {% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
     {% set r_download = 'https://stat.ethz.ch/R/daily/R-devel_2021-11-16.tar.gz' %}
     {% set r_version = 'R-4.1.2' %}

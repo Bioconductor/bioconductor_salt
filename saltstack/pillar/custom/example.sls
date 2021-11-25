@@ -2,12 +2,11 @@
 
 {% set branch = 'release' %}                                {# Use 'release' or 'devel' #}
 {% set version = '3.14' %}                                  {# Bioc version #}
-{% set manifest_branch = 'RELEASE_3_14' %}
 {% set environment = 'dev' %}                               {# Use 'dev' or 'prod' #}
 {% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.1.1.tar.gz' %}
 {% set r_version = 'R-4.1.1' %}
 {% set cycle = 'patch' %}                                   {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
-{% set name = 'nebbiolo2' %}                                {# Machine name #}
+{% set name = 'nebbiolo2' %}                                {# nebbiolo1 for 3.15, nebbiolo2 for 3.14 #}
 {% set biocbuild_password = 'PASSWORD' %}
 {% set biocbuild_key = 'salt://common/files/id_rsa' %}      {# Path to the file #}
 {% set biocbuild_authorized_key = 'ssh-rsa AAAiB3Nza== biocbuild@nebbiolo2' %}
