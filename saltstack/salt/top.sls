@@ -1,7 +1,12 @@
 base:
-  '*':
-    - common
-    - common/r
+  'os:Ubuntu':
+    - match: grain
+    - common.linux
+    - common.rlang.linux
+  'os:Darwin':
+    - match: grain
+    - common.mac
+    - common.rlang.mac
   'machine:type:primary':
     - match: pillar 
     - webserver
@@ -27,5 +32,5 @@ base:
     - match: pillar
     - dotnet
   'machine:env:dev':
-    - match: pillar
-    - common/bbs
+    - match: grain
+    - common.bbs

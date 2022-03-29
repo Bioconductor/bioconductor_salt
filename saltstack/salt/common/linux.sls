@@ -12,24 +12,36 @@ change_hostname:
 
 change_host:
   host.present:
-    - ip: {{ machine.ip }} 
+    - ip: {{ machine.ip }}
     - names:
       - {{ machine.name }}
     - clean: True
 
-{%- for group in machine.groups + machine.additional.groups %}
+{% if machine.additional is defined %}
+{% set groups = machine.groups + machine.additional.groups %}
+{% else %}
+{% set groups = machine.groups %}
+{% endif %}
+
+{%- for group in groups %}
 make_group_{{ group }}:
   group.present:
     - name: {{ group }}
 {%- endfor %}
 
-{%- for user in machine.users + machine.additional.users %}
+{% if machine.additional is defined %}
+{% set users = machine.users + machine.additional.users %}
+{% else %}
+{% set users = machine.users %}
+{% endif %}
+
+{%- for user in users %}
 make_user_{{ user.name }}:
   user.present:
     - name: {{ user.name }}
     - password: {{ user.password }}
-    - home: /home/{{ user.name }}
-    - shell: /usr/bin/bash
+    - home: {{ machine.user.home }}/{{ user.name }}
+    - shell: {{ machine.user.shell }} 
     - groups:
     {%- for group in user.groups %}
       - {{ group }}
@@ -38,7 +50,7 @@ make_user_{{ user.name }}:
 {%- if user.key is defined %}
 copy_{{ user.name }}_ssh_key:
   file.managed:
-    - name: /home/{{ user.name }}/.ssh/{{ user.name }}
+    - name: {{ machine.user.home }}/{{ user.name }}/.ssh/{{ user.name }}
     - source: {{ user.key }} 
     - user: {{ user.name }} 
     - group: {{ user.name }}
@@ -58,27 +70,17 @@ copy_{{ user.name }}_authorized_keys:
 {%- endif %}
 
 {%- if user.name in ('biocbuild', 'biocpush') %}
-git_clone_{{ repo.bbs.name }}_to_/home/{{ user.name }}:
+git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ user.name }}:
   git.cloned:
     - name: {{ repo.bbs.github }}
-    - target: /home/{{ user.name }}/{{ repo.bbs.name }}
+    - target: {{ machine.user.home }}/{{ user.name }}/{{ repo.bbs.name }}
     - user: {{ user.name }}
 {%- endif %}
 {%- endfor %}
 
-# Echo apt packages to install
-echo_apt_pkgs:
-  cmd.run:
-    - name: echo apt-get -y install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
-
 install_apt_pkgs:
   cmd.run:
     - name: apt-get -y install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
-
-# Echo pip packages to install
-echo_pip_pkgs:
-  cmd.run:
-    - name: echo python3 -m pip install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/pip_*.txt | awk '/^[^#]/ {print $1}')
 
 install_pip_pkgs:
   cmd.run:
@@ -134,6 +136,7 @@ create_xfb_init:
           stop)
             echo -n "Stopping virtual X frame buffer: Xvfb"
             start-stop-daemon --stop --quiet --pidfile $PIDFILE
+
             sleep 2
             rm -f $PIDFILE
             echo "."
@@ -151,7 +154,7 @@ create_xfb_init:
 
 install_init-system-helpers:
   pkg.installed:
-    - name: init-system-helpers 
+    - name: init-system-helpers
 
 symlink_xvfb:
   cmd.run:
@@ -177,7 +180,7 @@ install_libcudart10.1:
 
 make_public_html:
   file.directory:
-    - name: /home/biocbuild/public_html
+    - name: {{ machine.user.home }}/biocbuild/public_html
     - user: biocbuild
     - group: biocbuild
     - replace: False
@@ -185,7 +188,7 @@ make_public_html:
 {%- for type in build.types %}
 make_{{ build.version }}_{{ type }}_directory:
   file.directory:
-    - name: /home/biocbuild/bbs-{{ build.version }}-{{ type }}/log
+    - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-{{ type }}/log
     - user: biocbuild
     - group: biocbuild
     - makedirs: True
@@ -194,13 +197,13 @@ make_{{ build.version }}_{{ type }}_directory:
 
 make_{{ build.version }}_bioc_rdownloads:
   file.directory:
-    - name: /home/biocbuild/bbs-{{ build.version }}-bioc/rdownloads
+    - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/rdownloads
     - user: biocbuild
     - group: biocbuild
     - makedirs: True
     - replace: False
 
-{%- for job in build.cron.jobs %} 
+{%- for job in build.cron.jobs %}
 add_{{ job.name }}_crontab:
   cron.present:
     - name: {{ job.command}}
@@ -222,13 +225,13 @@ add_PERL_MM_USE_DEFAULT_to_bashrc:
 
 make_propagation_symlink:
   file.symlink:
-    - name: /home/biocpush/propagation
-    - target: /home/biocpush/BBS/propagation
+    - name: {{ machine.user.home }}/biocpush/propagation
+    - target: {{ machine.user.home }}/biocpush/BBS/propagation
 
-{%- for build_type in build.types %} 
+{%- for build_type in build.types %}
 make_{{ build_type }}_src_contrib:
   file.directory:
-    - name: /home/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/src/contrib
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/src/contrib
     - user: biocpush
     - group: biocpush
     - makedirs: True
@@ -242,6 +245,6 @@ make_{{ build_type }}_src_contrib:
 git_bioc_manifest:
   git.cloned:
     - name: {{ repo.manifest.github }}
-    - target: /home/biocbuild/bbs-{{ build.version }}-bioc/{{ repo.manifest.name }}
+    - target: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/{{ repo.manifest.name }}
     - user: biocbuild 
     - branch: {{ repo.manifest.branch }}

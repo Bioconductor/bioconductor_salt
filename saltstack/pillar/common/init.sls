@@ -1,12 +1,25 @@
-{% from '../custom/init.sls' import branch, version, environment,
-   r_download, r_version, cycle, name, immunespace_pwd,
-   biocbuild_password, biocbuild_key, biocbuild_authorized_key,
-   biocpush_password, biocpush_key, biocpush_authorized_key %}
+{% from '../custom/linux.sls' import branch, version, environment,
+   r_download, r_version, r_previous_version, cycle, name,
+   immunespace_pwd, biocbuild_password, biocbuild_key,
+   biocbuild_authorized_key, biocpush_password, biocpush_key,
+   biocpush_authorized_key %}
 
 {%- if branch == 'release' %}
 {% set current_branch = 'RELEASE_' ~ version.replace(".", "_") %}
 {% else %}
 {% set current_branch = 'master' %}
+{%- endif %}
+
+{%- if grains['os_family'] == 'Debian' %}
+{% set user_home = '/home' %}
+{% set shell = '/usr/bin/bash' %}
+{% set slash = '/' %}
+{% set machine_type = 'primary' %}
+{% elif grains['os_family'] == 'Mac' %}
+{% set user_home = '/Users' %}
+{% set shell = '/usr/bin/sh' %}
+{% set slash = '/' %}
+{% set machine_type = 'secondary' %}
 {%- endif %}
 
 {# See machine.users below to add more users #}
@@ -27,7 +40,7 @@ build:
     path: /usr/local/bin:/usr/bin:/bin
     jobs:
       - name: bioc_prerun
-        command: /bin/bash --login -c "cd /home/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./prerun.sh >>/home/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
         minute: 50
         hour: 14
         daymonth: "*"
@@ -36,7 +49,7 @@ build:
         comment: "BIOC {{ version }} SOFTWARE BUILDS"
         commented: True 
       - name: bioc_run
-        command: /bin/bash --login -c "cd /home/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./run.sh >>/home/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
         minute: 00
         hour: 16
         daymonth: "*"
@@ -45,7 +58,7 @@ build:
         comment: "BIOC {{ version }} SOFTWARE BUILDS"
         commented: True 
       - name: bioc_postrun
-        command: /bin/bash --login -c "cd /home/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./postrun.sh >>/home/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
         minute: 00
         hour: 12
         daymonth: "*"
@@ -55,23 +68,33 @@ build:
         commented: True 
 
 machine:
-  name: {{ name }} 
+  name: {{ name }}
   env: {{ environment }}
+  slash: {{ slash }}
   ip: 127.0.1.1
   cores: 8 {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
-  type: primary
+  type: {{ machine_type }}
   groups: 
     - biocbuild
+    {%- if machine_type == 'primary' %}
     - biocpush
     - bioconductor
+    {%- endif %}
+  user:
+    home: {{ user_home }}
+    shell: {{ shell }}
   users:
     - name: biocbuild
       key: {{ biocbuild_key }}
       password: {{ biocbuild_password }}
       groups:
         - biocbuild
+        {% if grains['os'] == 'Mac' %}
+        - admin
+    {% endif %}
       authorized_keys:
         - {{ biocbuild_authorized_key }}
+    {% if machine_type == 'primary' %}
     - name: biocpush
       key: {{ biocpush_key }}
       password: {{ biocpush_password }}
@@ -79,6 +102,7 @@ machine:
         - biocpush
       authorized_keys:
         - {{ biocpush_authorized_key }}
+    {% endif %}
     {# Add more users using the same pattern as above
     - name: member
       pub-key: "ssh-dss AAAAB3NzaCL0sQ9fJ5bYTEyY== user@domain"
@@ -91,6 +115,7 @@ machine:
 r:
   download: {{ r_download }}
   version: {{ r_version }}
+  previous_version: {{ r_previous_version }}
 
 repo:
   bbs:
@@ -104,18 +129,6 @@ repo:
 
 {# Bioc package dependencies #}
 
-dependencies:
-  bibtex: True                          {# for bioc destiny #}
-  ensemblvep: True                      {# for bioc ensemblVEP and MMAPPR2 #}
-  viennarna: True                       {# for bioc GeneGA #}
-  libsbml_cflags_libsbml_libs: True     {# for bioc rsbml #}
-  immunespace: True                     {# for bioc ImmuneSpaceR #}
-  xmlsimple: True                       {# for bioc LowMACA #}
-  dotnet: True                          {# for bioc rmspc #}
-
 immunespace:
   login: bioc@immunespace.org
   pwd: {{ immunespace_pwd }}
-
-dotnet:
-  url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb

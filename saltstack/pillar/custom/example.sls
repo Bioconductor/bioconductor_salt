@@ -13,8 +13,7 @@
 {% set biocpush_password = 'PASSWORD' %}
 {% set biocpush_key = 'salt://common/files/id_rsa' %}
 {% set biocpush_authorized_key = 'ssh-rsa AAAiB3Nza== biocpush@nebbiolo2' %}
-{% set immunespace_pwd = 'PASSWORD' %}                      {# Neede for ImmuneSpaceR #}
-
+{% set immunespace_pwd = 'PASSWORD' %}                      {# Need for ImmuneSpaceR #}
 
 {# Add any pillars to overwrite existing values #}
 

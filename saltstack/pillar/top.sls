@@ -1,4 +1,8 @@
 base:
-  '*':
+  'os:Ubuntu':
+    - match: grain
     - common
-    - custom
+  'os:Darwin':
+    - match: grain
+    - common
+    - common.mac
