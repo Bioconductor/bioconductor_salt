@@ -1,4 +1,4 @@
-{% from '../custom/linux.sls' import branch, version, environment,
+{% from '../custom/mac.sls' import branch, version, environment,
    r_download, r_version, r_previous_version, cycle, name,
    immunespace_pwd, biocbuild_password, biocbuild_key,
    biocbuild_authorized_key, biocpush_password, biocpush_key,
@@ -10,12 +10,12 @@
 {% set current_branch = 'master' %}
 {%- endif %}
 
-{%- if grains['os_family'] == 'Debian' %}
+{%- if grains['os'] == 'Ubuntu' %}
 {% set user_home = '/home' %}
 {% set shell = '/usr/bin/bash' %}
 {% set slash = '/' %}
 {% set machine_type = 'primary' %}
-{% elif grains['os_family'] == 'Mac' %}
+{% elif grains['os'] == 'MacOS' %}
 {% set user_home = '/Users' %}
 {% set shell = '/usr/bin/sh' %}
 {% set slash = '/' %}
@@ -30,11 +30,6 @@ build:
   version: {{ version }}
   types:
     - bioc                  {# always required #}
-    - workflows
-    - books
-    - data-experiment
-    - data-annotation
-    - bioc-longtests
   cron:
     user: biocbuild
     path: /usr/local/bin:/usr/bin:/bin
@@ -74,12 +69,14 @@ machine:
   ip: 127.0.1.1
   cores: 8 {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
   type: {{ machine_type }}
+  {%- if grains['os'] == 'Ubuntu' %}
   groups: 
     - biocbuild
     {%- if machine_type == 'primary' %}
     - biocpush
     - bioconductor
     {%- endif %}
+  {% endif %}
   user:
     home: {{ user_home }}
     shell: {{ shell }}
@@ -88,10 +85,11 @@ machine:
       key: {{ biocbuild_key }}
       password: {{ biocbuild_password }}
       groups:
+        {%- if grains['os'] == 'Ubuntu' %}
         - biocbuild
-        {% if grains['os'] == 'Mac' %}
-        - admin
-    {% endif %}
+        {% elif grains['os'] == 'MacOS' %}
+        - staff
+        {% endif %}
       authorized_keys:
         - {{ biocbuild_authorized_key }}
     {% if machine_type == 'primary' %}

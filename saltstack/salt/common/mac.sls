@@ -1,6 +1,6 @@
-# Copy salt files into /srv/salt
-# Place biocbuild ssh key into /srv/salt/common/files
-# Place an authorized_keys file with core team member public keys in /srv/salt/common/files
+# Copy salt files into /opt/saltstack
+# Place biocbuild ssh key into /opt/salt/common/files
+# Place an authorized_keys file with core team member public keys in /opt/salt/common/files
 
 {% set machine = salt["pillar.get"]("machine") %}
 {% set build = salt["pillar.get"]("build") %}
@@ -19,12 +19,16 @@ change_hostname:
 set_dns_servers:
   cmd.run:
     - name: networksetup -setdnsservers 'Ethernet 1' 216.126.35.8 216.24.175.3 8.8.8.8
+    - require:
+      - cmd: change_hostname
 
 update:
   cmd.run:
     - name: |
         softwareupdate -l
         softwareupdate -ia --verbose
+    - require:
+      - cmd: set_dns_servers
 
 create_biocbuild:
   cmd.run:
@@ -38,18 +42,8 @@ create_biocbuild:
         dscl . -append /Groups/admin GroupMembership biocbuild
         cp -R /System/Library/User\ Template/English.lproj /Users/biocbuild
         chown -R biocbuild:staff /Users/biocbuild
-
-{% if machine.additional is defined %}
-{% set groups = machine.groups + machine.additional.groups %}
-{% else %}
-{% set groups = machine.groups %}
-{% endif %}
-
-{%- for group in groups %}
-make_group_{{ group }}:
-  group.present:
-    - name: {{ group }}
-{%- endfor %}
+    - require:
+      - cmd: update 
 
 {% if machine.additional is defined %}
 {% set users = machine.users + machine.additional.users %}
@@ -63,21 +57,24 @@ make_user_{{ user.name }}:
     - name: {{ user.name }}
     - password: {{ user.password }}
     - home: {{ machine.user.home }}/{{ user.name }}
-    - shell: /usr/bin/bash
+    - shell: /usr/bin/sh
     - groups:
-    {%- for group in user.groups %}
-      - {{ group }}
-    {%- endfor %}
+      - staff 
+      - admin
+    - require:
+      - cmd: create_biocbuild
 
 {%- if user.key is defined %}
 copy_{{ user.name }}_ssh_key:
   file.managed:
     - name: {{ machine.user.home }}/{{ user.name }}/.ssh/{{ user.name }}
-    - source: {{ user.key }} 
-    - user: {{ user.name }} 
-    - group: {{ user.name }}
+    - source: {{ user.key }}
+    - user: {{ user.name }}
+    - group: staff
     - makedirs: True
     - mode: 500
+    - require:
+      - cmd: create_biocbuild
 {%- endif %}
 
 {%- if user.authorized_key is defined %}
@@ -89,13 +86,17 @@ copy_{{ user.name }}_authorized_keys:
     {%- for authorized_key in user.authorized_keys %}
       - {{ authorized_key }}
     {%- endfor %}
+    - require:
+      - cmd: create_biocbuild
 {%- endif %}
 {%- endfor %}
 
 download_XQuartz:
-  file.managed:
-    - name: {{ machine.downloads.xquartz }}
+  cmd.run:
+    - name: curl -0 {{ machine.downloads.xquartz }}
     - cwd: {{ machine.user.home }}/Downloads
+    - require:
+      - cmd: create_biocbuild
 
 install_XQuartz:
   cmd.run:
@@ -103,20 +104,51 @@ install_XQuartz:
         hdiutil attach {{ xquartz }}.dmg
         installer -pkg /Volumes/{{ xquartz }}/XQuartz.pkg -target /
         hdiutil detach /Volumes/{{ xquartz }}
+    - cwd: {{ machine.user.home }}/Downloads
+    - require:
+      - cmd: download_XQuartz
 
 symlink_x11:
   file.symlink:
     - name: /usr/local/include/X11
     - target: /opt/X11/include/X11
-    - user: biocbuild
-    - group: biocbuild
+    - user: root
+    - group: wheel
+    - require:
+      - cmd: install_XQuartz
 
 {# Run Xvfb as a service #}
 
 create_xvfb_plist:
   file.managed:
     - name: /Library/LaunchDaemons/local.xvfb.plist
-    - source: salt://common/files/local.xvfb.plist
+    - contents: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+          <dict>
+            <key>KeepAlive</key>
+              <true/>
+            <key>Label</key>
+              <string>local.xvfb</string>
+            <key>ProgramArguments</key>
+              <array>
+                <string>/opt/X11/bin/Xvfb</string>
+                <string>:1</string>
+                <string>-screen</string>
+                <string>0</string>
+                <string>800x600x16</string>
+              </array>
+            <key>RunAtLoad</key>
+              <true/>
+            <key>ServiceDescription</key>
+              <string>Xvfb Virtual X Server</string>
+            <key>StandardOutPath</key>
+              <string>/var/log/xvfb/xvfb.stdout.log</string>
+            <key>StandardErrorPath</key>
+              <string>/var/log/xvfb/xvfb.stderror.log</string>
+          </dict>
+        </plist>
 
 create_xvfb.conf:
   file.managed:
@@ -125,24 +157,32 @@ create_xvfb.conf:
         # logfilename          [owner:group]    mode count size when  flags [/pid_file] [sig_num]
         /var/log/xvfb/xvfb.stderror.log         644  5     5120 *     JN
         /var/log/xvfb/xvfb.stdout.log           644  5     5120 *     JN
+    - require:
+      - file: create_xvfb_plist
 
 simulate_rotation:
   cmd.run:
     - name: newsyslog -nvv
+    - require:
+      - file: create_xvfb.conf
 
 export_global_variable_DISPLAY:
   file.append:
     - name: /etc/profile
-    - contents: export DISPLAY=:1.0
+    - text: export DISPLAY=:1.0
+    - require:
+      - file: create_xvfb.conf
 
 load_xvfb:
   cmd.run:
     - name: launchctl load /Library/LaunchDaemons/local.xvfb.plist
+    - require:
+      - file: export_global_variable_DISPLAY
 
 download_gfortran:
-  file.managed:
-    - name: {{ machine.user.home }}/Downloads
-    - source: {{ machine.mac.gfortran }}
+  cmd.run:
+    - name: curl -O {{ machine.downloads.gfortran }}
+    - cwd: {{ machine.user.home }}/Downloads 
     - user: biocbuild
 
 install_gfortran:
@@ -151,6 +191,9 @@ install_gfortran:
         hdiutil attach {{ gfortran }}.dmg
         installer -pkg /Volumes/{{ gfortran }}/{{ gfortran }}/gfortran.pkg -target /
         hdiutil detach /Volumes/{{ gfortran }}
+    - cwd: {{ machine.user.home }}/Downloads 
+    - require:
+      - cmd: download_gfortran
 
 brew_packages:
   cmd.run:
@@ -164,58 +207,79 @@ append_openssl_configurations_to_path:
         PATH=$PATH:/usr/local/opt/openssl@3/bin
         PKG_CONFIG_PATH=$PATH:/usr/local/opt/openssl@3/bin
         export OPENSSL_LIBS="/usr/local/opt/openssl@3/lib/libssl.a /usr/local/opt/openssl@3/lib/libcrypto.a"
+    - require:
+      - cmd: brew_packages
 
 pip_install_psutil:
   pip.installed:
     - name: psutil
     - bin_env: /usr/bin/pip3
     - user: biocbuild
+    - require:
+      - cmd: create_biocbuild
 
 install_pip_pkgs:
   cmd.run:
     - name: python3 -m pip install $(cat {{ machine.user.home }}/biocbuild/{{ repo.bbs.name }}/Ubuntu-files/20.04/pip_*.txt | awk '/^[^#]/ {print $1}')
+    - require:
+      - cmd: create_biocbuild
 
 download_mactex:
-  file.managed:
-    - name:  {{ machine.user.home }}/Downloads
-    - source: {{ machine.downloads.mactex }}
+  cmd.run:
+    - name: curl -O {{ machine.downloads.mactex }}
+    - cwd:  {{ machine.user.home }}/Downloads
     - user: biocbuild
+    - require:
+      - cmd: create_biocbuild
 
 install_mactex:
   cmd.run:
-    name: installer -pkg MacTex.pkg -target /
+    - name: installer -pkg MacTex.pkg -target /
+    - cwd:  {{ machine.user.home }}/Downloads
+    - require:
+      - cmd: download_mactex
 
 download_pandoc:
-  file.managed:
-    - name: {{ machine.user.home }}/Downloads
-    - source: {{ machine.downloads.pandoc }}
+  cmd.run:
+    - name: curl -O {{ machine.downloads.pandoc }}
+    - cwd: {{ machine.user.home }}/Downloads
     - user: biocbuild
+    - require:
+      - cmd: create_biocbuild
 
 install_pandoc:
   cmd.run:
     - name: installer -pkg {{ pandoc }} -target /
+    - cwd: {{ machine.user.home }}/Downloads
+    - require:
+      - cmd: download_pandoc
 
 fix_/usr/local_permissions:
   cmd.run:
     - name: |
         chown -R biocbuild:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
+    - require:
+      - cmd: install_mactex
+      - cmd: install_pandoc
 
 {%- for type in build.types %}
 make_{{ build.version }}_{{ type }}_directory:
   file.directory:
     - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-{{ type }}/log
     - user: biocbuild
-    - group: biocbuild
+    - group: staff
     - makedirs: True
     - replace: False
+    - require:
+      - cmd: create_biocbuild
 {%- endfor %}
 
 make_{{ build.version }}_bioc_rdownloads:
   file.directory:
     - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/rdownloads
     - user: biocbuild
-    - group: biocbuild
+    - group: staff
     - makedirs: True
     - replace: False
 

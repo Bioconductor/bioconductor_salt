@@ -2,7 +2,7 @@ base:
   'os:Ubuntu':
     - match: grain
     - common
-  'os:Darwin':
+  'os:MacOS':
     - match: grain
     - common
     - common.mac

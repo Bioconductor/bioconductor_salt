@@ -3,7 +3,7 @@ base:
     - match: grain
     - common.linux
     - common.rlang.linux
-  'os:Darwin':
+  'os:MacOS':
     - match: grain
     - common.mac
     - common.rlang.mac
