@@ -99,7 +99,7 @@ git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/biocbuild:
   git.cloned:
     - name: {{ repo.bbs.github }}
     - target: {{ machine.user.home }}/biocbuild/{{ repo.bbs.name }}
-    - user: {{ user.name }}
+    - user: biocbuild
 
 download_XQuartz:
   cmd.run:
