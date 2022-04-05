@@ -6,7 +6,7 @@
 
 download_netcdf:
   cmd.run:
-    - name: curl -O {{ machine.dependencies.netcdf }}
+    - name: curl -LO {{ machine.dependencies.netcdf }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
@@ -20,7 +20,7 @@ untar_netcdf:
 
 download_hdf5:
   cmd.run:
-    - name: curl -O {{ machine.dependencies.hdf5 }}
+    - name: curl -LO {{ machine.dependencies.hdf5 }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 

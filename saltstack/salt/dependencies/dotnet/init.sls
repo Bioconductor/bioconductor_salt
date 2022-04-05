@@ -12,7 +12,7 @@
 {%- if grains['os'] == 'Ubuntu' %}
 wget_deb:
   cmd.run:
-    - name: curl -O packages-microsoft-prod.deb {{ machine.dependencies.dotnet }} && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
+    - name: curl -LO packages-microsoft-prod.deb {{ machine.dependencies.dotnet }} && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
 
 apt_update:
   cmd.run:
@@ -26,7 +26,7 @@ install_apt-transport-https_aspnetcore-runtime:
 {% elif grains['os'] == 'MacOS' %}
 download_dotnet:
   cmd.run:
-    - name: curl -O {{ machine.dependencies.dotnet }}
+    - name: curl -LO {{ machine.dependencies.dotnet }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 

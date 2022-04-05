@@ -5,7 +5,7 @@
 
 download_clustal_omega:
   cmd.run:
-    - name: curl -L {{ machine.dependencies.clustal_omega }}
+    - name: curl -LO {{ machine.dependencies.clustal_omega }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 

@@ -22,7 +22,7 @@ install_viennarna:
 {%- elif grains['os'] == 'MacOS' %}
 download_viennarna:
   cmd.run:
-    - name: curl -O {{ machine.dependencies.viennarna }} 
+    - name: curl -LO {{ machine.dependencies.viennarna }} 
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 

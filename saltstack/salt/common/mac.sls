@@ -97,7 +97,7 @@ copy_{{ user.name }}_authorized_keys:
 
 download_XQuartz:
   cmd.run:
-    - name: curl -O {{ machine.downloads.xquartz }}
+    - name: curl -LO {{ machine.downloads.xquartz }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
 
 install_XQuartz:
@@ -183,7 +183,7 @@ load_xvfb:
 
 download_gfortran:
   cmd.run:
-    - name: curl -O {{ machine.downloads.gfortran }}
+    - name: curl -LO {{ machine.downloads.gfortran }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
@@ -201,7 +201,6 @@ fix_/usr/local_permissions_for_brewing:
   cmd.run:
     - name: |
         chown -R biocbuild:admin /usr/local/*
-        chown -R root:wheel /usr/local/texlive
 
 brew_packages:
   cmd.run:
@@ -231,7 +230,7 @@ install_pip_pkgs:
 
 download_mactex:
   cmd.run:
-    - name: curl -O {{ machine.downloads.mactex }}
+    - name: curl -LO {{ machine.downloads.mactex }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
@@ -244,7 +243,7 @@ install_mactex:
 
 download_pandoc:
   cmd.run:
-    - name: curl -O {{ machine.downloads.pandoc }}
+    - name: curl -LO {{ machine.downloads.pandoc }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 

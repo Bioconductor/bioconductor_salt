@@ -4,7 +4,7 @@
 
 download_java:
   cmd.run:
-    - name: curl -O {{ machine.dependencies.java }}
+    - name: curl -LO {{ machine.dependencies.java }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 

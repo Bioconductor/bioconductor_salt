@@ -5,7 +5,7 @@
 
 download_gsl:
   cmd.run:
-    - name: curl -O {{ machine.dependencies.gsl }}
+    - name: curl -LO {{ machine.dependencies.gsl }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
