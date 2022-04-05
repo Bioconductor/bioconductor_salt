@@ -1,4 +1,4 @@
-{% from '../custom/mac.sls' import branch, version, environment,
+{% from '../custom/init.sls' import branch, version, environment,
    r_download, r_version, r_previous_version, cycle, name,
    immunespace_pwd, biocbuild_password, biocbuild_key,
    biocbuild_authorized_key, biocpush_password, biocpush_key,
@@ -65,7 +65,6 @@ build:
 machine:
   name: {{ name }}
   env: {{ environment }}
-  create_users: True
   slash: {{ slash }}
   ip: 127.0.1.1
   cores: 8 {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
