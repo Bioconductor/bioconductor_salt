@@ -117,11 +117,9 @@ install_XQuartz:
       - cmd: download_XQuartz
 
 symlink_x11:
-  file.symlink:
-    - name: /usr/local/include/X11
-    - target: /opt/X11/include/X11
-    - user: root
-    - group: wheel
+  cmd.run:
+    - name: ln -s /opt/X11/include/X11 X11
+    - cwd: /usr/local/include
     - require:
       - cmd: install_XQuartz
 
