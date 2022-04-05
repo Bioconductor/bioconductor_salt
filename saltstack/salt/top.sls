@@ -3,34 +3,32 @@ base:
     - match: grain
     - common.linux
     - common.rlang.linux
+    - dependencies.bibtex                       # BioC destiny
+    - dependencies.libsbml_cflags_libsbml_libs  # BioC rsbml
+    - dependencies.xmlsimple                    # BioC LowMACA
   'os:MacOS':
     - match: grain
     - common.mac
     - common.rlang.mac
+    - dependencies.clustal_omega                # BioC LowMACA
+    - dependencies.cmake                        # CRAN nlopter
+    - dependencies.gsl                          # BioC GLAD
+    - dependencies.infernal                     # BioC inferrnal
+    - dependencies.jags                         # BioC rjags
+    - dependencies.java                         # CRAN rJava
+    - dependencies.macfuse                      # BioC Travel
+    - dependencies.mono                         # BioC rawrr
+    - dependencies.mysql                        # BioC ensemblVEP
+    - dependencies.netcdf_hdf5                  # CRAN ncdf4, BioC mzR
+    - dependencies.open_babel                   # BioC ChemmineOB
   'machine:type:primary':
     - match: pillar 
     - webserver
-  'dependencies:bibtex:True':                       # For destiny
-    - match: pillar
-    - bibtex
-  'dependencies:ensemblvep:True':                   # For ensemblVEP and MMAPPR2 
-    - match: pillar
-    - ensemblvep 
-  'dependencies:viennarna:True':                    # For GeneGA 
-    - match: pillar
-    - viennarna
-  'dependencies:libsbml_cflags_libsbml_libs:True':  # For rsbml
-    - match: pillar
-    - libsbml_cflags_libsbml_libs
-  'dependencies:immunespace:True':                  # For ImmuneSpaceR
-    - match: pillar
-    - immunespace
-  'dependencies:xmlsimple:True':                    # For LowMACA
-    - match: pillar
-    - xmlsimple
-  'dependencies:dotnet:True':			    # For rmspc 
-    - match: pillar
-    - dotnet
+  '*':
+    - dependencies.dotnet                       # BioC rmspc
+    - dependencies.ensemblvep                   # BioC ensemblVEP, MMAPPR2
+    - dependencies.immunespace                  # BioC ImmuneSpaceR
+    - dependencies.viennarna                    # BioC GeneGA
   'machine:env:dev':
     - match: grain
     - common.bbs

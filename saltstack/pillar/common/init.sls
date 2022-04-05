@@ -70,6 +70,7 @@ machine:
   cores: 8 {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
   type: {{ machine_type }}
   {%- if grains['os'] == 'Ubuntu' %}
+  r_path: {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/R/bin
   groups: 
     - biocbuild
     {%- if machine_type == 'primary' %}
