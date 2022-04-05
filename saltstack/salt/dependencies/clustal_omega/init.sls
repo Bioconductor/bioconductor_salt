@@ -25,9 +25,8 @@ move_clustal_omega:
 
 symlink_clustal_omega:
   file.symlink:
-    - name: clustalo
-    - target: {{ download }}
-    - cwd: /usr/local/bin
+    - name: /usr/local/bin/clustalo
+    - target: /usr/local/bin/{{ download }}
     - require:
       - cmd: move_clustal_omega
 
@@ -37,3 +36,5 @@ test_R_CMD_build_LowMACA_for_clustal_omega:
         git clone https://git.bioconductor.org/packages/LowMACA
         R CMD build LowMACA
     - cwd: /tmp
+    - require:
+      - file: symlink_clustal_omega

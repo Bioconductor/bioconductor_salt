@@ -47,4 +47,4 @@ test_R_CMD_build_rmspc:
         ls rmspc*tar.gz | {{ r_path }}/R CMD check --no-vignettes
     - cwd: /tmp
     - require:
-      - file: install_dotnet
+      - cmd: install_dotnet
