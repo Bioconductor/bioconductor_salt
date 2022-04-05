@@ -242,7 +242,7 @@ download_mactex:
 
 install_mactex:
   cmd.run:
-    - name: installer -pkg MacTex.pkg -target /
+    - name: installer -pkg MacTeX.pkg -target /
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_mactex
