@@ -97,7 +97,7 @@ copy_{{ user.name }}_authorized_keys:
 
 download_XQuartz:
   cmd.run:
-    - name: curl -0 {{ machine.downloads.xquartz }}
+    - name: curl -o {{ machine.downloads.xquartz }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
 
 install_XQuartz:
@@ -183,7 +183,7 @@ load_xvfb:
 
 download_gfortran:
   cmd.run:
-    - name: curl -O {{ machine.downloads.gfortran }}
+    - name: curl -o {{ machine.downloads.gfortran }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
@@ -196,6 +196,12 @@ install_gfortran:
     - cwd: {{ machine.user.home }}/biocbuild/Downloads 
     - require:
       - cmd: download_gfortran
+
+fix_/usr/local_permissions_for_brewing:
+  cmd.run:
+    - name: |
+        chown -R biocbuild:admin /usr/local/*
+        chown -R root:wheel /usr/local/texlive
 
 brew_packages:
   cmd.run:
@@ -221,6 +227,7 @@ pip_install_psutil:
 install_pip_pkgs:
   cmd.run:
     - name: python3 -m pip install $(cat {{ machine.user.home }}/biocbuild/{{ repo.bbs.name }}/Ubuntu-files/20.04/pip_*.txt | awk '/^[^#]/ {print $1}')
+    - runas: biocbuild
 
 download_mactex:
   cmd.run:
@@ -237,7 +244,7 @@ install_mactex:
 
 download_pandoc:
   cmd.run:
-    - name: curl -O {{ machine.downloads.pandoc }}
+    - name: curl -o {{ machine.downloads.pandoc }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
