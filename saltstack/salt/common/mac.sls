@@ -30,6 +30,7 @@ update:
     - require:
       - cmd: set_dns_servers
 
+{%- if machine.create_users %}
 create_biocbuild:
   cmd.run:
     - name: |
@@ -42,6 +43,8 @@ create_biocbuild:
         dscl . -append /Groups/admin GroupMembership biocbuild
         cp -R /System/Library/User\ Template/English.lproj /Users/biocbuild
         chown -R biocbuild:staff /Users/biocbuild
+    - unless:
+      - dscl . list /Users | egrep {{ user.name }}
     - require:
       - cmd: update 
 
@@ -90,13 +93,12 @@ copy_{{ user.name }}_authorized_keys:
       - cmd: create_biocbuild
 {%- endif %}
 {%- endfor %}
+{%- endif %}
 
 download_XQuartz:
   cmd.run:
     - name: curl -0 {{ machine.downloads.xquartz }}
     - cwd: {{ machine.user.home }}/Downloads
-    - require:
-      - cmd: create_biocbuild
 
 install_XQuartz:
   cmd.run:
@@ -183,7 +185,7 @@ download_gfortran:
   cmd.run:
     - name: curl -O {{ machine.downloads.gfortran }}
     - cwd: {{ machine.user.home }}/Downloads 
-    - user: biocbuild
+    - runas: biocbuild
 
 install_gfortran:
   cmd.run:
@@ -198,7 +200,7 @@ install_gfortran:
 brew_packages:
   cmd.run:
     - name: brew install {{ machine.brews }}
-    - user: biocbuild
+    - runas: biocbuild
 
 append_openssl_configurations_to_path:
   file.append:
@@ -214,23 +216,17 @@ pip_install_psutil:
   pip.installed:
     - name: psutil
     - bin_env: /usr/bin/pip3
-    - user: biocbuild
-    - require:
-      - cmd: create_biocbuild
+    - runas: biocbuild
 
 install_pip_pkgs:
   cmd.run:
     - name: python3 -m pip install $(cat {{ machine.user.home }}/biocbuild/{{ repo.bbs.name }}/Ubuntu-files/20.04/pip_*.txt | awk '/^[^#]/ {print $1}')
-    - require:
-      - cmd: create_biocbuild
 
 download_mactex:
   cmd.run:
     - name: curl -O {{ machine.downloads.mactex }}
     - cwd:  {{ machine.user.home }}/Downloads
-    - user: biocbuild
-    - require:
-      - cmd: create_biocbuild
+    - runas: biocbuild
 
 install_mactex:
   cmd.run:
@@ -244,8 +240,6 @@ download_pandoc:
     - name: curl -O {{ machine.downloads.pandoc }}
     - cwd: {{ machine.user.home }}/Downloads
     - user: biocbuild
-    - require:
-      - cmd: create_biocbuild
 
 install_pandoc:
   cmd.run:
@@ -271,8 +265,6 @@ make_{{ build.version }}_{{ type }}_directory:
     - group: staff
     - makedirs: True
     - replace: False
-    - require:
-      - cmd: create_biocbuild
 {%- endfor %}
 
 make_{{ build.version }}_bioc_rdownloads:

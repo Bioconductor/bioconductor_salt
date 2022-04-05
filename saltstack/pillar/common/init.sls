@@ -2,7 +2,7 @@
    r_download, r_version, r_previous_version, cycle, name,
    immunespace_pwd, biocbuild_password, biocbuild_key,
    biocbuild_authorized_key, biocpush_password, biocpush_key,
-   biocpush_authorized_key %}
+   biocpush_authorized_key, create_users %}
 
 {%- if branch == 'release' %}
 {% set current_branch = 'RELEASE_' ~ version.replace(".", "_") %}
@@ -65,10 +65,12 @@ build:
 machine:
   name: {{ name }}
   env: {{ environment }}
+  create_users: True
   slash: {{ slash }}
   ip: 127.0.1.1
   cores: 8 {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
   type: {{ machine_type }}
+  create_users: {% if create_users is defined %}{{ create_users }}{% else %}True{% endif %}
   {%- if grains['os'] == 'Ubuntu' %}
   r_path: {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/R/bin
   groups: 
