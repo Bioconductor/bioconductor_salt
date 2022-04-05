@@ -2,7 +2,7 @@
 
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.jags.split("/")[-1] %}
-{% set jags = jags[-4] %}
+{% set jags = download[-4] %}
 
 download_jags:
   cmd.run:

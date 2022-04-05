@@ -2,7 +2,7 @@
 
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.macfuse.split("/")[-1] %}
-{% set macfuse = macfuse[-4] %}
+{% set macfuse = download[-4] %}
 
 download_macfuse:
   cmd.run:

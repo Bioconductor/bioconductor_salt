@@ -1,24 +1,24 @@
 # Needed for BioC LowMACA
 
 {% set machine = salt["pillar.get"]("machine") %}
-{% set downloaded_clustal_omega = machine.downloads.clustal_omega.split("/")[-1] %}
+{% set download = machine.dependencies.clustal_omega.split("/")[-1] %}
 
-download_jags:
+download_clustal_omega:
   cmd.run:
-    - name: curl -L {{ machine.downloads.clustal_omega }}
+    - name: curl -L {{ machine.dependencies.clustal_omega }}
     - cwd:  {{ machine.user.home }}/Downloads
     - user: biocbuild
 
 change_clustal_omega_permissions:
   cmd.run:
-    - name: chmod +x {{ downloaded_clustal_omega }} 
+    - name: chmod +x {{ download }}
     - cwd:  {{ machine.user.home }}/Downloads
     - require:
       - cmd: download_clustal_omega
 
 move_clustal_omega:
   cmd.run:
-    - name: mv -i {{ downloaded_clustal_omega }} /usr/local/bin 
+    - name: mv -i {{ download }} /usr/local/bin
     - cwd:  {{ machine.user.home }}/Downloads
     - require:
       - cmd: change_clustal_omega_permissions
@@ -26,7 +26,7 @@ move_clustal_omega:
 symlink_clustal_omega:
   file.symlink:
     - name: clustalo
-    - target: {{ downloaded_clustal_omega }} 
+    - target: {{ download }}
     - cwd: /usr/local/bin
     - require:
       - cmd: move_clustal_omega

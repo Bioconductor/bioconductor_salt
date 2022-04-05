@@ -59,7 +59,7 @@ make_user_{{ user.name }}:
     - home: {{ machine.user.home }}/{{ user.name }}
     - shell: /usr/bin/sh
     - groups:
-      - staff 
+      - staff
       - admin
     - require:
       - cmd: create_biocbuild

@@ -1,7 +1,5 @@
 # Needed for BioC ChemmineOB
 
-{% set machine = salt["pillar.get"]("machine") %}
-
 brew_open_babel:
   cmd.run:
     - name: brew install eigen open-babel boost
@@ -9,10 +7,10 @@ brew_open_babel:
 
 symlink_open_babel:
   cmd.run:
-    - name: ln -s ../Cellar/open-babel/$(brew info openbabel | grep "openbabel: stable" | awk '{print $3'})/lib openbabel3
-    - cwd: /usr/local/lib 
-    - user: biocbuild
-    - group: staff
+    - name: ln -s /usr/local/lib/Cellar/open-babel/$(brew info openbabel | grep "openbabel: stable" | awk '{print $3}')/lib openbabel3
+    - runas: biocbuild
+    - require:
+      - cmd: brew_open_babel
 
 test_bioc_install_ChemmineOB:
   cmd.run:

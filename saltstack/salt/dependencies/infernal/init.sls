@@ -1,5 +1,6 @@
 # Needed by BioC inferrnal
 
+{% set machine = salt["pillar.get"]("machine") %}
 {%- if machine.r_path is defined %}
 {% set r_path = machine.r_path %}
 {% else %}
