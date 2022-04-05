@@ -12,7 +12,7 @@ brew_uninstall_cmake:
 download_cmake:
   cmd.run:
     - name: curl -LO {{ machine.dependencies.cmake }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
 attach_cmake:

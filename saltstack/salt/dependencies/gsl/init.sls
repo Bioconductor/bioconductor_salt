@@ -6,12 +6,12 @@
 download_gsl:
   cmd.run:
     - name: curl -O {{ machine.dependencies.gsl }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
 untar_gsl:
   cmd.run:
-    - name: tar xvfJ {{ machine.user.home }}/Downloads/{{ download }} -C /
+    - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ download }} -C /
     - user: biocbuild
     - require:
       - cmd: download_gsl

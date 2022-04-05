@@ -7,7 +7,7 @@
 download_macfuse:
   cmd.run:
     - name: curl -LO {{ machine.dependencies.macfuse }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
 install_macfuse:
@@ -16,6 +16,7 @@ install_macfuse:
         hdiutil attach {{ download }}
         installer -pkg /Volumes/{{ macfuse }}/{{macfuse }}.pkg -target /
         hdiutil detach /Volumes/{{ macfuse }}
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_macfuse
 

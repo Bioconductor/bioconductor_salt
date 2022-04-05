@@ -98,7 +98,7 @@ copy_{{ user.name }}_authorized_keys:
 download_XQuartz:
   cmd.run:
     - name: curl -0 {{ machine.downloads.xquartz }}
-    - cwd: {{ machine.user.home }}/Downloads
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
 
 install_XQuartz:
   cmd.run:
@@ -106,7 +106,7 @@ install_XQuartz:
         hdiutil attach {{ xquartz }}.dmg
         installer -pkg /Volumes/{{ xquartz }}/XQuartz.pkg -target /
         hdiutil detach /Volumes/{{ xquartz }}
-    - cwd: {{ machine.user.home }}/Downloads
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_XQuartz
 
@@ -184,7 +184,7 @@ load_xvfb:
 download_gfortran:
   cmd.run:
     - name: curl -O {{ machine.downloads.gfortran }}
-    - cwd: {{ machine.user.home }}/Downloads 
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
 install_gfortran:
@@ -193,7 +193,7 @@ install_gfortran:
         hdiutil attach {{ gfortran }}.dmg
         installer -pkg /Volumes/{{ gfortran }}/{{ gfortran }}/gfortran.pkg -target /
         hdiutil detach /Volumes/{{ gfortran }}
-    - cwd: {{ machine.user.home }}/Downloads 
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads 
     - require:
       - cmd: download_gfortran
 
@@ -225,7 +225,7 @@ install_pip_pkgs:
 download_mactex:
   cmd.run:
     - name: curl -O {{ machine.downloads.mactex }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
 install_mactex:
@@ -238,13 +238,13 @@ install_mactex:
 download_pandoc:
   cmd.run:
     - name: curl -O {{ machine.downloads.pandoc }}
-    - cwd: {{ machine.user.home }}/Downloads
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
 install_pandoc:
   cmd.run:
     - name: installer -pkg {{ pandoc }} -target /
-    - cwd: {{ machine.user.home }}/Downloads
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_pandoc
 

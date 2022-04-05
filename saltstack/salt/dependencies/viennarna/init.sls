@@ -3,7 +3,6 @@
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.viennarna.split("/")[-1] %}
 {% set viennarna_version = download[9:-11] %}
-
 {%- if machine.r_path is defined %}
 {% set r_path = machine.r_path %}
 {% else %}
@@ -24,7 +23,7 @@ install_viennarna:
 download_viennarna:
   cmd.run:
     - name: curl -O {{ machine.dependencies.viennarna }} 
-    - cwd: {{ machine.user.home }}/Downloads
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
 install_viennarna:
@@ -33,6 +32,7 @@ install_viennarna:
         hdiutil attach {{ download }}
         installer -pkg "/Volumes/ViennaRNA {{ viennarna_version }}/ViennaRNA Package {{ viennarna_version }}Installer.pkg" -target /
         hdiutil detach "/Volumes/ViennaRNA {{ viennarna_version }}"
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_viennarna
 

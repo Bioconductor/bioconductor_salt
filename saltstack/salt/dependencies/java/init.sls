@@ -5,12 +5,12 @@
 download_java:
   cmd.run:
     - name: curl -O {{ machine.dependencies.java }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
 untar_java:
   cmd.run:
-    - name: tar zxvf {{ machine.user.home }}/Downloads/{{ download }}
+    - name: tar zxvf {{ machine.user.home }}/biocbuild/Downloads/{{ download }}
     - cwd: /usr/local
     - runas: biocbuild
     - require:

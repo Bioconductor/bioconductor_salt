@@ -7,7 +7,7 @@
 download_jags:
   cmd.run:
     - name: curl -LO {{ machine.dependencies.jags }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
 install_jags:

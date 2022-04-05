@@ -27,13 +27,13 @@ install_apt-transport-https_aspnetcore-runtime:
 download_dotnet:
   cmd.run:
     - name: curl -O {{ machine.dependencies.dotnet }}
-    - cwd: {{ machine.user.home }}/Downloads
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
 install_dotnet:
   cmd.run:
     - name: installer -pkg {{ download }} -target /
-    - cwd: {{ machine.user.home }}/Downloads
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
     - require:
       - cmd: download_dotnet

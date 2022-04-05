@@ -7,12 +7,12 @@
 download_netcdf:
   cmd.run:
     - name: curl -O {{ machine.dependencies.netcdf }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
 untar_netcdf:
   cmd.run:
-    - name: tar xvfJ {{ machine.user.home }}/Downloads/{{ netcdf }} -C /
+    - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ netcdf }} -C /
     - cwd: /usr/local
     - user: biocbuild
     - require:
@@ -21,12 +21,12 @@ untar_netcdf:
 download_hdf5:
   cmd.run:
     - name: curl -O {{ machine.dependencies.hdf5 }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
 untar_hdf5:
   cmd.run:
-    - name: tar xvfJ {{ machine.user.home }}/Downloads/{{ hdf5 }} -C /
+    - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ hdf5 }} -C /
     - cwd: /usr/local
     - user: biocbuild
     - require:

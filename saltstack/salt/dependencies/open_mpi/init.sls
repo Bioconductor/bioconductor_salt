@@ -3,7 +3,7 @@
 brew_open_mpi:
   cmd.run:
     - name: brew install open-mpi 
-    - user: biocbuild
+    - runas: biocbuild
 
 test_cran_install_Rmpi:
   cmd.run:

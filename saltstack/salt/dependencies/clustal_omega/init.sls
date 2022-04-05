@@ -6,20 +6,20 @@
 download_clustal_omega:
   cmd.run:
     - name: curl -L {{ machine.dependencies.clustal_omega }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
 change_clustal_omega_permissions:
   cmd.run:
     - name: chmod +x {{ download }}
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_clustal_omega
 
 move_clustal_omega:
   cmd.run:
     - name: mv -i {{ download }} /usr/local/bin
-    - cwd:  {{ machine.user.home }}/Downloads
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: change_clustal_omega_permissions
 
