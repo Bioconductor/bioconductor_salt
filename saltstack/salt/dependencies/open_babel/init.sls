@@ -7,7 +7,9 @@ brew_open_babel:
 
 symlink_open_babel:
   cmd.run:
-    - name: ln -s /usr/local/lib/Cellar/open-babel/$(brew info openbabel | grep "openbabel: stable" | awk '{print $3}')/lib openbabel3
+    - name: |
+        openbabel_version=$(brew info openbabel | grep "openbabel: stable" | awk '{print $3}')
+        ln -s /usr/local/lib/Cellar/open-babel/$openbabel_version/lib openbabel3
     - runas: biocbuild
     - require:
       - cmd: brew_open_babel
