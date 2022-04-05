@@ -60,7 +60,7 @@ make_user_{{ user.name }}:
     - name: {{ user.name }}
     - password: {{ user.password }}
     - home: {{ machine.user.home }}/{{ user.name }}
-    - shell: /usr/bin/sh
+    - shell: /bin/bash
     - groups:
       - staff
       - admin
@@ -93,6 +93,14 @@ copy_{{ user.name }}_authorized_keys:
       - cmd: create_biocbuild
 {%- endif %}
 {%- endfor %}
+{%- endif %}
+
+{%- if user.name == 'biocbuild' %}
+git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ user.name }}:
+  git.cloned:
+    - name: {{ repo.bbs.github }}
+    - target: {{ machine.user.home }}/{{ user.name }}/{{ repo.bbs.name }}
+    - user: {{ user.name }}
 {%- endif %}
 
 download_XQuartz:

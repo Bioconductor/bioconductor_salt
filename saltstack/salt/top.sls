@@ -2,14 +2,12 @@ base:
   'os:Ubuntu':
     - match: grain
     - common.linux
-    - common.bbs
     - common.rlang.linux
     - dependencies.bibtex                       # BioC destiny
     - dependencies.libsbml_cflags_libsbml_libs  # BioC rsbml
     - dependencies.xmlsimple                    # BioC LowMACA
   'os:MacOS':
     - match: grain
-    - common.bbs
     - common.mac
     - common.rlang.mac
     - dependencies.clustal_omega                # BioC LowMACA
