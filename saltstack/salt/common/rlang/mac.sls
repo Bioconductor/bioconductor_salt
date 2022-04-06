@@ -18,7 +18,6 @@ install_R:
   cmd.run:
     - name: installer -pkg {{ downloaded_file }} -target /
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
-    - runas: biocbuild
     - require:
       - cmd: get_R_pkg
 
