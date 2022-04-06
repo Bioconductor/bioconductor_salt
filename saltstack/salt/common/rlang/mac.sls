@@ -85,21 +85,25 @@ add_cairo_hack_for_polygon_edge_not_found:
     - require:
       - cmd: install_cran_Cairo
 
-{% for pkg in r.difficult_pkgs %}
+{%- for pkg in r.difficult_pkgs %}
 attempt_install_difficult_package_{{ pkg }}:
   cmd.run:
     - name: Rscript -e "install.packages('{{ pkg }}', repos='https://cran.r-project.org')"
     - runas: biocbuild
+    - unless:
+      - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
     - require:
       - cmd: install_R
 
 attempt_install_previous_version_of_{{ pkg }}:
   cmd.run:
-    - name: Rscript -e "if (!'{{ pkg }}' %in% rownames(installed.packages()) install.packages('{{ pkg }}', repos='https://cran.r-project.org/bin/macosx/contrib/{{ r.previous_version }}')"
+    - name: Rscript -e "if (!('{{ pkg }}' %in% rownames(installed.packages())) install.packages('{{ pkg }}', repos='https://cran.r-project.org/bin/macosx/contrib/{{ r.previous_version }}')"
     - runas: biocbuild
+    - unless:
+      - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
     - require:
       - cmd: install_R
-{% endfor %}
+{%- endfor %}
 
 symlink_previous_version:
   file.symlink:
