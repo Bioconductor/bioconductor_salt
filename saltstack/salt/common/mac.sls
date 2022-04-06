@@ -195,7 +195,7 @@ install_gfortran:
   cmd.run:
     - name: |
         hdiutil attach {{ gfortran }}.dmg
-        installer -pkg /Volumes/{{ gfortran }}/{{ gfortran }}/gfortran.pkg -target /
+        installer -pkg /Volumes/{{ gfortran }}//gfortran.pkg -target /
         hdiutil detach /Volumes/{{ gfortran }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads 
     - require:
