@@ -97,7 +97,7 @@ attempt_install_difficult_package_{{ pkg }}:
 
 attempt_install_previous_version_of_{{ pkg }}:
   cmd.run:
-    - name: Rscript -e "if (!('{{ pkg }}' %in% rownames(installed.packages())) install.packages('{{ pkg }}', repos='https://cran.r-project.org/bin/macosx/contrib/{{ r.previous_version }}')"
+    - name: Rscript -e "if (!('{{ pkg }}' %in% rownames(installed.packages()))) install.packages('{{ pkg }}', repos='https://cran.r-project.org/bin/macosx/contrib/{{ r.previous_version }}')"
     - runas: biocbuild
     - unless:
       - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
