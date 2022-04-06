@@ -10,8 +10,7 @@ download_java:
 
 untar_java:
   cmd.run:
-    - name: tar zxvf {{ machine.user.home }}/biocbuild/Downloads/{{ download }}
-    - cwd: /usr/local
+    - name: tar zxvf {{ machine.user.home }}/biocbuild/Downloads/{{ download }} -C /usr/local
     - require:
       - cmd: download_java
 
