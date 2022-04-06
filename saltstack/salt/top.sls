@@ -9,13 +9,13 @@ base:
   'os:MacOS':
     - match: grain
     - common.mac
+    - dependencies.java                         # CRAN rJava
     - common.rlang.mac
     - dependencies.clustal_omega                # BioC LowMACA
     - dependencies.cmake                        # CRAN nlopter
     - dependencies.gsl                          # BioC GLAD
     - dependencies.infernal                     # BioC inferrnal
     - dependencies.jags                         # BioC rjags
-    - dependencies.java                         # CRAN rJava
     - dependencies.macfuse                      # BioC Travel
     - dependencies.mono                         # BioC rawrr
     - dependencies.mysql                        # BioC ensemblVEP
