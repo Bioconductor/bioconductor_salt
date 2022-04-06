@@ -21,12 +21,18 @@ install_R:
     - require:
       - cmd: get_R_pkg
 
+fix_library_permissions:
+  cmd.run:
+    - name: chown -R biocbuild:admin /Library/Frameworks/R.framework/Resources/library
+    - require:
+      - cmd: install_R
+
 install_biocmanager:
   cmd.run:
     - name: Rscript -e "install.packages('BiocManager', repos='https://cran.r-project.org'); library(BiocManager); BiocManager::install(ask=FALSE)"
     - runas: biocbuild
     - require:
-      - cmd: install_R
+      - cmd: fix_library_permissions 
 
 {%- for pkg in r.cran %}
 install_cran_{{ pkg }}:
