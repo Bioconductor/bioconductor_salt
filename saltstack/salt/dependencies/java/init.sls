@@ -1,6 +1,6 @@
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.java.split("/")[-1] %}
-{% set java = download[:-21] %}
+{% set java = download[4:-21] %}
 
 download_java:
   cmd.run:
@@ -8,6 +8,7 @@ download_java:
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
+{# NOTE: May fail but will still untar files #}
 untar_java:
   cmd.run:
     - name: tar zxvf {{ machine.user.home }}/biocbuild/Downloads/{{ download }} -C /usr/local
@@ -19,8 +20,6 @@ fix_/usr/local_permissions_java:
     - name: |
         chown -R biocbuild:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
-    - require:
-      - cmd: untar_java
 
 symlink_java:
   cmd.run:
@@ -36,5 +35,3 @@ set_JAVA_HOME:
   file.append:
     - name: /etc/profile
     - text: export JAVA_HOME=/usr/local/{{ java }}.jdk/Contents/Home
-    - require:
-      - cmd: symlink_java
