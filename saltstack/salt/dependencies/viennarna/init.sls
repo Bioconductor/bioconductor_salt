@@ -49,7 +49,7 @@ test_R_CMD_build_GeneGA:
   cmd.run:
     - name: |
         git clone https://git.bioconductor.org/packages/GeneGA
-        {{ r_path }}/R CMD build GeneGA
+        {{ r_path }}R CMD build GeneGA
     - cwd: /tmp
     - require:
       - cmd: install_viennarna

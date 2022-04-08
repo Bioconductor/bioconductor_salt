@@ -71,7 +71,7 @@ machine:
   type: {{ machine_type }}
   create_users: {% if create_users is defined %}{{ create_users }}{% else %}True{% endif %}
   {%- if grains['os'] == 'Ubuntu' %}
-  r_path: {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/R/bin
+  r_path: {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/R/bin/
   groups: 
     - biocbuild
     {%- if machine_type == 'primary' %}

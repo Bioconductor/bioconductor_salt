@@ -101,8 +101,8 @@ test_R_CMD_build_{{ pkg }}:
   cmd.run:
     - name: |
         git clone https://git.bioconductor.org/packages/{{ pkg }}
-        {{ r_path }}/R CMD build {{ pkg }} 
-        ls {{ pkg }}*.tar.gz | {{ r_path }}/R CMD check --no-vignettes 
+        {{ r_path }}R CMD build {{ pkg }} 
+        ls {{ pkg }}*.tar.gz | {{ r_path }}R CMD check --no-vignettes 
     - cwd: /tmp
     - require:
       - file: append_ensemblvep_to_path

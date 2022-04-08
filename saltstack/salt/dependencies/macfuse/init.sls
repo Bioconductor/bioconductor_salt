@@ -2,7 +2,7 @@
 
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.macfuse.split("/")[-1] %}
-{% set macfuse = download[-4] %}
+{% set macfuse = download[:-4] %}
 
 download_macfuse:
   cmd.run:
@@ -14,9 +14,9 @@ install_macfuse:
   cmd.run:
     - name: |
         hdiutil attach {{ download }}
-        installer -pkg /Volumes/{{ macfuse }}/{{macfuse }}.pkg -target /
+        installer -pkg /Volumes//{{macfuse }}.pkg -target /
         hdiutil detach /Volumes/{{ macfuse }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_macfuse
 

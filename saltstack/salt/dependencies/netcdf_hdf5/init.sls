@@ -28,7 +28,6 @@ untar_hdf5:
   cmd.run:
     - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ hdf5 }} -C /
     - cwd: /usr/local
-    - user: biocbuild
     - require:
       - cmd: download_hdf5
 

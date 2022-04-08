@@ -15,8 +15,8 @@ test_R_CMD_build_rawrr:
   cmd.run:
     - name: |
         git clone https://git.bioconductor.org/packages/rawrr
-        {{ r_path }}/R CMD INSTALL rawrr
-        {{ r_path }}/R CMD build rawrr
+        {{ r_path }}R CMD INSTALL rawrr
+        {{ r_path }}R CMD build rawrr
         ls rawrr*tar.gz | {{ r_path }}/R CMD check --no-vignettes
     - cwd: /tmp
     - require:

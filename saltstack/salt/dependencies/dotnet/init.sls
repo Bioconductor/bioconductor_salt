@@ -43,8 +43,8 @@ test_R_CMD_build_rmspc:
   cmd.run:
     - name: |
         git clone https://git.bioconductor.org/packages/rmspc
-        {{ r_path }}/R CMD build rmspc
-        ls rmspc*tar.gz | {{ r_path }}/R CMD check --no-vignettes
+        {{ r_path }}R CMD build rmspc
+        ls rmspc*tar.gz | {{ r_path }}R CMD check --no-vignettes
     - cwd: /tmp
     - require:
       - cmd: install_dotnet
