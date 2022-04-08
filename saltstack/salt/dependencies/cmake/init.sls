@@ -26,7 +26,7 @@ attach_cmake:
 
 cp_cmake_to_applications:
   cmd.run:
-    - name: cp -ri /Volumes/{{ cmake }}/CMake.app /Applications/
+    - name: cp -r /Volumes/{{ cmake }}/CMake.app /Applications/
     - require:
       - cmd: attach_cmake
 
