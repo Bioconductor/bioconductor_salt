@@ -2,7 +2,7 @@
 
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.cmake.split("/")[-1] %}
-{% set cmake = download[-4] %}
+{% set cmake = download[:-4] %}
 
 brew_uninstall_cmake:
   cmd.run:
