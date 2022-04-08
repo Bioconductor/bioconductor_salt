@@ -14,7 +14,7 @@ install_jags:
   cmd.run:
     - name: |
         hdiutil attach {{ download }}
-        installer -pkg /Volumes/{{ jags }}/{{ jags }}.pkg -target /
+        installer -pkg /Volumes/{{ jags }}.pkg -target /
         hdiutil detach /Volumes/{{ jags }}
     - require:
       - cmd: download_jags
