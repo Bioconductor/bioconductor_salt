@@ -16,6 +16,7 @@ install_jags:
         hdiutil attach {{ download }}
         installer -pkg /Volumes/{{ jags }}.pkg -target /
         hdiutil detach /Volumes/{{ jags }}
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_jags
 
