@@ -10,10 +10,12 @@
 brew_tap_brewsci/bio:
   cmd.run:
     - name: brew tap brewsci/bio
+    - runas: biocbuild
 
 brew_install_infernal:
   cmd.run:
     - name: brew install infernal
+    - runas: biocbuild
     - require:
       - cmd: brew_tap_brewsci/bio
 
