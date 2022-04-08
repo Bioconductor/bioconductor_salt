@@ -27,7 +27,6 @@ attach_cmake:
 cp_cmake_to_applications:
   cmd.run:
     - name: cp -ri /Volumes/{{ cmake }}/CMake.app /Applications/
-    - runas: biocbuild
     - require:
       - cmd: attach_cmake
 
