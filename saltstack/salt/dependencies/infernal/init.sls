@@ -23,7 +23,7 @@ test_R_CMD_build_inferrnal:
   cmd.run:
     - name: |
         git clone https://git.bioconductor.org/packages/inferrnal
-        {{ r_path }}/R CMD build inferrnal
+        R CMD build inferrnal
     - cwd: /tmp
     - require:
       - cmd: brew_install_infernal
