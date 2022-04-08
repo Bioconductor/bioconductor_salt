@@ -215,8 +215,8 @@ append_openssl_configurations_to_path:
   file.append:
     - name: /etc/profile
     - text: |
-        PATH=$PATH:/usr/local/opt/openssl@3/bin
-        PKG_CONFIG_PATH=$PATH:/usr/local/opt/openssl@3/bin
+        export PATH=$PATH:/usr/local/opt/openssl@3/bin
+        export PKG_CONFIG_PATH=$PATH:/usr/local/opt/openssl@3/bin
         export OPENSSL_LIBS="/usr/local/opt/openssl@3/lib/libssl.a /usr/local/opt/openssl@3/lib/libcrypto.a"
     - require:
       - cmd: brew_packages
