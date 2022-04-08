@@ -35,3 +35,9 @@ set_JAVA_HOME:
   file.append:
     - name: /etc/profile
     - text: export JAVA_HOME=/usr/local/{{ java }}.jdk/Contents/Home
+
+configure_R_to_use_Java:
+  cmd.run:
+    - name: R CMD javareconf
+    - require:
+      - file: set_JAVA_HOME

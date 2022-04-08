@@ -71,8 +71,6 @@ check_rtrackerlayer_statically_linked:
 configure_R_to_use_Java:
   cmd.run:
     - name: R CMD javareconf
-    - wait:
-      - file: set_JAVA_HOME
 
 add_cairo_hack_for_polygon_edge_not_found:
   file.replace:
