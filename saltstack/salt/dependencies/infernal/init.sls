@@ -1,12 +1,5 @@
 # Needed by BioC inferrnal
 
-{% set machine = salt["pillar.get"]("machine") %}
-{%- if machine.r_path is defined %}
-{% set r_path = machine.r_path %}
-{% else %}
-{% set r_path = '' %}
-{%- endif %}
-
 brew_tap_brewsci/bio:
   cmd.run:
     - name: brew tap brewsci/bio
