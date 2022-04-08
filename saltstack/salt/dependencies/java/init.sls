@@ -39,5 +39,6 @@ set_JAVA_HOME:
 configure_R_to_use_Java:
   cmd.run:
     - name: R CMD javareconf
+    - onlyif: which R
     - require:
       - file: set_JAVA_HOME
