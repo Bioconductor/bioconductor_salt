@@ -8,6 +8,8 @@ brew_uninstall_cmake:
   cmd.run:
     - name: brew uninstall cmake
     - runas: biocbuild
+    - unless:
+      - brew info cmake
 
 download_cmake:
   cmd.run:
@@ -18,6 +20,7 @@ download_cmake:
 attach_cmake:
   cmd.run:
     - name: hdiutil attach {{ download }}
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_cmake
 
