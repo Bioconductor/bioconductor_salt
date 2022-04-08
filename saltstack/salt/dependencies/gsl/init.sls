@@ -21,8 +21,6 @@ fix_/usr/local_permissions_gsl:
     - name: |
         chown -R biocbuild:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
-    - require:
-      - cmd: untar_gsl
 
 test_bioc_install_GLAD:
   cmd.run:
