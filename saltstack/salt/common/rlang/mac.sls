@@ -108,7 +108,7 @@ attempt_install_previous_version_of_{{ pkg }}:
 symlink_previous_version:
   file.symlink:
     - name: /Library/Frameworks/R.framework/Versions/{{ r.previous_version[2:] }}
-    - target: {{ r.version[2:] }}
+    - target: '{{ r.version[2:] }}'
     - cwd: /Library/Frameworks/R.framework/Versions
     - force: True
     - user: biocbuild
