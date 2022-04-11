@@ -14,7 +14,7 @@ install_macfuse:
   cmd.run:
     - name: |
         hdiutil attach {{ download }}
-        installer -pkg /Volumes//{{macfuse }}.pkg -target /
+        installer -pkg /Volumes/{{macfuse }}.pkg -target /
         hdiutil detach /Volumes/{{ macfuse }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
