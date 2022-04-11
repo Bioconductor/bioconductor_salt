@@ -3,7 +3,7 @@
 brew_install_mysql_client:
   cmd.run:
     - name: brew install mysql-client
-    - user: biocbuild
+    - runas: biocbuild
 
 add_mysql_to_path_in_/etc/profile:
   file.append:
