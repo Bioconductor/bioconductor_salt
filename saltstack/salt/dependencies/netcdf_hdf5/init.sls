@@ -36,9 +36,6 @@ fix_/usr/local_permissions_netcdf_hdf5:
     - name: |
         chown -R biocbuild:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
-    - require:
-      - cmd: untar_netcdf
-      - cmd: untar_hdf5
 
 test_ncdf4:
   cmd.run:
