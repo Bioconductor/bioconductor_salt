@@ -10,6 +10,7 @@
 brew_install_mono:
   cmd.run:
     - name: brew install mono
+    - runas: biocbuild
 
 test_R_CMD_build_rawrr:
   cmd.run:
