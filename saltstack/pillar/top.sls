@@ -1,4 +1,9 @@
 base:
-  '*':
+  'os:Ubuntu':
+    - match: grain
     - common
-    - custom
+    - common.linux
+  'os:MacOS':
+    - match: grain
+    - common
+    - common.mac
