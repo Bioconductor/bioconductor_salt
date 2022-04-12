@@ -2,7 +2,7 @@ base:
   'os:Ubuntu':
     - match: grain
     - common.linux
-    - common.rlang.linux
+    - rlang.linux                               # install R
     - dependencies.bibtex                       # BioC destiny
     - dependencies.libsbml_cflags_libsbml_libs  # BioC rsbml
     - dependencies.xmlsimple                    # BioC LowMACA
@@ -10,7 +10,7 @@ base:
     - match: grain
     - common.mac
     - dependencies.java                         # CRAN rJava
-    - common.rlang.mac
+    - rlang.mac                                 # install R
     - dependencies.clustal_omega                # BioC LowMACA
     - dependencies.cmake                        # CRAN nlopter
     - dependencies.gsl                          # BioC GLAD
