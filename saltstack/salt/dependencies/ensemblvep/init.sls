@@ -15,6 +15,7 @@ install_cpanminus:
 install_perl_modules_for_ensemblVEP_MMAPPR2:
   cmd.run:
     - name: |
+        . /etc/profile
         cpanm -vn Archive::Zip
         cpanm -vn File::Copy::Recursive
         cpanm -vn DBI
@@ -53,15 +54,12 @@ create_symlinks_for_libhts.a:
 brew_install_htslib:
   cmd.run:
     - name: brew install htslib
-    - require:
-      - cmd: install_perl_modules_for_ensemblVEP_MMAPPR2
+    - runas: biocbuild
 {%- endif %}
 
 install_perl_module_tabix:
   cmd.run:
     - name: cpanm -vn Bio::DB::HTS::Tabix
-    - require:
-      - cmd: install_perl_modules_for_ensemblVEP_MMAPPR2
 
 clone_ensemblvep:
   git.cloned:
@@ -104,6 +102,7 @@ test_R_CMD_build_{{ pkg }}:
         {{ r_path }}R CMD build {{ pkg }} 
         ls {{ pkg }}*.tar.gz | {{ r_path }}R CMD check --no-vignettes 
     - cwd: /tmp
+    - runas: biocbuild
     - require:
       - file: append_ensemblvep_to_path
 {%- endfor %}
