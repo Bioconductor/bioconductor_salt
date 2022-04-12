@@ -2,7 +2,7 @@
 
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.viennarna.split("/")[-1] %}
-{% set viennarna_version = download[9:-11] %}
+{% set viennarna_version = download[10:-11] %}
 {%- if machine.r_path is defined %}
 {% set r_path = machine.r_path %}
 {% else %}
@@ -19,6 +19,7 @@ install_libgsl:
 install_viennarna:
   cmd.run:
     - name: wget {{ machine.dependencies.viennarna }} && dpkg -i {{ download }} 
+
 {%- elif grains['os'] == 'MacOS' %}
 download_viennarna:
   cmd.run:
@@ -30,7 +31,7 @@ install_viennarna:
   cmd.run:
     - name: |
         hdiutil attach {{ download }}
-        installer -pkg "/Volumes/ViennaRNA {{ viennarna_version }}/ViennaRNA Package {{ viennarna_version }}Installer.pkg" -target /
+        installer -pkg "/Volumes/ViennaRNA {{ viennarna_version }}/ViennaRNA Package {{ viennarna_version }} Installer.pkg" -target /
         hdiutil detach "/Volumes/ViennaRNA {{ viennarna_version }}"
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
