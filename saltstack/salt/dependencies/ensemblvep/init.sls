@@ -94,7 +94,7 @@ append_ensemblvep_to_path:
     - require:
       - cmd: perl_install_ensemblvep
 
-{%- for pkg in ['ensemblVEP', 'MMAPPR'] %}
+{%- for pkg in ['ensemblVEP', 'MMAPPR2'] %}
 test_R_CMD_build_{{ pkg }}:
   cmd.run:
     - name: |
