@@ -11,5 +11,6 @@ test_cran_install_Rmpi:
         Rscript -e 'install.packages("Rmpi", type="source", repos="https://cran.r-project.org");
         library(Rmpi); mpi.spawn.Rslaves(nslaves=3); mpi.parReplicate(100, mean(rnorm(1000000)));
         mpi.close.Rslaves(); mpi.quit()'
+    - runas: biocbuild
     - require:
       - cmd: brew_open_mpi

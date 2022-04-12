@@ -18,5 +18,6 @@ symlink_open_babel:
 test_bioc_install_ChemmineOB:
   cmd.run:
     - name: Rscript -e 'library(BiocManager); BiocManager::install("ChemmineOB", type="source")'
+    - runas: biocbuild
     - require:
       - cmd: symlink_open_babel

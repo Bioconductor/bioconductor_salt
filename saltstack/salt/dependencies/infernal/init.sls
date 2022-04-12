@@ -18,5 +18,6 @@ test_R_CMD_build_inferrnal:
         git clone https://git.bioconductor.org/packages/inferrnal
         R CMD build inferrnal
     - cwd: /tmp
+    - runas: biocbuild
     - require:
       - cmd: brew_install_infernal

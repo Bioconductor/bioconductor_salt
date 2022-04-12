@@ -25,5 +25,6 @@ fix_/usr/local_permissions_gsl:
 test_bioc_install_GLAD:
   cmd.run:
     - name: Rscript -e 'library(BiocManager); BiocManager::install("GLAD", type="source")'
+    - runas: biocbuild
     - require:
       - cmd: fix_/usr/local_permissions_gsl

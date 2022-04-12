@@ -20,5 +20,6 @@ test_R_CMD_build_ImmuneSpaceR:
         git clone https://git.bioconductor.org/packages/ImmuneSpaceR
         {{ r_path }}R CMD build ImmuneSpaceR
     - cwd: /tmp
+    - runas: biocbuild
     - require:
       - file: set_ISR_login_and_ISR_pwd

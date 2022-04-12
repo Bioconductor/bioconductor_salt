@@ -20,5 +20,6 @@ test_R_CMD_build_rawrr:
         {{ r_path }}R CMD build rawrr
         ls rawrr*tar.gz | {{ r_path }}/R CMD check --no-vignettes
     - cwd: /tmp
+    - runas: biocbuild
     - require:
       - cmd: brew_install_mono

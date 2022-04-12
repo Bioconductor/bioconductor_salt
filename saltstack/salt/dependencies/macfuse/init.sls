@@ -22,5 +22,6 @@ install_macfuse:
 test_install_bioc_Travel:
   cmd.run:
     - name: Rscript -e 'library(BiocManager); BiocManager::install("Travel", type="source")'
+    - runas: biocbuild
     - require:
       - cmd: install_macfuse

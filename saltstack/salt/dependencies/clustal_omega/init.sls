@@ -36,5 +36,6 @@ test_R_CMD_build_LowMACA_for_clustal_omega:
         git clone https://git.bioconductor.org/packages/LowMACA
         R CMD build LowMACA
     - cwd: /tmp
+    - runas: biocbuild
     - require:
       - file: symlink_clustal_omega

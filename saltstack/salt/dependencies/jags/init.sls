@@ -31,3 +31,4 @@ fix_/usr/local_permissions_jags:
 test_rjags_install:
   cmd.run:
     - name: Rscript -e 'install.packages("rjags", type="source", repos="https://cran.r-project.org")'
+    - runas: biocbuild

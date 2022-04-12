@@ -40,5 +40,6 @@ fix_/usr/local_permissions_netcdf_hdf5:
 test_ncdf4:
   cmd.run:
     - name: Rscript -e 'install.packages("ncdf4", type="source", repos="https://cran.r-project.org")'
+    - runas: biocbuild
     - require:
       - cmd: fix_/usr/local_permissions_netcdf_hdf5
