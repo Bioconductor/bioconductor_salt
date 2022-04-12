@@ -10,7 +10,7 @@
 {%- endif %}
 
 {%- if grains['os'] == 'Ubuntu' %}
-wget_deb:
+install_dotnet:
   cmd.run:
     - name: curl -LO packages-microsoft-prod.deb {{ machine.dependencies.dotnet }} && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
 
@@ -34,7 +34,6 @@ install_dotnet:
   cmd.run:
     - name: installer -pkg {{ download }} -target /
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
-    - runas: biocbuild
     - require:
       - cmd: download_dotnet
 {%- endif %}
