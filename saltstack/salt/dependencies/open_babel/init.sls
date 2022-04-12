@@ -1,9 +1,5 @@
 # Needed for BioC ChemmineOB
 
-remove_x11_symlink:
-  cmd.run:
-    - name: /usr/local/include/X11
-
 brew_open_babel:
   cmd.run:
     - name: brew install eigen open-babel boost
