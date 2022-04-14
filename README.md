@@ -14,11 +14,11 @@ Darwin (Mac) machine.
 Note: If the minion is running as a daemon, you'll want to stop it as it will
 poll for the master periodically.
 
-2. Copy `saltstack/minion.d/minion` to `/etc/salt/minion`.
+2. Copy `saltstack/minion.d/minion.conf` to `/etc/salt/minion`.
 
-3. Copy the files in `/saltstack` to `/opt`.
+3. Copy the files in `/saltstack` to `/srv`.
 
-4. Copy ssh keys to `/opt/salt/common/files`.
+4. Copy ssh keys to `/srv/salt/common/files`.
 
 5. Comment add or remove any dependencies not needed for your system in
 `/opt/salt/top.sls`.
@@ -41,14 +41,14 @@ and clone this repository:
     brew install saltstack
     ```
 
-2. Copy `saltstack/minion.d/minion` to `/etc/salt/minion`.
+2. Copy `saltstack/minion.d/mac.minion.conf` to `/etc/salt/minion`.
 
-3. Copy the files in `/saltstack` to `/srv`.
+3. Copy `saltstack` to `/opt`.
 
-4. Copy ssh keys to `/srv/salt/common/files`.
+4. Copy ssh keys to `/opt/saltstack/salt/common/files`.
 
 5. Comment add or remove any dependencies not needed for your system
-in `/srv/salt/top.sls`.
+in `/opt/saltstack/salt/top.sls`.
 
 6. Run salt, with debug or testing (`test=True`) if desired:
 
@@ -56,7 +56,7 @@ in `/srv/salt/top.sls`.
     sudo salt-call --local state.highstate -l debug
     ```
 
-7. Configure the `BBS` configuration files.
+7. Configure the BBS configuration files.
 
 8. Uncomment the desired builds in the crontab as `biocbuild`.
 
