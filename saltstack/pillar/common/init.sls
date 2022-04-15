@@ -31,11 +31,11 @@ build:
   types:
     - bioc                  {# always required #}
   cron:
-    user: biocbuild
     path: /usr/local/bin:/usr/bin:/bin
     jobs:
       - name: bioc_prerun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        user: biocbuild
         minute: 55
         hour: 13
         daymonth: "*"
@@ -45,6 +45,7 @@ build:
         commented: True
       - name: bioc_run
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 15
         daymonth: "*"
@@ -54,6 +55,7 @@ build:
         commented: True
       - name: bioc_postrun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 11
         daymonth: "*"
@@ -63,6 +65,7 @@ build:
         commented: True
       - name: bioc_notify
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./stage7-notify.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-notify.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 13
         daymonth: "*"

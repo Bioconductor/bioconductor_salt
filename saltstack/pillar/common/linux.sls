@@ -13,6 +13,7 @@ build:
     jobs:
       - name: bioc_prerun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        user: biocbuild
         minute: 55
         hour: 13
         daymonth: "*"
@@ -22,6 +23,7 @@ build:
         commented: True
       - name: bioc_run
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 15
         daymonth: "*"
@@ -31,6 +33,7 @@ build:
         commented: True
       - name: bioc_postrun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 11
         daymonth: "*"
@@ -40,6 +43,7 @@ build:
         commented: True
       - name: bioc_notify
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./stage7-notify.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-notify.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 13
         daymonth: "*"
@@ -49,6 +53,7 @@ build:
         commented: True
       - name: data-annotation_prerun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/data-annotation/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-data-annotation/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        user: biocbuild
         minute: 30
         hour: 02
         daymonth: "*"
@@ -58,6 +63,7 @@ build:
         commented: True
       - name: data-annotation_run
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/data-annotation/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-data-annotation/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 03
         daymonth: "*"
@@ -67,6 +73,7 @@ build:
         commented: True
       - name: data-annotation_postrun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/data-annotation/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-data-annotation/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 06
         daymonth: "*"
@@ -76,6 +83,7 @@ build:
         commented: True
       - name: data-experiment_prerun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/data-experiment/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-data-experiment/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        user: biocbuild
         minute: 30
         hour: 07
         daymonth: "*"
@@ -85,6 +93,7 @@ build:
         commented: True
       - name: data-experiment_run
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/data-experiment/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-data-experiment/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 10
         daymonth: "*"
@@ -94,6 +103,7 @@ build:
         commented: True
       - name: data-experiment_postrun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/data-experiment/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-data-experiment/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        user: biocbuild
         minute: 45
         hour: 14
         daymonth: "*"
@@ -103,6 +113,7 @@ build:
         commented: True
       - name: workflows_prerun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/workflows/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-workflows/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        user: biocbuild
         minute: 45
         hour: 07
         daymonth: "*"
@@ -112,6 +123,7 @@ build:
         commented: True
       - name: workflows_run
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/workflows/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-workflows/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 08
         daymonth: "*"
@@ -121,6 +133,7 @@ build:
         commented: True
       - name: workflows_postrun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/workflows/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-workflows/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 14
         daymonth: "*"
@@ -130,6 +143,7 @@ build:
         commented: True
       - name: books_prerun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/books/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-books/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        user: biocbuild
         minute: 45
         hour: 06
         daymonth: "*"
@@ -139,6 +153,7 @@ build:
         commented: True
       - name: books_run
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/books/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-books/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 07
         daymonth: "*"
@@ -148,6 +163,7 @@ build:
         commented: True
       - name: books_postrun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/books/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-books/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 14
         daymonth: "*"
@@ -157,6 +173,7 @@ build:
         commented: True
       - name: bioc-longruns_prerun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longruns/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longruns/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        user: biocbuild
         minute: 55
         hour: 06
         daymonth: "*"
@@ -166,6 +183,7 @@ build:
         commented: True
       - name: bioc-longruns_run
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longruns/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longruns/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 08
         daymonth: "*"
@@ -175,6 +193,7 @@ build:
         commented: True
       - name: bioc-longruns_postrun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longruns/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longruns/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        user: biocbuild
         minute: 00
         hour: 21
         daymonth: "*"
