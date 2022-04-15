@@ -17,6 +17,7 @@ change_host:
       - {{ machine.name }}
     - clean: True
 
+{% if machine.create_users %}
 {% if machine.additional is defined %}
 {% set groups = machine.groups + machine.additional.groups %}
 {% else %}
@@ -77,6 +78,7 @@ git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ user.name }}:
     - user: {{ user.name }}
 {%- endif %}
 {%- endfor %}
+{%- endif %}
 
 install_apt_pkgs:
   cmd.run:
