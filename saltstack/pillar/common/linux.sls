@@ -11,6 +11,42 @@ build:
     - long-tests
   cron:
     jobs:
+      - name: bioc_prerun
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        minute: 55
+        hour: 13
+        daymonth: "*"
+        month: "*"
+        dayweek: "0-5"
+        comment: "BIOC {{ version }} SOFTWARE BUILDS prerun"
+        commented: True
+      - name: bioc_run
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        minute: 00
+        hour: 15
+        daymonth: "*"
+        month: "*"
+        dayweek: "0-5"
+        comment: "BIOC {{ version }} SOFTWARE BUILDS run"
+        commented: True
+      - name: bioc_postrun
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        minute: 00
+        hour: 11
+        daymonth: "*"
+        month: "*"
+        dayweek: "1-6"
+        comment: "BIOC {{ version }} SOFTWARE BUILDS postrun"
+        commented: True
+      - name: bioc_notify
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./stage7-notify.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/log/`hostname`-`date +\%Y\%m\%d`-notify.log 2>&1"
+        minute: 00
+        hour: 13
+        daymonth: "*"
+        month: "*"
+        dayweek: "3"
+        comment: "BIOC {{ version }} SOFTWARE BUILDS notify"
+        commented: True
       - name: data-annotation_prerun
         command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/data-annotation/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-data-annotation/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
         minute: 30
