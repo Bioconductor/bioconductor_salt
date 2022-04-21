@@ -1,6 +1,7 @@
 {% set machine = salt["pillar.get"]("machine") %}
 {% set build = salt["pillar.get"]("build") %}
 {% set repo = salt["pillar.get"]("repo") %}
+{% set r = salt["pillar.get"]("r") %}
 
 {%- for type in build.types %}
 make_{{ build.version }}_{{ type }}_directory:
@@ -35,8 +36,32 @@ make_propagation_symlink:
 
 {%- for build_type in build.types %}
 make_{{ build_type }}_src_contrib:
-  file.directory:
-    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/src/contrib
+  file.managed:
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/src/contrib/PACKAGES
+    - user: biocpush
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
+    - makedirs: True
+    - dir_mode: 774
+    - recurse:
+      - user
+      - group
+      - mode
+
+make_{{ build_type }}_bin_macosx_contrib:
+  file.managed:
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/bin/macosx/contrib/{{ r.version[2:] }}/PACKAGES
+    - user: biocpush
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
+    - makedirs: True
+    - dir_mode: 774
+    - recurse:
+      - user
+      - group
+      - mode
+
+make_{{ build_type }}_bin_windows_contrib:
+  file.managed:
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/bin/windows/contrib/{{ r.version[2:] }}/PACKAGES
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
     - makedirs: True
