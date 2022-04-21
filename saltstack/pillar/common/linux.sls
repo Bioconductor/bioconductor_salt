@@ -8,7 +8,7 @@ build:
     - data-experiment
     - workflows
     - books
-    - long-tests
+    - longtests
   cron:
     jobs:
       - name: bioc_prerun
@@ -171,35 +171,35 @@ build:
         dayweek: "1,3,5"
         comment: "BIOC {{ version }} BOOKS BUILDS postrun"
         commented: True
-      - name: bioc-longruns_prerun
-        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longruns/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longruns/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+      - name: bioc-longtests_prerun
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longtests/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longtests/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
         user: biocbuild
         minute: 55
         hour: 06
         daymonth: "*"
         month: "*"
         dayweek: 6
-        comment: "BIOC {{ version }} BIOC-LONGRUNS BUILDS prerun"
+        comment: "BIOC {{ version }} BIOC-LONGTESTS BUILDS prerun"
         commented: True
-      - name: bioc-longruns_run
-        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longruns/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longruns/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+      - name: bioc-longtests_run
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longtests/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longtests/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
         user: biocbuild
         minute: 00
         hour: 08
         daymonth: "*"
         month: "*"
         dayweek: 6
-        comment: "BIOC {{ version }} BIOC-LONGRUNS BUILDS run"
+        comment: "BIOC {{ version }} BIOC-LONGTESTS BUILDS run"
         commented: True
-      - name: bioc-longruns_postrun
-        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longruns/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longruns/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+      - name: bioc-longtests_postrun
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc-longtests/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-longtests/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
         user: biocbuild
         minute: 00
         hour: 21
         daymonth: "*"
         month: "*"
         dayweek: 6
-        comment: "BIOC {{ version }} BIOC-LONGRUNS BUILDS postrun"
+        comment: "BIOC {{ version }} BIOC-LONGTESTS BUILDS postrun"
         commented: True
 
 machine:
