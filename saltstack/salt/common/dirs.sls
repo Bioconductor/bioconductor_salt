@@ -34,7 +34,7 @@ make_propagation_symlink:
     - name: {{ machine.user.home }}/biocpush/propagation
     - target: {{ machine.user.home }}/biocpush/BBS/propagation
 
-{%- for build_type in build.types %}
+{%- for build_type in build.types.remove('longtests') %}
 make_{{ build_type }}_src_contrib:
   file.managed:
     - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/src/contrib/PACKAGES
