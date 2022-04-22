@@ -40,7 +40,7 @@ make_{{ build_type }}_src_contrib:
   file.managed:
     - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/src/contrib/PACKAGES
     - user: biocpush
-    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
     - dir_mode: 774
     - recurse:
@@ -52,7 +52,7 @@ make_{{ build_type }}_bin_macosx_contrib:
   file.managed:
     - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/bin/macosx/contrib/{{ r.version[2:] }}/PACKAGES
     - user: biocpush
-    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
     - dir_mode: 774
     - recurse:
@@ -64,7 +64,7 @@ make_{{ build_type }}_bin_windows_contrib:
   file.managed:
     - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/bin/windows/contrib/{{ r.version[2:] }}/PACKAGES
     - user: biocpush
-    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
     - dir_mode: 774
     - recurse:
