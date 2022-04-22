@@ -34,7 +34,8 @@ make_propagation_symlink:
     - name: {{ machine.user.home }}/biocpush/propagation
     - target: {{ machine.user.home }}/biocpush/BBS/propagation
 
-{%- for build_type in build.types.remove('longtests') %}
+{%- for build_type in build.types %}
+{% if build_type != 'longtests' %}
 make_{{ build_type }}_src_contrib:
   file.managed:
     - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/src/contrib/PACKAGES
@@ -70,6 +71,7 @@ make_{{ build_type }}_bin_windows_contrib:
       - user
       - group
       - mode
+{% endif %}
 {%- endfor %}
 
 git_bioc_manifest:
