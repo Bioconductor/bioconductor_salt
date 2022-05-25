@@ -266,3 +266,20 @@ fix_/usr/local_permissions:
     - require:
       - cmd: install_mactex
       - cmd: install_pandoc
+
+run_chown-rootadmin:
+  cmd.run:
+    - name: gcc chown-rootadmin.c -o chown-rootadmin
+    - runas: biocbuild
+    - cwd: {{ machine.user.home }}/biocbuild/BBS/utils
+    - require:
+      - cmd: fix_/usr/local_permissions
+
+fix_chown-rootadmin_permissions:
+  cmd.run:
+    - name: |
+        chown root:admin chown-rootadmin
+        chmod 4750 chown-rootadmin
+    - cwd: {{ machine.user.home }}/biocbuild/BBS/utils
+    - require:
+      - cmd: run_chown-rootadmin
