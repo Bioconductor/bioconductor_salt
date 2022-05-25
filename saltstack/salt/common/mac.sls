@@ -39,7 +39,7 @@ create_biocbuild:
         dscl . -create /Users/biocbuild UniqueID "505"
         dscl . -create /Users/biocbuild PrimaryGroupID 20
         dscl . -create /Users/biocbuild NFSHomeDirectory /Users/biocbuild
-        dscl . -passwd /Users/biocbuild <password_for_biocbuild>
+        dscl . -passwd /Users/biocbuild {{ salt['environ.get']('BIOCBUILD_PASSWORD') }} 
         dscl . -append /Groups/admin GroupMembership biocbuild
         cp -R /System/Library/User\ Template/English.lproj /Users/biocbuild
         chown -R biocbuild:staff /Users/biocbuild

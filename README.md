@@ -50,15 +50,20 @@ and clone this repository:
 5. Comment add or remove any dependencies not needed for your system
 in `/opt/saltstack/salt/top.sls`.
 
-6. Run salt, with debug or testing (`test=True`) if desired:
+6. If creating user `biocbuild`, set the password in an environment
+variable:
+
+    export BIOCBUILD_PASSWORD=myNewPass1
+
+7. Run salt, with debug or testing (`test=True`) if desired:
 
     ```
     sudo salt-call --local state.highstate -l debug
     ```
 
-7. Configure the BBS configuration files.
+8. Configure the BBS configuration files.
 
-8. Uncomment the desired builds in the crontab as `biocbuild`.
+9. Uncomment the desired builds in the crontab as `biocbuild`.
 
 ## Updating R 
 
