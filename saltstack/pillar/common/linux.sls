@@ -8,7 +8,7 @@ build:
     - data-experiment
     - workflows
     - books
-    - longtests
+    - bioc-longtests
   cron:
     jobs:
       - name: bioc_prerun
