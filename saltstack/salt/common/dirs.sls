@@ -71,6 +71,18 @@ make_{{ build_type }}_bin_windows_contrib:
       - user
       - group
       - mode
+
+make_{{ build_type }}_bin_macosx_big-sur-arm64_contrib:
+  file.managed:
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/bin/macosx/big-sur-arm64/contrib/{{ r.version[2:] }}/PACKAGES
+    - user: biocpush
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
+    - makedirs: True
+    - dir_mode: 774
+    - recurse:
+      - user
+      - group
+      - mode
 {% endif %}
 {%- endfor %}
 
