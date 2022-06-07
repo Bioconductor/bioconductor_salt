@@ -68,7 +68,7 @@ check_rtrackerlayer_statically_linked:
     - require:
       - cmd: install_bioc_rtracklayer
 
-configure_R_to_use_Java:
+reconfigure_R_to_use_Java:
   cmd.run:
     - name: R CMD javareconf
 
