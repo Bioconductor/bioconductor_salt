@@ -18,7 +18,7 @@ change_hostname:
 
 set_dns_servers:
   cmd.run:
-    - name: networksetup -setdnsservers {{ networksetup -listallnetworkservices | awk 'NR==2' }} 216.126.35.8 216.24.175.3 8.8.8.8
+    - name: networksetup -setdnsservers "$(networksetup -listallnetworkservices | awk 'NR==2')" 216.126.35.8 216.24.175.3 8.8.8.8
     - require:
       - cmd: change_hostname
 
