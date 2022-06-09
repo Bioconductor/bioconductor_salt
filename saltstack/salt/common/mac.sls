@@ -30,6 +30,14 @@ update:
     - require:
       - cmd: set_dns_servers
 
+{%- if grains["osarch"]== "arm64" %}
+install_rosetta:
+  cmd.run:
+    - name: softwareupdate --install-rosetta
+    - require:
+      - cmd: update
+{%- endif %}
+
 {%- if machine.create_users %}
 create_biocbuild:
   cmd.run:
