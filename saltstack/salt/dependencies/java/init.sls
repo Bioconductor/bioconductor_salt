@@ -1,10 +1,17 @@
 {% set machine = salt["pillar.get"]("machine") %}
-{% set download = machine.dependencies.java.split("/")[-1] %}
-{% set java = download[4:-21] %}
+
+{%- if grains["osarch"]== "arm64" %}
+{% set download_url = machine.dependencies.java_aarch64 %}
+{% else %}
+{% set download_url = machine.dependencies.java_x64 %}
+{%- endif %}
+
+{% set download = java_url.split("/")[-1] %}
+{% set java = download.split("_")[0] %}
 
 download_java:
   cmd.run:
-    - name: curl -LO {{ machine.dependencies.java }}
+    - name: curl -LO {{ download_url }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
