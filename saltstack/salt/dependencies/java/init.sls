@@ -6,7 +6,7 @@
 {% set download_url = machine.dependencies.java_x64 %}
 {%- endif %}
 
-{% set download = java_url.split("/")[-1] %}
+{% set download = download_url.split("/")[-1] %}
 {% set java = download.split("_")[0] %}
 
 download_java:
