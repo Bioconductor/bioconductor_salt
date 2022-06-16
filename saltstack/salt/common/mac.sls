@@ -7,7 +7,6 @@
 {% set repo = salt["pillar.get"]("repo") %}
 {% set xquartz = machine.downloads.xquartz.split("/")[-1][:-4] %}
 {% set gfortran = machine.downloads.gfortran.split("/")[-1][:-4] %}
-{% set pandoc = machine.downloads.pandoc.split("/")[-1] %}
 
 change_hostname:
   cmd.run:
@@ -29,14 +28,6 @@ update:
         softwareupdate -ia --verbose
     - require:
       - cmd: set_dns_servers
-
-{%- if grains["osarch"]== "arm64" %}
-install_rosetta:
-  cmd.run:
-    - name: softwareupdate --install-rosetta
-    - require:
-      - cmd: update
-{%- endif %}
 
 {%- if machine.create_users %}
 create_biocbuild:
@@ -253,6 +244,13 @@ install_mactex:
     - require:
       - cmd: download_mactex
 
+{%- if grains["osarch"]== "arm64" %}
+install_pandoc:
+  cmd.run:
+    - name: brew install pandoc
+{% else %}
+{% set pandoc = machine.downloads.pandoc.split("/")[-1] %}
+
 download_pandoc:
   cmd.run:
     - name: curl -LO {{ machine.downloads.pandoc }}
@@ -265,6 +263,7 @@ install_pandoc:
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_pandoc
+{%- endif %}
 
 fix_/usr/local_permissions:
   cmd.run:
