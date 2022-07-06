@@ -18,10 +18,10 @@ machine:
     viennarna: https://www.tbi.univie.ac.at/RNA/download/osx/macosx/ViennaRNA-2.5.0-MacOSX.dmg
   downloads:                {# For BBS #}
     intel:
-      gfortran: https://github.com/fxcoudert/gfortran-for-macOS/releases/download/11.2-monterey-intel/gfortran-Intel-11.2-Monterey.dmg
+      gfortran: https://mac.r-project.org/tools/gfortran-8.2-Mojave.dmg
       pandoc: https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-macOS.pkg
     arm64:
-      gfortran: https://github.com/fxcoudert/gfortran-for-macOS/releases/download/12.1-monterey/gfortran-ARM-12.1-Monterey.dmg
+      gfortran: https://mac.r-project.org/tools/gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz
     mactex: https://mirror.ctan.org/systems/mac/mactex/MacTeX.pkg
     xquartz: https://github.com/XQuartz/XQuartz/releases/download/XQuartz-2.8.1/XQuartz-2.8.1.dmg
 
