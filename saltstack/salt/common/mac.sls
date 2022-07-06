@@ -254,6 +254,7 @@ install_mactex:
 install_pandoc:
   cmd.run:
     - name: brew install pandoc
+    - runas: biocbuild
 {% else %}
 {% set pandoc = machine.downloads.intel.pandoc.split("/")[-1] %}
 
