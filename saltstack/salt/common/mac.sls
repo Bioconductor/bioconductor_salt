@@ -6,7 +6,11 @@
 {% set build = salt["pillar.get"]("build") %}
 {% set repo = salt["pillar.get"]("repo") %}
 {% set xquartz = machine.downloads.xquartz.split("/")[-1][:-4] %}
-{% set gfortran = machine.downloads.gfortran.split("/")[-1][:-4] %}
+{%- if grains["osarch"]== "arm64" %}
+{% set gfortran = machine.downloads.arm64.gfortran.split("/")[-1][:-4] %}
+{% else %}
+{% set gfortran = machine.downloads.intel.gfortran.split("/")[-1][:-4] %}
+{%- endif %}
 
 change_hostname:
   cmd.run:
@@ -249,11 +253,11 @@ install_pandoc:
   cmd.run:
     - name: brew install pandoc
 {% else %}
-{% set pandoc = machine.downloads.pandoc.split("/")[-1] %}
+{% set pandoc = machine.downloads.intel.pandoc.split("/")[-1] %}
 
 download_pandoc:
   cmd.run:
-    - name: curl -LO {{ machine.downloads.pandoc }}
+    - name: curl -LO {{ machine.downloads.intel.pandoc }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
