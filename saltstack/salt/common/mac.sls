@@ -219,8 +219,7 @@ install_gfortran:
 export_gfortran_path:
   file.append:
     - name: /etc/profile
-    - text: |
-        export PATH=$PATH:{{ gfortran_path }}
+    - text: export PATH="$PATH:{{ gfortran_path }}"
     - require:
       - cmd: install_gfortran
 
