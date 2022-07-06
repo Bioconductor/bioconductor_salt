@@ -206,6 +206,16 @@ install_gfortran:
     - require:
       - cmd: download_gfortran
 
+{%- if grains["osarch"]== "arm64" %}
+export_gfortran_path:
+  file.append:
+    - name: /etc/profile
+    - text: |
+        export PATH="/opt/R/arm64/bin:$PATH"
+    - require:
+      - cmd: install_gfortran
+{%- endif %}
+
 fix_/usr/local_permissions_for_brewing:
   cmd.run:
     - name: |
