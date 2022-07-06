@@ -7,11 +7,9 @@
 {% set repo = salt["pillar.get"]("repo") %}
 {% set xquartz = machine.downloads.xquartz.split("/")[-1][:-4] %}
 {%- if grains["osarch"]== "arm64" %}
-{% set gfortran_path = "/usr/local/gfortran/bin" $}
 {% set gfortran_download = machine.downloads.arm64.gfortran %}
 {% set gfortran = machine.downloads.arm64.gfortran.split("/")[-1] %}
 {% else %}
-{% set gfortran_path = "/opt/R/arm64/gfortran/bin" $}
 {% set gfortran_download = machine.downloads.intel.gfortran %}
 {% set gfortran = machine.downloads.intel.gfortran.split("/")[-1][:-4] %}
 {%- endif %}
@@ -204,6 +202,14 @@ install_gfortran:
     - name: tar fxz {{ gfortran }} -C /
     - require:
       - cmd: download_gfortran
+
+export_gfortran_path:
+  file.append:
+    - name: /etc/profile
+    - text: |
+        export PATH=$PATH:/opt/R/arm64/gfortran/bin
+    - require:
+      - cmd: install_gfortran
 {% else %}
 install_gfortran:
   cmd.run:
@@ -214,14 +220,15 @@ install_gfortran:
     - cwd: {{ machine.user.home }}/biocbuild/Downloads 
     - require:
       - cmd: download_gfortran
-{%- endif %}
 
 export_gfortran_path:
   file.append:
     - name: /etc/profile
-    - text: export PATH="$PATH:{{ gfortran_path }}"
+    - text: |
+        export PATH=$PATH:/usr/local/gfortran/bin
     - require:
       - cmd: install_gfortran
+{%- endif %}
 
 fix_/usr/local_permissions_for_brewing:
   cmd.run:
