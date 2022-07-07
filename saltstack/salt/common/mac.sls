@@ -200,6 +200,7 @@ download_gfortran:
 install_gfortran:
   cmd.run:
     - name: tar fxz {{ gfortran }} -C /
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_gfortran
 
