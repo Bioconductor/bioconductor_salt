@@ -1,8 +1,13 @@
 # Needed for CRAN ncdf4, BioC mzR
 
 {% set machine = salt["pillar.get"]("machine") %}
-{% set netcdf = machine.dependencies.netcdf.split("/")[-1] %}
-{% set hdf5 = machine.dependencies.hdf5.split("/")[-1] %}
+{%- if grains["osarch"] == "arm64" %}
+{% set netcdf = machine.dependencies.arm64.netcdf.split("/")[-1] %}
+{% set hdf5 = machine.dependencies.arm64.hdf5.split("/")[-1] %}
+{% else %}
+{% set netcdf = machine.dependencies.intel.netcdf.split("/")[-1] %}
+{% set hdf5 = machine.dependencies.intel.hdf5.split("/")[-1] %}
+{%- endif %}
 
 download_netcdf:
   cmd.run:

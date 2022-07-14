@@ -1,7 +1,11 @@
 # Needed for BioC GLAD
 
 {% set machine = salt["pillar.get"]("machine") %}
-{% set download = machine.dependencies.gsl.split("/")[-1] %}
+{%- if grains["osarch"] == "arm64" %}
+{% set download = machine.dependencies.arm64.gsl.split("/")[-1] %}
+{% else %}
+{% set download = machine.dependencies.intel.gsl.split("/")[-1] %}
+{%- endif %}
 
 download_gsl:
   cmd.run:

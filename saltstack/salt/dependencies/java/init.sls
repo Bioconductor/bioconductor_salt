@@ -1,5 +1,4 @@
 {% set machine = salt["pillar.get"]("machine") %}
-
 {%- if grains["osarch"]== "arm64" %}
 {% set download_url = machine.dependencies.arm64.java %}
 {% else %}
