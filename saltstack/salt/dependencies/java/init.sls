@@ -4,7 +4,6 @@
 {% else %}
 {% set download_url = machine.dependencies.intel.java %}
 {%- endif %}
-
 {% set download = download_url.split("/")[-1] %}
 {% set java = download.split("_")[0] %}
 

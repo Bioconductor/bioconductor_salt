@@ -2,16 +2,20 @@
 
 {% set machine = salt["pillar.get"]("machine") %}
 {%- if grains["osarch"] == "arm64" %}
-{% set netcdf = machine.dependencies.arm64.netcdf.split("/")[-1] %}
-{% set hdf5 = machine.dependencies.arm64.hdf5.split("/")[-1] %}
+{% set netcdf_url = machine.dependencies.arm64.netcdf %}
+{% set netcdf = netcdf_url.split("/")[-1] %}
+{% set hdf5_url = machine.dependencies.arm64.hdf5 %}
+{% set hdf5 = hdf5_url.split("/")[-1] %}
 {% else %}
-{% set netcdf = machine.dependencies.intel.netcdf.split("/")[-1] %}
-{% set hdf5 = machine.dependencies.intel.hdf5.split("/")[-1] %}
+{% set netcdf_url = machine.dependencies.intel.netcdf %}
+{% set netcdf = netcdf_url.split("/")[-1] %}
+{% set hdf5_url = machine.dependencies.intel.hdf5 %}
+{% set hdf5 = hdf5_url.split("/")[-1] %}
 {%- endif %}
 
 download_netcdf:
   cmd.run:
-    - name: curl -LO {{ machine.dependencies.netcdf }}
+    - name: curl -LO {{ netcdf_url }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
@@ -25,7 +29,7 @@ untar_netcdf:
 
 download_hdf5:
   cmd.run:
-    - name: curl -LO {{ machine.dependencies.hdf5 }}
+    - name: curl -LO {{ hdf5_url }}
     - cwd:  {{ machine.user.home }}/biocbuild/Downloads
     - user: biocbuild
 
