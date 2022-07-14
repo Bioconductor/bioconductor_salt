@@ -245,9 +245,9 @@ append_openssl_configurations_to_path:
   file.append:
     - name: /etc/profile
     - text: |
-        export PATH=$PATH:/usr/local/opt/openssl@3/bin
-        export PKG_CONFIG_PATH=$PATH:/usr/local/opt/openssl@3/bin
-        export OPENSSL_LIBS="/usr/local/opt/openssl@3/lib/libssl.a /usr/local/opt/openssl@3/lib/libcrypto.a"
+        export PATH=$PATH:/opt/homebrew/Cellar/openssl@3/3.0.5/bin
+        export PKG_CONFIG_PATH=$PATH:/opt/homebrew/Cellar/openssl@3/3.0.5/lib/pkgconfig
+        export OPENSSL_LIBS="/opt/homebrew/Cellar/openssl@3/3.0.5/lib/libssl.a /opt/homebrew/Cellar/openssl@3/3.0.5/lib/libcrypto.a"
     - require:
       - cmd: brew_packages
 
