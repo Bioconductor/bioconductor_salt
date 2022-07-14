@@ -196,7 +196,7 @@ download_gfortran:
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
-{%- if grains["osarch"]== "arm64" %}
+{%- if grains["osarch"] == "arm64" %}
 install_gfortran:
   cmd.run:
     - name: tar fxz {{ gfortran }} -C /
