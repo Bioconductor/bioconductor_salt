@@ -3,15 +3,13 @@
 {% set machine = salt["pillar.get"]("machine") %}
 {%- if grains["osarch"] == "arm64" %}
 {% set netcdf_url = machine.dependencies.arm64.netcdf %}
-{% set netcdf = netcdf_url.split("/")[-1] %}
 {% set hdf5_url = machine.dependencies.arm64.hdf5 %}
-{% set hdf5 = hdf5_url.split("/")[-1] %}
 {% else %}
 {% set netcdf_url = machine.dependencies.intel.netcdf %}
-{% set netcdf = netcdf_url.split("/")[-1] %}
 {% set hdf5_url = machine.dependencies.intel.hdf5 %}
-{% set hdf5 = hdf5_url.split("/")[-1] %}
 {%- endif %}
+{% set netcdf = netcdf_url.split("/")[-1] %}
+{% set hdf5 = hdf5_url.split("/")[-1] %}
 
 download_netcdf:
   cmd.run:

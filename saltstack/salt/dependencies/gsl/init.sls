@@ -3,11 +3,10 @@
 {% set machine = salt["pillar.get"]("machine") %}
 {%- if grains["osarch"] == "arm64" %}
 {% set download_url = machine.dependencies.arm64.gsl %}
-{% set download = download_url.split("/")[-1] %}
 {% else %}
 {% set download_url = machine.dependencies.intel.gsl %}
-{% set download = download_url.split("/")[-1] %}
 {%- endif %}
+{% set download = download_url.split("/")[-1] %}
 
 download_gsl:
   cmd.run:
