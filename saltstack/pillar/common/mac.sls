@@ -3,7 +3,7 @@ build:
     - bioc                  {# always required #}
 
 machine:
-  brews: openssl@3 python@3 xz wget pstree
+  brews: openssl@3 python@3 xz wget pstree poppler
   dependencies:             {# For Bioc or CRAN packages #}
     arm64:
       gsl: https://mac.r-project.org/bin/darwin20/arm64/gsl-2.7-darwin.20-arm64.tar.xz
