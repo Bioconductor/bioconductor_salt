@@ -12,11 +12,7 @@ download_jags:
 
 install_jags:
   cmd.run:
-    - name: |
-        hdiutil attach {{ download }}
-        installer -pkg /Volumes/{{ jags }}.pkg -target /
-        hdiutil detach /Volumes/{{ jags }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
+    - name: installer -pkg {{ machine.user.home }}/biocbuild/Downloads/{{ jags }}.pkg -target /
     - require:
       - cmd: download_jags
 
