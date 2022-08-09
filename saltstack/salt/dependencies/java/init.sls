@@ -39,7 +39,7 @@ symlink_java:
 set_JAVA_HOME:
   file.append:
     - name: /etc/profile
-    - text: export JAVA_HOME=/usr/local/{{ java }}.jdk/Contents/Home
+    - text: export JAVA_HOME=/usr/local/{{ java.replace("open", "") }}.jdk/Contents/Home
 
 configure_R_to_use_Java:
   cmd.run:
