@@ -5,7 +5,7 @@
 {% set download_url = machine.dependencies.intel.java %}
 {%- endif %}
 {% set download = download_url.split("/")[-1] %}
-{% set java = download.split("_")[0] %}
+{% set java = download.split("_")[0].replace("open", "") %}
 
 download_java:
   cmd.run:
@@ -39,7 +39,7 @@ symlink_java:
 set_JAVA_HOME:
   file.append:
     - name: /etc/profile
-    - text: export JAVA_HOME=/usr/local/{{ java.replace("open", "") }}.jdk/Contents/Home
+    - text: export JAVA_HOME=/usr/local/{{ java }}.jdk/Contents/Home
 
 configure_R_to_use_Java:
   cmd.run:
