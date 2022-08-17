@@ -9,6 +9,7 @@ build:
     - workflows
     - books
     - bioc-longtests
+    - bioc-mac-arm64
   cron:
     jobs:
       - name: bioc_prerun
@@ -200,6 +201,36 @@ build:
         month: "*"
         dayweek: 6
         comment: "BIOC {{ version }} BIOC-LONGTESTS BUILDS postrun"
+        commented: True
+      - name: bioc-mac-arm64_prerun
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./prerun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-mac-arm64/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1"
+        user: biocbuild
+        minute: 55
+        hour: 13
+        daymonth: "*"
+        month: "*"
+        dayweek: "0,3"
+        comment: "BIOC {{ version }} SOFTWARE MAC ARM64 BUILDS prerun"
+        commented: True
+      - name: bioc-mac-arm64_run
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./run.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-mac-arm64/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1"
+        user: biocbuild
+        minute: 00
+        hour: 15
+        daymonth: "*"
+        month: "*"
+        dayweek: "0,3"
+        comment: "BIOC {{ version }} SOFTWARE MAC ARM64 BUILDS run"
+        commented: True
+      - name: bioc-mac-arm64_postrun
+        command: /bin/bash --login -c "cd {{ user_home }}/biocbuild/BBS/{{ version }}/bioc/`hostname` && ./postrun.sh >> {{ user_home }}/biocbuild/bbs-{{ version }}-bioc-mac-arm64/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1"
+        user: biocbuild
+        minute: 00
+        hour: 11
+        daymonth: "*"
+        month: "*"
+        dayweek: "0,3"
+        comment: "BIOC {{ version }} SOFTWARE MAC ARM64 BUILDS postrun"
         commented: True
 
 machine:
