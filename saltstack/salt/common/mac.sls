@@ -251,11 +251,6 @@ append_openssl_configurations_to_path:
     - require:
       - cmd: brew_packages
 
-pip_install_psutil:
-  pip.installed:
-    - name: psutil
-    - runas: biocbuild
-
 install_pip_pkgs:
   cmd.run:
     - name: python3 -m pip install $(cat {{ machine.user.home }}/biocbuild/{{ repo.bbs.name }}/Ubuntu-files/20.04/pip_*.txt | awk '/^[^#]/ {print $1}')
