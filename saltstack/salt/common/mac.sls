@@ -254,7 +254,6 @@ append_openssl_configurations_to_path:
 pip_install_psutil:
   pip.installed:
     - name: psutil
-    - bin_env: /usr/bin/pip3
     - runas: biocbuild
 
 install_pip_pkgs:
