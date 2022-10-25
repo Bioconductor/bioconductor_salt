@@ -38,7 +38,7 @@ make_propagation_symlink:
 {% if build_type != 'bioc-longtests' %}
 make_{{ build_type }}_src_contrib:
   file.managed:
-    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/src/contrib/PACKAGES
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type|replace('-', '/') }}/src/contrib/PACKAGES
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
@@ -50,7 +50,7 @@ make_{{ build_type }}_src_contrib:
 
 make_{{ build_type }}_bin_macosx_contrib:
   file.managed:
-    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/bin/macosx/contrib/{{ r.version[2:] }}/PACKAGES
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type|replace('-', '/') }}/bin/macosx/contrib/{{ r.version[2:] }}/PACKAGES
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
@@ -62,7 +62,7 @@ make_{{ build_type }}_bin_macosx_contrib:
 
 make_{{ build_type }}_bin_windows_contrib:
   file.managed:
-    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type }}/bin/windows/contrib/{{ r.version[2:] }}/PACKAGES
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build.version }}/{{ build_type|replace('-', '/') }}/bin/windows/contrib/{{ r.version[2:] }}/PACKAGES
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
