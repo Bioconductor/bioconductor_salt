@@ -30,6 +30,7 @@ base:
     - dependencies.ensemblvep                   # BioC ensemblVEP, MMAPPR2
     - dependencies.immunespace                  # BioC ImmuneSpaceR
     - dependencies.viennarna                    # BioC GeneGA
+    - dependencies.reticulate_python            # Bioc seqArchR
   'machine:type:primary':
     - match: pillar
     - webserver
