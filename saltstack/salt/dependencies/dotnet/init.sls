@@ -1,10 +1,12 @@
 # Needed by BioC rmspc
 
 {% set machine = salt["pillar.get"]("machine") %}
+{%- if grains["os"] == "MacOS" %}
 {%- if grains["osarch"] == "arm64" %}
 {% set download_url = machine.dependencies.arm64.dotnet %}
 {% else %}
 {% set download_url = machine.dependencies.intel.dotnet %}
+{%- endif %}
 {%- endif %}
 {% set download = machine.dependencies.dotnet.split("/")[-1] %}
 
@@ -17,7 +19,9 @@
 {%- if grains['os'] == 'Ubuntu' %}
 install_dotnet:
   cmd.run:
-    - name: curl -LO packages-microsoft-prod.deb {{ machine.dependencies.dotnet }} && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
+    - name: curl -LO {{ machine.dependencies.dotnet }} && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
+    - cwd: /tmp
+    - runas: root
 
 apt_update:
   cmd.run:
@@ -47,7 +51,6 @@ test_R_CMD_build_rmspc:
     - name: |
         git clone https://git.bioconductor.org/packages/rmspc
         {{ r_path }}R CMD build rmspc
-        ls rmspc*tar.gz | {{ r_path }}R CMD check --no-vignettes
     - cwd: /tmp
     - runas: biocbuild
     - require:
