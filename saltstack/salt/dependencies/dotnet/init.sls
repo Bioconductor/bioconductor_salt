@@ -1,6 +1,11 @@
 # Needed by BioC rmspc
 
 {% set machine = salt["pillar.get"]("machine") %}
+{%- if grains["osarch"] == "arm64" %}
+{% set download_url = machine.dependencies.arm64.dotnet %}
+{% else %}
+{% set download_url = machine.dependencies.intel.dotnet %}
+{%- endif %}
 {% set download = machine.dependencies.dotnet.split("/")[-1] %}
 
 {%- if machine.r_path is defined %}
@@ -18,11 +23,10 @@ apt_update:
   cmd.run:
     - name: apt-get update
 
-install_apt-transport-https_aspnetcore-runtime:
+install_aspnetcore-runtime:
   pkg.installed:
     - pkgs:
-      - apt-transport-https
-      - aspnetcore-runtime-5.0
+      - aspnetcore-runtime-6.0
 {% elif grains['os'] == 'MacOS' %}
 download_dotnet:
   cmd.run:
