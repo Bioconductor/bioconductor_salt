@@ -8,7 +8,7 @@
 {% set download_url = machine.dependencies.intel.dotnet %}
 {%- endif %}
 {%- endif %}
-{% set download = machine.dependencies.dotnet.split("/")[-1] %}
+{% set download = download_url.split("/")[-1] %}
 
 {%- if machine.r_path is defined %}
 {% set r_path = machine.r_path %}
@@ -34,7 +34,7 @@ install_aspnetcore-runtime:
 {% elif grains['os'] == 'MacOS' %}
 download_dotnet:
   cmd.run:
-    - name: curl -LO {{ machine.dependencies.dotnet }}
+    - name: curl -LO {{ download_url }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
