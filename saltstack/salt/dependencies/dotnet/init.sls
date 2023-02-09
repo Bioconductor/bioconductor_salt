@@ -7,8 +7,8 @@
 {% else %}
 {% set download_url = machine.dependencies.intel.dotnet %}
 {%- endif %}
-{%- endif %}
 {% set download = download_url.split("/")[-1] %}
+{%- endif %}
 
 {%- if machine.r_path is defined %}
 {% set r_path = machine.r_path %}
