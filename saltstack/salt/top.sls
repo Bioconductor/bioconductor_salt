@@ -16,7 +16,6 @@ base:
     - dependencies.clustal_omega                # BioC LowMACA
     - dependencies.cmake                        # CRAN nlopter
     - dependencies.gsl                          # BioC GLAD
-    - dependencies.infernal                     # BioC inferrnal
     - dependencies.jags                         # BioC rjags
     - dependencies.macfuse                      # BioC Travel
     - dependencies.mono                         # BioC rawrr
