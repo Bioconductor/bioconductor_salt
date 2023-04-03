@@ -77,8 +77,7 @@ make_R:
 
 make_site-library:
   file.directory:
-    - name: site-library
-    - cwd: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/R
+    - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/R/site-library
     - user: biocbuild
     - group: biocbuild
     - makedirs: True
