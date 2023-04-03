@@ -75,6 +75,17 @@ make_R:
     - cwd: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/R
     - runas: biocbuild
 
+make_site-library:
+  file.directory:
+    - name: site-library
+    - cwd: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/R
+    - user: biocbuild
+    - group: biocbuild
+    - makedirs: True
+    - replace: True
+    - require:
+      - cmd: make_R
+
 run_R-fix-flags.sh:
   cmd.run:
     - name: {{ machine.user.home }}/biocbuild/BBS/utils/R-fix-flags.sh
