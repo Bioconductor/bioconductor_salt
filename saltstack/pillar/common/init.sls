@@ -7,7 +7,7 @@
 {%- if branch == 'release' %}
 {% set current_branch = 'RELEASE_' ~ version.replace(".", "_") %}
 {% else %}
-{% set current_branch = 'master' %}
+{% set current_branch = 'devel' %}
 {%- endif %}
 
 {%- if grains['os'] == 'Ubuntu' %}
@@ -133,7 +133,7 @@ repo:
   bbs:
     name: BBS
     github: https://github.com/Bioconductor/BBS
-    branch: master
+    branch: devel
   manifest:
     name: manifest
     github: https://git.bioconductor.org/admin/manifest
