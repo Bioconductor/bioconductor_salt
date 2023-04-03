@@ -102,3 +102,13 @@ install_biocmanager_devel:
     - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/R/bin/Rscript -e "library(BiocManager); BiocManager::install(version='devel', ask=FALSE)" 
     - runas: biocbuild
 {% endif %}
+
+install_BiocCheck:
+  cmd.run:
+    - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/R/bin/Rscript -e "library(BiocManager); BiocManager::install('BiocCheck')" 
+    - runas: biocbuild
+
+install_devtools_BiocStyle_rtracklayer_VariantAnnotation_rhdf5:
+  cmd.run:
+    - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/R/bin/Rscript -e "library(BiocManager); BiocManager::install(c('devtools', 'BiocStyle', 'rtracklayer', 'VariantAnnotation', 'rhdf5'))"
+    - runas: biocbuild
