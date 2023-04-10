@@ -6,13 +6,9 @@
 {% set build = salt["pillar.get"]("build") %}
 {% set repo = salt["pillar.get"]("repo") %}
 {% set xquartz = machine.downloads.xquartz.split("/")[-1][:-4] %}
-{%- if grains["osarch"] == "arm64" %}
-{% set gfortran_download = machine.downloads.arm64.gfortran %}
-{% set gfortran = machine.downloads.arm64.gfortran.split("/")[-1] %}
-{% else %}
-{% set gfortran_download = machine.downloads.intel.gfortran %}
-{% set gfortran = machine.downloads.intel.gfortran.split("/")[-1][:-4] %}
-{%- endif %}
+{% set gfortran_download = machine.downloads.gfortran %}
+{% set gfortran = machine.downloads.gfortran.split("/")[-1] %}
+
 
 change_hostname:
   cmd.run:
@@ -196,11 +192,9 @@ download_gfortran:
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
 
-{%- if grains["osarch"] == "arm64" %}
 install_gfortran:
   cmd.run:
-    - name: tar fxz {{ gfortran }} -C /
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - name: tar -xf {{ machine.user.home }}/biocbuild/Downloads/{{ gfortran }} -C /
     - require:
       - cmd: download_gfortran
 
@@ -208,28 +202,15 @@ export_gfortran_path:
   file.append:
     - name: /etc/profile
     - text: |
-        export PATH=$PATH:/opt/R/arm64/gfortran/bin
+        export PATH=$PATH:/opt/gfortran/bin
     - require:
       - cmd: install_gfortran
-{% else %}
-install_gfortran:
-  cmd.run:
-    - name: |
-        hdiutil attach {{ gfortran }}.dmg
-        installer -pkg /Volumes/{{ gfortran }}//gfortran.pkg -target /
-        hdiutil detach /Volumes/{{ gfortran }}
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads 
-    - require:
-      - cmd: download_gfortran
 
-export_gfortran_path:
-  file.append:
-    - name: /etc/profile
-    - text: |
-        export PATH=$PATH:/usr/local/gfortran/bin
+symlink_gfortran_sdk:
+  cmd.run:
+    - name: ln -sfn $(xcrun --show-sdk-path) /opt/gfortran/SDK
     - require:
-      - cmd: install_gfortran
-{%- endif %}
+      - file: export_gfortran_path
 
 fix_/usr/local_permissions_for_brewing:
   cmd.run:
@@ -245,9 +226,9 @@ append_openssl_configurations_to_path:
   file.append:
     - name: /etc/profile
     - text: |
-        export PATH=$PATH:/opt/homebrew/Cellar/openssl@3/3.0.5/bin
-        export PKG_CONFIG_PATH=$PATH:/opt/homebrew/Cellar/openssl@3/3.0.5/lib/pkgconfig
-        export OPENSSL_LIBS="/opt/homebrew/Cellar/openssl@3/3.0.5/lib/libssl.a /opt/homebrew/Cellar/openssl@3/3.0.5/lib/libcrypto.a"
+        export PATH=$PATH:/usr/local/opt/openssl@1.1/bin
+        export PKG_CONFIG_PATH=$PATH:/usr/local/opt/openssl@1.1/lib/pkgconfig
+        export OPENSSL_LIBS="/usr/local/opt/openssl@1.1/lib/libssl.a /usr/local/opt/openssl@1.1/lib/libcrypto.a"
     - require:
       - cmd: brew_packages
 
