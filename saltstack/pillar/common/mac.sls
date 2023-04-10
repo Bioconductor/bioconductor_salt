@@ -22,14 +22,14 @@ machine:
     jags: https://cfhcable.dl.sourceforge.net/project/mcmc-jags/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg
     macfuse: https://github.com/osxfuse/osxfuse/releases/download/macfuse-4.2.4/macfuse-4.2.4.dmg
     viennarna: https://www.tbi.univie.ac.at/RNA/download/osx/macosx/ViennaRNA-2.5.0-MacOSX.dmg
+    glpk: https://mac.r-project.org/bin/darwin20/x86_64/glpk-5.0-darwin.20-x86_64.tar.xz
   downloads:                {# For BBS #}
     intel:
-      pandoc: https://github.com/jgm/pandoc/releases/download/2.18/pandoc-2.18-macOS.pkg
+      pandoc: https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-macOS.pkg
     gfortran: https://github.com/R-macos/gcc-12-branch/releases/download/12.2-darwin-r0/gfortran-12.2-darwin20-r0-universal.tar.xz
     mactex: https://mirror.ctan.org/systems/mac/mactex/MacTeX.pkg
     pkgconfig: https://mac.r-project.org/bin/darwin20/x86_64/pkgconfig-0.29.2-darwin.20-x86_64.tar.xz
-    xquartz: https://github.com/XQuartz/XQuartz/releases/download/XQuartz-2.8.1/XQuartz-2.8.1.dmg
-
+    xquartz: https://github.com/XQuartz/XQuartz/releases/download/XQuartz-2.8.5/XQuartz-2.8.5.pkg
 r:
   cran:
     - rgl
