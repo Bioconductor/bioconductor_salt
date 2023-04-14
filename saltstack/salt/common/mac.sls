@@ -8,6 +8,11 @@
 {% set xquartz = machine.downloads.xquartz.split("/")[-1][:-4] %}
 {% set gfortran_download = machine.downloads.gfortran %}
 {% set gfortran = machine.downloads.gfortran.split("/")[-1] %}
+{%- if grains["osarch"] == "arm64" %}
+{% set subpath = "arm64" %}
+{%- else %}
+{% set subpath = "x86_64" %}
+{%- endif %}
 
 
 change_hostname:
@@ -229,6 +234,7 @@ append_openssl_configurations_to_path:
         export PATH=$PATH:/usr/local/opt/openssl@1.1/bin
         export PKG_CONFIG_PATH=$PATH:/usr/local/opt/openssl@1.1/lib/pkgconfig
         export OPENSSL_LIBS="/usr/local/opt/openssl@1.1/lib/libssl.a /usr/local/opt/openssl@1.1/lib/libcrypto.a"
+        export PATH=$PATH:/opt/R/{{ subpath }}/bin
     - require:
       - cmd: brew_packages
 

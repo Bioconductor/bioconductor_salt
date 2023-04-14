@@ -5,6 +5,11 @@ brew_open_mpi:
     - name: brew install open-mpi 
     - runas: biocbuild
 
+brew_uninstall_gfortran:
+  cmd.run:
+    - name: brew uninstall --ignore-dependencies gfortran
+    - runas: biocbuild
+
 test_cran_install_Rmpi:
   cmd.run:
     - name: |
