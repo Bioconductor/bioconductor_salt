@@ -2,6 +2,11 @@
 {% set machine = salt["pillar.get"]("machine") %}
 {% set r = salt["pillar.get"]("r") %}
 {% set downloaded_file  = r.download.split("/")[-1] %}
+{%- if grains["osarch"] == "arm64" %}
+{% set subpath = "arm64" %}
+{%- else %}
+{% set subpath = "x86_64" %}
+{%- endif %}
 
 remove_old_r:
   file.absent:
@@ -112,7 +117,7 @@ attempt_install_previous_version_of_{{ pkg }}:
 symlink_previous_version:
   file.symlink:
     - name: /Library/Frameworks/R.framework/Versions/{{ r.previous_version[2:] }}
-    - target: '{{ r.version[2:] }}'
+    - target: '{{ r.version[2:] }}-{{ subpath }}'
     - cwd: /Library/Frameworks/R.framework/Versions
     - force: True
     - user: biocbuild
