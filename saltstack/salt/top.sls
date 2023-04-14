@@ -23,7 +23,6 @@ base:
     - dependencies.mysql                        # BioC ensemblVEP
     - dependencies.netcdf_hdf5                  # CRAN ncdf4, BioC mzR
     - dependencies.open_babel                   # BioC ChemmineOB
-    - dependencies.open_mpi                     # CRAN Rmpi
   '*':
     - common.cronjobs
     - dependencies.dotnet                       # BioC rmspc
