@@ -23,9 +23,16 @@ fix_/usr/local_permissions_glpk:
         chown -R biocbuild:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
 
+reinstall_igraph:
+  cmd.run:
+    - name: Rscript -e 'BiocManager::install("igraph", force=TRUE)'
+    - runas: biocbuild
+    - require:
+      - cmd: fix_/usr/local_permissions_glpk
+
 test_bioc_install_MMUPHin:
   cmd.run:
     - name: Rscript -e 'library(igraph); cluster_optimal(make_graph("Zachary"))'
     - runas: biocbuild
     - require:
-      - cmd: fix_/usr/local_permissions_glpk
+      - cmd: reinstall_igraph
