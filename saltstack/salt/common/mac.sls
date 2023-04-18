@@ -5,7 +5,7 @@
 {% set machine = salt["pillar.get"]("machine") %}
 {% set build = salt["pillar.get"]("build") %}
 {% set repo = salt["pillar.get"]("repo") %}
-{% set xquartz = machine.downloads.xquartz.split("/")[-1][:-4] %}
+{% set xquartz = machine.downloads.xquartz.split("/") %}
 {% set gfortran_download = machine.downloads.gfortran %}
 {% set gfortran = machine.downloads.gfortran.split("/")[-1] %}
 {%- if grains["osarch"] == "arm64" %}
@@ -115,9 +115,7 @@ download_XQuartz:
 install_XQuartz:
   cmd.run:
     - name: |
-        hdiutil attach {{ xquartz }}.dmg
-        installer -pkg /Volumes/{{ xquartz }}/XQuartz.pkg -target /
-        hdiutil detach /Volumes/{{ xquartz }}
+        installer -pkg {{ xquartz }} -target /
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - require:
       - cmd: download_XQuartz
