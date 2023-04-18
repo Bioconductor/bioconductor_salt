@@ -132,7 +132,7 @@ download_minimum_supported_macossdk:
 
 untar_macossdk:
   cmd.run:
-    - name: tar -xf https://mac.r-project.org/sdk/MacOSX11.3.sdk.tar.xz
+    - name: tar -xf {{ machine.user.home }}/biocbuild/Downloads/MacOSX11.3.sdk.tar.xz
     - cwd: /Library/Developer/CommandLineTools/SDKs 
     - group: wheel
     - require:
