@@ -89,6 +89,11 @@ Confirm that your version of R has been updated
     vagrant@nebbiolo2-dev:~$ /home/biocbuild/bbs-3.15-bioc/R/bin/R --version
     R Under development (unstable) (2021-11-16 r81199) -- "Unsuffered Consequences"
 
+Note: Saltstack doesn't officially support Apple Silicon. However, we can still
+run salt install via homebrew and pointing to the `HOMEBREW_PREFIX`:
+
+    env HOMEBREW_PREFIX=/opt/homebrew salt-call --local state.highstate
+
 ## Salted Vagrant 
 
 ### Requirements
