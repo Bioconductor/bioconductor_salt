@@ -6,6 +6,7 @@
 {% set build = salt["pillar.get"]("build") %}
 {% set repo = salt["pillar.get"]("repo") %}
 {% set xquartz = machine.downloads.xquartz.split("/") %}
+{% set openssl = machine.downloads.openssl.split("/") %}
 {% set gfortran_download = machine.downloads.gfortran %}
 {% set gfortran = machine.downloads.gfortran.split("/")[-1] %}
 {%- if grains["osarch"] == "arm64" %}
@@ -225,16 +226,28 @@ brew_packages:
     - name: brew install {{ machine.brews }}
     - runas: biocbuild
 
+download_openssl_from_r-project:
+  cmd.run:
+    - name: curl -LO {{ machine.downloads.openssl }}
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
+    - runas: biocbuild
+
+install_openssl:
+  cmd.run:
+    - name: tar -xf {{ openssl }}
+    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
+    - require:
+      - cmd: download_openssl_from_r-project
+
 append_openssl_configurations_to_path:
   file.append:
     - name: /etc/profile
     - text: |
-        export PATH=$PATH:/usr/local/opt/openssl@1.1/bin
-        export PKG_CONFIG_PATH=$PATH:/usr/local/opt/openssl@1.1/lib/pkgconfig
-        export OPENSSL_LIBS="/usr/local/opt/openssl@1.1/lib/libssl.a /usr/local/opt/openssl@1.1/lib/libcrypto.a"
         export PATH=$PATH:/opt/R/{{ subpath }}/bin
+        export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/R/arm64/lib/pkgconfig
+        export OPENSSL_LIBS="/opt/R/arm64/lib/libssl.a /opt/R/arm64/lib/libcrypto.a"
     - require:
-      - cmd: brew_packages
+      - cmd: install_openssl
 
 install_pip_pkgs:
   cmd.run:
