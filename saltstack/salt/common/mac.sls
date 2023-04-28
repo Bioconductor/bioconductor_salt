@@ -5,8 +5,8 @@
 {% set machine = salt["pillar.get"]("machine") %}
 {% set build = salt["pillar.get"]("build") %}
 {% set repo = salt["pillar.get"]("repo") %}
-{% set xquartz = machine.downloads.xquartz.split("/") %}
-{% set openssl = machine.downloads.openssl.split("/") %}
+{% set xquartz = machine.downloads.xquartz.split("/")[-1] %}
+{% set openssl = machine.downloads.openssl.split("/")[-1] %}
 {% set gfortran_download = machine.downloads.gfortran %}
 {% set gfortran = machine.downloads.gfortran.split("/")[-1] %}
 {%- if grains["osarch"] == "arm64" %}
