@@ -140,8 +140,8 @@ untar_macossdk:
 
 symlink_minor_to_major_version:
   file.symlink:
-    - name: /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk
-    - target: MacOSX11.sdk
+    - name: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
+    - target: MacOSX11.3.sdk
     - cwd: /Library/Developer/CommandLineTools/SDKs 
     - group: wheel 
     - require:
