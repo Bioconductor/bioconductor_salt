@@ -149,8 +149,8 @@ symlink_minor_to_major_version:
 
 fix_gfortran_sdk_symlink:
   file.symlink:
-    - name: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
-    - target: SDK
+    - name: /opt/gfortrant/SDK 
+    - target: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
     - cwd: /opt/gfortran 
     - group: admin
     - require:
