@@ -5,6 +5,7 @@
 {% set environment = 'dev' %}               {# Use 'dev' or 'prod' #}
 {% set cycle = 'patch' %}                   {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
 {% set name = 'nebbiolo2' %}                {# nebbiolo1 for 3.15, nebbiolo2 for 3.14 #}
+{% set machine_type = 'secondary' %}        {# Use 'primary' or 'secondary' #}
 
 {# For Macs
    If installing R devel, download R the .pkg file from https://mac.r-project.org.

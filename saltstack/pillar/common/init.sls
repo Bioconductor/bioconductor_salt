@@ -2,7 +2,7 @@
    r_download, r_version, r_previous_version, cycle, name,
    immunespace_pwd, biocbuild_password, biocbuild_key,
    biocbuild_authorized_key, biocpush_password, biocpush_key,
-   biocpush_authorized_key, create_users %}
+   biocpush_authorized_key, create_users, machine_type %}
 
 {%- if branch == 'release' %}
 {% set current_branch = 'RELEASE_' ~ version.replace(".", "_") %}
@@ -14,12 +14,10 @@
 {% set user_home = '/home' %}
 {% set shell = '/usr/bin/bash' %}
 {% set slash = '/' %}
-{% set machine_type = 'primary' %}
 {% elif grains['os'] == 'MacOS' %}
 {% set user_home = '/Users' %}
 {% set shell = '/usr/bin/sh' %}
 {% set slash = '/' %}
-{% set machine_type = 'secondary' %}
 {%- endif %}
 
 {# See machine.users below to add more users #}
@@ -80,7 +78,7 @@ machine:
   slash: {{ slash }}
   ip: 127.0.1.1
   cores: 8 {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
-  type: {{ machine_type }}
+  type: {% if machine_type != "" %}{{ machine_type }}{% else %}secondary{% endif %}
   create_users: {% if create_users is defined %}{{ create_users }}{% else %}True{% endif %}
   {%- if grains['os'] == 'Ubuntu' %}
   r_path: {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/R/bin/
