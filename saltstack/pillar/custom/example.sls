@@ -5,7 +5,6 @@
 {% set environment = 'dev' %}               {# Use 'dev' or 'prod' #}
 {% set cycle = 'patch' %}                   {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
 {% set name = 'nebbiolo2' %}                {# nebbiolo1 for 3.15, nebbiolo2 for 3.14 #}
-{% set machine_type = 'secondary' %}        {# Use 'primary' or 'secondary' #}
 
 {# For Macs
    If installing R devel, download R the .pkg file from https://mac.r-project.org.
@@ -16,20 +15,20 @@
 {% set r_version = 'R-4.1.1' %}
 
 {% set create_users = False %}              {# Skip creating users if False #}
-{% set biocbuild_password = 'PASSWORD' %}
-{% set biocbuild_key = 'salt://common/files/id_rsa' %}  {# Path to the file #}
-{% set biocbuild_authorized_key = 'ssh-rsa AAAiB3Nza== biocbuild@nebbiolo2' %}
+{% set biocbuild_password = '' %}
+{% set biocbuild_key = '' %}                {# Path to the file #}
+{% set biocbuild_authorized_key = '' %}
 
 {# biocpush users are only for primary build machines #}
-{% set biocpush_password = 'PASSWORD' %}
-{% set biocpush_key = 'salt://common/files/id_rsa' %}
-{% set biocpush_authorized_key = 'ssh-rsa AAAiB3Nza== biocpush@nebbiolo2' %}
+{% set biocpush_password = '' %}
+{% set biocpush_key = '' %}
+{% set biocpush_authorized_key = '' %}
 
 {# Add any pillars to overwrite existing values #}
 
 {# Bioc package dependencies #}
 
-{% set immunespace_pwd = 'PASSWORD' %}                      {# Need for ImmuneSpaceR #}
+{% set immunespace_pwd = '' %}              {# Need for ImmuneSpaceR #}
 
 {# Add users and groups #}
 
@@ -41,8 +40,8 @@ machine:
       - newGroup
     users:
       - name: newMember
-        pub-key: "ssh AAAAA newMember"
-        password: PASSWORD
+        pub-key: new_ssh_key 
+        password: new_password
         groups:
           - newGroup
 #}
