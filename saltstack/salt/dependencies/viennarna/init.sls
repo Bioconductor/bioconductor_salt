@@ -24,8 +24,8 @@ install_viennarna:
 download_viennarna:
   cmd.run:
     - name: curl -LO {{ machine.dependencies.viennarna }} 
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
-    - runas: biocbuild
+    - cwd: /tmp
+    - runas: {{ machine.user.name }}
 
 install_viennarna:
   cmd.run:
@@ -33,14 +33,14 @@ install_viennarna:
         hdiutil attach {{ download }}
         installer -pkg "/Volumes/ViennaRNA {{ viennarna_version }}/ViennaRNA Package {{ viennarna_version }} Installer.pkg" -target /
         hdiutil detach "/Volumes/ViennaRNA {{ viennarna_version }}"
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: /tmp
     - require:
       - cmd: download_viennarna
 
 fix_/usr/local_permissions_viennarna:
   cmd.run:
     - name: |
-        chown -R biocbuild:admin /usr/local/*
+        chown -R {{ machine.user.name }}:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
     - require:
       - cmd: install_viennarna
@@ -52,6 +52,6 @@ test_R_CMD_build_GeneGA:
         git clone https://git.bioconductor.org/packages/GeneGA
         {{ r_path }}R CMD build GeneGA
     - cwd: /tmp
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: install_viennarna

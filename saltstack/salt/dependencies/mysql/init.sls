@@ -1,9 +1,11 @@
 # Needed for ensemblVEP 
 
+{% set machine = salt["pillar.get"]("machine") %}
+
 brew_install_mysql_client:
   cmd.run:
     - name: brew install mysql-client
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
 
 add_mysql_to_path_in_/etc/profile:
   file.append:

@@ -6,6 +6,9 @@
 {% from '../custom/init.sls' import biocbuild_password, biocbuild_key,
    biocbuild_authorized_key, biocpush_password, biocpush_key,
    biocpush_authorized_key %}
+{% set build_user = 'biocbuild' %}
+{% else %}
+{% set build_user = grains['cwd'].split("/")[-1] %}
 {% endif %} 
 
 {%- if branch == 'release' %}
@@ -42,10 +45,10 @@ machine:
   type: {% if machine_type != "" %}{{ machine_type }}{% else %}secondary{% endif %}
   create_users: {% if create_users is defined %}{{ create_users }}{% else %}True{% endif %}
   {%- if grains['os'] == 'Ubuntu' %}
-  r_path: {{ user_home }}/biocbuild/bbs-{{ version }}-bioc/R/bin/
+  r_path: {{ user_home }}/{{ build_user }}/bbs-{{ version }}-bioc/R/bin/
   groups: 
     {%- if machine_type in ['primary', 'secondary'] %}
-    - biocbuild
+    - {{ build_user }}
     {% endif %}
     {%- if machine_type == 'primary' %}
     - biocpush
@@ -53,11 +56,12 @@ machine:
     {%- endif %}
   {% endif %}
   user:
+    name: {{ build_user }}
     home: {{ user_home }}
     shell: {{ shell }}
   users:
     {% if create_users %}
-    - name: biocbuild
+    - name: {{ build_user }}
       key: {{ biocbuild_key }}
       password: {{ biocbuild_password }}
       groups:

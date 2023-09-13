@@ -11,25 +11,25 @@
 download_gsl:
   cmd.run:
     - name: curl -LO {{ download_url }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - user: biocbuild
+    - cwd: /tmp
+    - user: {{ machine.user.name }}
 
 untar_gsl:
   cmd.run:
-    - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ download }} -C /
-    - user: biocbuild
+    - name: tar xvfJ /tmp/{{ download }} -C /
+    - user: {{ machine.user.name }}
     - require:
       - cmd: download_gsl
 
 fix_/usr/local_permissions_gsl:
   cmd.run:
     - name: |
-        chown -R biocbuild:admin /usr/local/*
+        chown -R {{ machine.user.name }}:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
 
 test_bioc_install_GLAD:
   cmd.run:
     - name: Rscript -e 'library(BiocManager); BiocManager::install("GLAD", type="source")'
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: fix_/usr/local_permissions_gsl

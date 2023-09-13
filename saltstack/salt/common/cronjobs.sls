@@ -4,7 +4,7 @@
 add_{{ job.name }}_crontab:
   cron.present:
     - name: {{ job.command}}
-    - user: {{ job.user }} 
+    - user: {{ job.user }}
     - minute: "{{ job.minute }}"
     - hour: "{{ job.hour }}"
     - daymonth: "{{ job.daymonth }}"

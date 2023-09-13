@@ -10,20 +10,20 @@
 download_java:
   cmd.run:
     - name: curl -LO {{ download_url }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - runas: biocbuild
+    - cwd: /tmp
+    - runas: {{ machine.user.name }}
 
 {# NOTE: May fail but will still untar files #}
 untar_java:
   cmd.run:
-    - name: tar zxvf {{ machine.user.home }}/biocbuild/Downloads/{{ download }} -C /usr/local
+    - name: tar zxvf /tmp/{{ download }} -C /usr/local
     - require:
       - cmd: download_java
 
 fix_/usr/local_permissions_java:
   cmd.run:
     - name: |
-        chown -R biocbuild:admin /usr/local/*
+        chown -R {{ machine.user.name }}:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
 
 symlink_java:
