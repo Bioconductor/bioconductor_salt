@@ -1,31 +1,44 @@
 # Needed by BioC GeneGA
+# Mac Only
 
 {% set machine = salt["pillar.get"]("machine") %}
-{% set download = machine.dependencies.viennarna.split("/")[-1] %}
-{% set viennarna_version = download[10:-11] %}
 {%- if machine.r_path is defined %}
 {% set r_path = machine.r_path %}
 {% else %}
-{% set r_path = '' %}
+{% set r_path = "" %}
 {%- endif %}
 
-{%- if grains['os'] == 'Ubuntu' %}
-install_libgsl:
-  pkg.installed:
-    - pkgs:
-      - libgsl23
-      - libgslcblas0
+{%- if grains["osarch"] == "arm64" %}
+{% set download_url = machine.dependencies.arm64.viennarna %}
+{% else %}
+{% set download_url = machine.dependencies.intel.viennarna %}
+{%- endif %}
 
-install_viennarna:
-  cmd.run:
-    - name: wget {{ machine.dependencies.viennarna }} && dpkg -i {{ download }} 
-
-{%- elif grains['os'] == 'MacOS' %}
+{% set download = download.split("/")[-1] %}
 download_viennarna:
   cmd.run:
     - name: curl -LO {{ machine.dependencies.viennarna }} 
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
+
+{%- if grains["osarch"] == "arm64" %}
+{% set perl_version = perl -v | grep version | awk -F" " "{print $9}" %}
+{% set cpath = machine.sdk.path ~ "/System/Library/Perl/" ~ perl_verison[2:-3] ~ "/darwin-thread-multi-2level/CORE/EXTERN.h" %}
+
+untar_viennarna:
+  cmd.run:
+    - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ download }}
+    - require:
+      - cmd.run: download_viennarna
+
+configure_compile_install_viennarna:
+  cmd.run:
+    - name: export CPATH={{ cpath }} ./configure && make && make install
+    - require:
+      - cmd.run: untar_vienna
+
+{%- else %}
+{% set viennarna_version = download[10:-11] %}
 
 install_viennarna:
   cmd.run:

@@ -133,16 +133,16 @@ download_minimum_supported_macossdk:
 untar_macossdk:
   cmd.run:
     - name: tar -xf {{ machine.user.home }}/biocbuild/Downloads/MacOSX11.3.sdk.tar.xz
-    - cwd: /Library/Developer/CommandLineTools/SDKs 
+    - cwd: /Library/Developer/CommandLineTools/SDKs
     - group: wheel
     - require:
       - cmd: download_minimum_supported_macossdk
 
 symlink_minor_to_major_version:
   file.symlink:
-    - name: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
-    - target: MacOSX11.3.sdk
-    - cwd: /Library/Developer/CommandLineTools/SDKs 
+    - name: {{ machine.sdk.path }}
+    - target: {{ machine.sdk.target }}
+    - cwd: /Library/Developer/CommandLineTools/SDKs
     - group: wheel 
     - require:
       - cmd: untar_macossdk
@@ -150,7 +150,7 @@ symlink_minor_to_major_version:
 fix_gfortran_sdk_symlink:
   file.symlink:
     - name: /opt/gfortrant/SDK 
-    - target: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
+    - target: {{ machine.sdk.path }}
     - cwd: /opt/gfortran 
     - group: admin
     - require:
@@ -160,7 +160,7 @@ export_minimum_build_in_profile:
   file.append:
     - name: /etc/profile
     - text: |
-        export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
-        export MACOSX_DEPLOYMENT_TARGET=11.0
+        export SDKROOT={{ machine.sdk.path }}
+        export MACOSX_DEPLOYMENT_TARGET={{ machine.deployment_target }}
     - require:
       - file: fix_gfortran_sdk_symlink
