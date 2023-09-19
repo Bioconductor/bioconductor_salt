@@ -30,17 +30,17 @@ sudo mv /srv/pillar/custom/standalone.sls /srv/pillar/custom/init.sls
 sudo salt-call --local state.highstate -l debug || true
 
 # Find R path and check that it works
-~/bbs-*/R/bin/R --version > /tmp/rver
+/home/biocbuild/bbs-*/R/bin/R --version > /tmp/rver
 if ! grep -q 'R version' /tmp/rver; then exit 1; fi
 
-RPATH="~/bbs-*/R/bin"
+RPATH="$(echo /home/biocbuild/bbs-*/R/bin)"
 
-sudo echo "export PATH='$PATH:$RPATH'" >> /etc/profile
+echo "export PATH='$PATH:$RPATH'" | sudo tee -a /etc/profile
 
-sudo echo "$RPATH/R" >> /bbs_r_start
+echo "#!/bin/bash\n$RPATH/R" | sudo tee /bbs_r_start 
 
-chown biocbuild /bbs_r_start
-chmod +x /bbs_r_start
+sudo chown biocbuild /bbs_r_start
+sudo chmod +x /bbs_r_start
 
 # Cleanup
 # rm -rf /srv /etc/salt
