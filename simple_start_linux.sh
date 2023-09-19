@@ -37,7 +37,8 @@ RPATH="$(echo /home/biocbuild/bbs-*/R/bin)"
 
 echo "export PATH='$PATH:$RPATH'" | sudo tee -a /etc/profile
 
-echo "#!/bin/bash\n$RPATH/R" | sudo tee /bbs_r_start 
+echo "#!/bin/bash" | sudo tee /bbs_r_start
+echo "$RPATH/R" | sudo tee -a /bbs_r_start
 
 sudo chown biocbuild /bbs_r_start
 sudo chmod +x /bbs_r_start
