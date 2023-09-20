@@ -68,7 +68,7 @@ jobs:
           cat << "EOF" > ${{matrix.ubuntu}}-${{matrix.platform}}-r.Dockerfile
           FROM ${{ steps.vars.outputs.container }}@${{ steps.build.outputs.digest }} as extract
           USER root
-          RUN mkdir /bioctmp && R --version > /bioctmp/rver && cat /etc/os-release > /bioctmp/os-release
+          RUN mkdir /bioctmp && /bbs_r_start --version > /bioctmp/rver && cat /etc/os-release > /bioctmp/os-release
           FROM scratch as export
           COPY --from=extract /bioctmp/* /
           EOF
