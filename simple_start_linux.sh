@@ -36,6 +36,7 @@ if ! grep -q 'R version' /tmp/rver; then exit 1; fi
 RPATH="$(echo /home/biocbuild/bbs-*/R/bin)"
 
 echo "export PATH='$PATH:$RPATH'" | sudo tee -a /etc/profile
+echo "export PATH='$PATH:$RPATH'" | sudo tee -a /etc/bash.bashrc
 
 echo "#!/bin/bash" | sudo tee /bbs_r_start
 echo "$RPATH/R \$1" | sudo tee -a /bbs_r_start
