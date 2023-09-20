@@ -1,31 +1,46 @@
 # Needed by BioC GeneGA
+# Mac Only
 
 {% set machine = salt["pillar.get"]("machine") %}
-{% set download = machine.dependencies.viennarna.split("/")[-1] %}
-{% set viennarna_version = download[10:-11] %}
 {%- if machine.r_path is defined %}
 {% set r_path = machine.r_path %}
 {% else %}
-{% set r_path = '' %}
+{% set r_path = "" %}
 {%- endif %}
 
-{%- if grains['os'] == 'Ubuntu' %}
-install_libgsl:
-  pkg.installed:
-    - pkgs:
-      - libgsl23
-      - libgslcblas0
+{%- if grains["osarch"] == "arm64" %}
+{% set download_url = machine.dependencies.arm64.viennarna %}
+{% else %}
+{% set download_url = machine.dependencies.intel.viennarna %}
+{%- endif %}
+{% set download = download_url.split("/")[-1] %}
 
-install_viennarna:
-  cmd.run:
-    - name: wget {{ machine.dependencies.viennarna }} && dpkg -i {{ download }} 
-
-{%- elif grains['os'] == 'MacOS' %}
 download_viennarna:
   cmd.run:
-    - name: curl -LO {{ machine.dependencies.viennarna }} 
+    - name: curl -LO {{ download_url }}
     - cwd: {{ machine.user.home }}/biocbuild/Downloads
     - runas: biocbuild
+
+{%- if grains["osarch"] == "arm64" %}
+untar_viennarna:
+  cmd.run:
+    - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ download }}
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - require:
+      - cmd: download_viennarna
+
+configure_compile_install_viennarna:
+  cmd.run:
+    - name: |
+        version=$(perl -v | grep version | awk -F'[ ,]' '{print $4 "." $7}')
+        export CPATH={{ machine.sdk.path }}/System/Library/Perl/$version/darwin-thread-multi-2level/CORE/EXTERN.h && ./configure
+        export CPATH={{ machine.sdk.path }}/System/Library/Perl/$version/darwin-thread-multi-2level/CORE/EXTERN.h make
+        export CPATH={{ machine.sdk.path }}/System/Library/Perl/$version/darwin-thread-multi-2level/CORE/EXTERN.h make install
+    - cwd: {{ machine.user.home }}/biocbuild/Downloads/{{ download[:-7] }}
+    - require:
+      - cmd: untar_viennarna
+{%- else %}
+{% set viennarna_version = download[10:-11] %}
 
 install_viennarna:
   cmd.run:
