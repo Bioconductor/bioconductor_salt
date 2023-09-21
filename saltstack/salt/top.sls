@@ -14,7 +14,7 @@ base:
     - dependencies.java                         # CRAN rJava
     - rlang.mac                                 # install R
     - dependencies.clustal_omega                # BioC LowMACA
-    - dependencies.cmake                        # CRAN nlopter
+    - dependencies.cmake                        # CRAN nloptr
     - dependencies.gsl                          # BioC GLAD
     - dependencies.glpk                         # BioC MMUPHin
     - dependencies.jags                         # BioC rjags
