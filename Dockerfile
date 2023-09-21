@@ -4,5 +4,5 @@ USER biocbuild
 COPY . /home/biocbuild/bioconductor_salt
 WORKDIR /home/biocbuild
 RUN bash bioconductor_salt/simple_start_linux.sh
-CMD ["/bbs_r_start"]
+ENTRYPOINT ["/bbs_r_start"]
 

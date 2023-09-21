@@ -39,7 +39,7 @@ echo "export PATH='$PATH:$RPATH'" | sudo tee -a /etc/profile
 echo "export PATH='$PATH:$RPATH'" | sudo tee -a /etc/bash.bashrc
 
 echo "#!/bin/bash" | sudo tee /bbs_r_start
-echo "$RPATH/R \$1" | sudo tee -a /bbs_r_start
+echo "$RPATH/R \"\$@\"" | sudo tee -a /bbs_r_start
 
 sudo chown biocbuild /bbs_r_start
 sudo chmod +x /bbs_r_start
