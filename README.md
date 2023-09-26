@@ -65,6 +65,10 @@ variable:
 
 9. Uncomment the desired builds in the crontab as `biocbuild`.
 
+Note: If macFuse is needed and it will be installed on the machine for the
+first time, you may need to enable kernel support for third party extensions.
+See https://github.com/macfuse/macfuse/wiki/Getting-Started.
+
 ## Updating R 
 
 You may also run individual states, such as to update R. After configuring the
