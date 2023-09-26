@@ -1,7 +1,11 @@
 # Needed for BioC MMUPHin
 
 {% set machine = salt["pillar.get"]("machine") %}
-{% set download_url = machine.dependencies.glpk %}
+{%- if grains["osarch"] == "arm64" %}
+{% set download_url = machine.dependencies.arm64.glpk %}
+{% else %}
+{% set download_url = machine.dependencies.intel.glpk %}
+{% endif %}
 {% set download = download_url.split("/")[-1] %}
 
 download_glpk:
