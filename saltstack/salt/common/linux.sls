@@ -83,8 +83,8 @@ install_apt_pkgs:
     - name: apt-get -y install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
 
 update_pip:
-  pip.installed:
-    - upgrade: True
+  cmd.run:
+    - name: pip install --upgrade pip 
 
 install_pip_pkgs:
   cmd.run:
