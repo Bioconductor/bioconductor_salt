@@ -1,11 +1,9 @@
-# Salt for the BBS and a Salty Vagrant
-
-## Using Salt to Configure a Build Machine
+## Salt to Configure a Linux or Mac for the BBS
 
 The available SaltStack formulas can be used to configure an Ubuntu or a
-Darwin (Mac) machine.
+MacOS machine.
 
-### Configuring an Ubuntu 20.04 Machine
+### Configuring for Ubuntu 22.04
 
 1. On the build machine, install the Salt minion and clone this repository:
     ```
@@ -33,7 +31,7 @@ poll for the master periodically.
 
 8. Uncomment the desired builds in the crontab as `biocbuild`.
 
-### Configuring a Darwin Machine
+### Configuring a Mac
 
 1. On the build machine, install Saltstack with `homebrew`
 and clone this repository:
@@ -65,7 +63,7 @@ variable:
 
 9. Uncomment the desired builds in the crontab as `biocbuild`.
 
-## Updating R 
+## Updating R
 
 You may also run individual states, such as to update R. After configuring the
 `custom` file for your machine, run the `rlang` states for your machine.
@@ -92,9 +90,20 @@ Confirm that your version of R has been updated
 Note: Saltstack doesn't officially support Apple Silicon. However, we can still
 run salt install via homebrew and pointing to the `HOMEBREW_PREFIX`:
 
-    env HOMEBREW_PREFIX=/opt/homebrew salt-call --local state.highstate
+    sudo env HOMEBREW_PREFIX=/opt/homebrew salt-call --local state.highstate
 
-## Salted Vagrant 
+### BBS-like Machine
+
+If `machine_type = 'standalone'` in `pillar/custom/init.sls`, the machine will
+be configured with the dependencies needed for the build system but without
+the set up necessary to perform the official builds. A standalone build might
+be sufficient for testing `R CMD INSTALL` `build` or `check`. It will also
+reduce the time necessary for configuration.
+
+Note: R will be along the `bbs-<version>-bioc/R/bin/R` path. For example, if
+the current version is 3.18 then the path will be `bbs-3.18-bioc/R/bin/R`
+
+## Salted Vagrant
 
 ### Requirements
 
