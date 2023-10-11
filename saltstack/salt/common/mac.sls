@@ -38,22 +38,22 @@ update:
       - cmd: set_dns_servers
 
 {%- if machine.create_users %}
-create_biocbuild:
+create_{{ machine.user.name }}:
   cmd.run:
     - name: |
-        dscl . -create /Users/biocbuild
-        dscl . -create /Users/biocbuild UserShell /bin/bash
-        dscl . -create /Users/biocbuild UniqueID "505"
-        dscl . -create /Users/biocbuild PrimaryGroupID 20
-        dscl . -create /Users/biocbuild NFSHomeDirectory /Users/biocbuild
-        dscl . -passwd /Users/biocbuild {{ salt['environ.get']('BIOCBUILD_PASSWORD') }} 
-        dscl . -append /Groups/admin GroupMembership biocbuild
-        cp -R /System/Library/User\ Template/English.lproj /Users/biocbuild
-        chown -R biocbuild:staff /Users/biocbuild
+        dscl . -create /Users/{{ machine.user.name }}
+        dscl . -create /Users/{{ machine.user.name }} UserShell /bin/bash
+        dscl . -create /Users/{{ machine.user.name }} UniqueID "505"
+        dscl . -create /Users/{{ machine.user.name }} PrimaryGroupID 20
+        dscl . -create /Users/{{ machine.user.name }} NFSHomeDirectory /Users/{{ machine.user.name }}
+        dscl . -passwd /Users/{{ machine.user.name }} {{ salt['environ.get']('BIOCBUILD_PASSWORD') }}
+        dscl . -append /Groups/admin GroupMembership {{ machine.user.name }}
+        cp -R /System/Library/User\ Template/English.lproj /Users/{{ machine.user.name }}
+        chown -R {{ machine.user.name }}:staff /Users/{{ machine.user.name }}
     - unless:
       - dscl . list /Users | egrep {{ user.name }}
     - require:
-      - cmd: update 
+      - cmd: update
 
 {% if machine.additional is defined %}
 {% set users = machine.users + machine.additional.users %}
@@ -72,7 +72,7 @@ make_user_{{ user.name }}:
       - staff
       - admin
     - require:
-      - cmd: create_biocbuild
+      - cmd: create_{{ machine.user.name }}
 
 {%- if user.key is defined %}
 copy_{{ user.name }}_ssh_key:
@@ -84,7 +84,7 @@ copy_{{ user.name }}_ssh_key:
     - makedirs: True
     - mode: 500
     - require:
-      - cmd: create_biocbuild
+      - cmd: create_{{ machine.user.name }}
 {%- endif %}
 
 {%- if user.authorized_key is defined %}
@@ -97,27 +97,27 @@ copy_{{ user.name }}_authorized_keys:
       - {{ authorized_key }}
     {%- endfor %}
     - require:
-      - cmd: create_biocbuild
+      - cmd: create_{{ machine.user.name }}
 {%- endif %}
 {%- endfor %}
 {%- endif %}
 
-git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/biocbuild:
+git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ machine.user.name }}:
   git.cloned:
     - name: {{ repo.bbs.github }}
-    - target: {{ machine.user.home }}/biocbuild/{{ repo.bbs.name }}
-    - user: biocbuild
+    - target: {{ machine.user.home }}/{{ machine.user.name }}/{{ repo.bbs.name }}
+    - user: {{ machine.user.name }}
 
 download_XQuartz:
   cmd.run:
     - name: curl -LO {{ machine.downloads.xquartz }}
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
 
 install_XQuartz:
   cmd.run:
     - name: |
         installer -pkg {{ xquartz }} -target /
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_XQuartz
 
@@ -193,12 +193,12 @@ load_xvfb:
 download_gfortran:
   cmd.run:
     - name: curl -LO {{ gfortran_download }}
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
-    - runas: biocbuild
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - runas: {{ machine.user.name }}
 
 install_gfortran:
   cmd.run:
-    - name: tar -xf {{ machine.user.home }}/biocbuild/Downloads/{{ gfortran }} -C /
+    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/{{ gfortran }} -C /
     - require:
       - cmd: download_gfortran
 
@@ -219,23 +219,23 @@ symlink_gfortran_sdk:
 fix_/usr/local_permissions_for_brewing:
   cmd.run:
     - name: |
-        chown -R biocbuild:admin /usr/local/*
+        chown -R {{ machine.user.name }}:admin /usr/local/*
 
 brew_packages:
   cmd.run:
     - name: brew install {{ machine.brews }}
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
 
 download_openssl_from_r-project:
   cmd.run:
     - name: curl -LO {{ machine.downloads.openssl }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - runas: biocbuild
+    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - runas: {{ machine.user.name }}
 
 install_openssl:
   cmd.run:
     - name: tar -xf {{ openssl }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
+    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_openssl_from_r-project
 
@@ -251,19 +251,19 @@ append_openssl_configurations_to_path:
 
 install_pip_pkgs:
   cmd.run:
-    - name: python3 -m pip install $(cat {{ machine.user.home }}/biocbuild/{{ repo.bbs.name }}/Ubuntu-files/20.04/pip_*.txt | awk '/^[^#]/ {print $1}')
-    - runas: biocbuild
+    - name: python3 -m pip install $(cat {{ machine.user.home }}/{{ machine.user.name }}/{{ repo.bbs.name }}/Ubuntu-files/20.04/pip_*.txt | awk '/^[^#]/ {print $1}')
+    - runas: {{ machine.user.name }}
 
 download_mactex:
   cmd.run:
     - name: curl -LO {{ machine.downloads.mactex }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - runas: biocbuild
+    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - runas: {{ machine.user.name }}
 
 install_mactex:
   cmd.run:
     - name: installer -pkg MacTeX.pkg -target /
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
+    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_mactex
 
@@ -271,20 +271,20 @@ install_mactex:
 install_pandoc:
   cmd.run:
     - name: brew install pandoc
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
 {% else %}
 {% set pandoc = machine.downloads.intel.pandoc.split("/")[-1] %}
 
 download_pandoc:
   cmd.run:
     - name: curl -LO {{ machine.downloads.intel.pandoc }}
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
-    - user: biocbuild
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - user: {{ machine.user.name }}
 
 install_pandoc:
   cmd.run:
     - name: installer -pkg {{ pandoc }} -target /
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_pandoc
 {%- endif %}
@@ -292,7 +292,7 @@ install_pandoc:
 fix_/usr/local_permissions:
   cmd.run:
     - name: |
-        chown -R biocbuild:admin /usr/local/*
+        chown -R {{ machine.user.name }}:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
     - require:
       - cmd: install_mactex
@@ -301,8 +301,8 @@ fix_/usr/local_permissions:
 run_chown-rootadmin:
   cmd.run:
     - name: gcc chown-rootadmin.c -o chown-rootadmin
-    - runas: biocbuild
-    - cwd: {{ machine.user.home }}/biocbuild/BBS/utils
+    - runas: {{ machine.user.name }}
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/BBS/utils
     - require:
       - cmd: fix_/usr/local_permissions
 
@@ -311,6 +311,6 @@ fix_chown-rootadmin_permissions:
     - name: |
         chown root:admin chown-rootadmin
         chmod 4750 chown-rootadmin
-    - cwd: {{ machine.user.home }}/biocbuild/BBS/utils
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/BBS/utils
     - require:
       - cmd: run_chown-rootadmin

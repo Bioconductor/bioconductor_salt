@@ -35,13 +35,13 @@ install_aspnetcore-runtime:
 download_dotnet:
   cmd.run:
     - name: curl -LO {{ download_url }}
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
-    - runas: biocbuild
+    - cwd: /tmp
+    - runas: {{ machine.user.name }}
 
 install_dotnet:
   cmd.run:
     - name: installer -pkg {{ download }} -target /
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: /tmp
     - require:
       - cmd: download_dotnet
 {%- endif %}
@@ -52,6 +52,6 @@ test_R_CMD_build_rmspc:
         git clone https://git.bioconductor.org/packages/rmspc
         {{ r_path }}R CMD build rmspc
     - cwd: /tmp
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: install_dotnet

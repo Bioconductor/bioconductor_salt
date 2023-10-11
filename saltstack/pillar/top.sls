@@ -1,9 +1,13 @@
 base:
+  '*':
+    - common
   'os:Ubuntu':
     - match: grain
-    - common
     - common.linux
   'os:MacOS':
     - match: grain
-    - common
     - common.mac
+  '(nebbiolo*|lconway*|merida*|kjohnson*)':
+    - common.cronjobs
+  'nebbiolo*':
+    - common.primary

@@ -7,19 +7,19 @@
 download_jags:
   cmd.run:
     - name: curl -LO {{ machine.dependencies.jags }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - user: biocbuild
+    - cwd: /tmp
+    - user: {{ machine.user.name }}
 
 install_jags:
   cmd.run:
-    - name: installer -pkg {{ machine.user.home }}/biocbuild/Downloads/{{ jags }}.pkg -target /
+    - name: installer -pkg /tmp/{{ jags }}.pkg -target /
     - require:
       - cmd: download_jags
 
 fix_/usr/local_permissions_jags:
   cmd.run:
     - name: |
-        chown -R biocbuild:admin /usr/local/*
+        chown -R {{ machine.user.name }}:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
     - require:
       - cmd: install_jags
@@ -27,4 +27,4 @@ fix_/usr/local_permissions_jags:
 test_rjags_install:
   cmd.run:
     - name: Rscript -e 'install.packages("rjags", type="source", repos="https://cran.r-project.org")'
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}

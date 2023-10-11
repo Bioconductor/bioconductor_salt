@@ -42,7 +42,7 @@ make_user_{{ user.name }}:
     - name: {{ user.name }}
     - password: {{ user.password }}
     - home: {{ machine.user.home }}/{{ user.name }}
-    - shell: {{ machine.user.shell }} 
+    - shell: {{ machine.user.shell }}
     - groups:
     {%- for group in user.groups %}
       - {{ group }}
@@ -52,8 +52,8 @@ make_user_{{ user.name }}:
 copy_{{ user.name }}_ssh_key:
   file.managed:
     - name: {{ machine.user.home }}/{{ user.name }}/.ssh/{{ user.name }}
-    - source: {{ user.key }} 
-    - user: {{ user.name }} 
+    - source: {{ user.key }}
+    - user: {{ user.name }}
     - group: {{ user.name }}
     - makedirs: True
     - mode: 500
@@ -69,24 +69,26 @@ copy_{{ user.name }}_authorized_keys:
       - {{ authorized_key }}
     {%- endfor %}
 {%- endif %}
-
-{%- if user.name in ('biocbuild', 'biocpush') %}
-git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ user.name }}:
-  git.cloned:
-    - name: {{ repo.bbs.github }}
-    - target: {{ machine.user.home }}/{{ user.name }}/{{ repo.bbs.name }}
-    - user: {{ user.name }}
-{%- endif %}
 {%- endfor %}
 {%- endif %}
 
+git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ machine.user.name }}:
+  git.cloned:
+    - name: {{ repo.bbs.github }}
+    - target: {{ machine.user.home }}/{{ machine.user.name }}/{{ repo.bbs.name }}
+    - user: {{ machine.user.name }}
+
 install_apt_pkgs:
   cmd.run:
-    - name: apt-get -y install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
+    - name: apt-get -y install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
+
+update_pip:
+  cmd.run:
+    - name: pip install --upgrade pip 
 
 install_pip_pkgs:
   cmd.run:
-    - name: python3 -m pip install $(cat /home/biocbuild/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/pip_*.txt | awk '/^[^#]/ {print $1}')
+    - name: python3 -m pip install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/pip_*.txt | awk '/^[^#]/ {print $1}')
 
 check_locale:
   locale.present:
@@ -125,7 +127,7 @@ create_xfb_init:
         #                    'R CMD build' and 'R CMD check on some BioC packages.
         #                    The DISPLAY variable is set in /etc/profile.d/xvfb.sh.
         ### END INIT INFO
-        
+       
         XVFB=/usr/bin/Xvfb
         XVFBARGS=":1 -screen 0 800x600x16"
         PIDFILE=/var/run/xvfb.pid
@@ -151,8 +153,8 @@ create_xfb_init:
             echo "Usage: /etc/init.d/xvfb {start|stop|restart}"
             exit 1
         esac
-        
-        exit 0 
+
+        exit 0
 
 install_init-system-helpers:
   pkg.installed:

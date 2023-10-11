@@ -14,26 +14,26 @@
 download_netcdf:
   cmd.run:
     - name: curl -LO {{ netcdf_url }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - user: biocbuild
+    - cwd: /tmp
+    - user: {{ machine.user.name }}
 
 untar_netcdf:
   cmd.run:
-    - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ netcdf }} -C /
+    - name: tar xvfJ /tmp/{{ netcdf }} -C /
     - cwd: /usr/local
-    - user: biocbuild
+    - user: {{ machine.user.name }}
     - require:
       - cmd: download_netcdf
 
 download_hdf5:
   cmd.run:
     - name: curl -LO {{ hdf5_url }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - user: biocbuild
+    - cwd: /tmp
+    - user: {{ machine.user.name }}
 
 untar_hdf5:
   cmd.run:
-    - name: tar xvfJ {{ machine.user.home }}/biocbuild/Downloads/{{ hdf5 }} -C /
+    - name: tar xvfJ /tmp/{{ hdf5 }} -C /
     - cwd: /usr/local
     - require:
       - cmd: download_hdf5
@@ -41,12 +41,12 @@ untar_hdf5:
 fix_/usr/local_permissions_netcdf_hdf5:
   cmd.run:
     - name: |
-        chown -R biocbuild:admin /usr/local/*
+        chown -R {{ machine.user.name }}:admin /usr/local/*
         chown -R root:wheel /usr/local/texlive
 
 test_ncdf4:
   cmd.run:
     - name: Rscript -e 'install.packages("ncdf4", type="source", repos="https://cran.r-project.org")'
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: fix_/usr/local_permissions_netcdf_hdf5

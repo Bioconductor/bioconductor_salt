@@ -15,27 +15,27 @@ remove_old_r:
 get_R_pkg:
   cmd.run:
     - name: curl -O {{ r.download }}
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - file: remove_old_r
 
 install_R:
   cmd.run:
     - name: installer -pkg {{ downloaded_file }} -target /
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: get_R_pkg
 
 fix_library_permissions:
   cmd.run:
-    - name: chown -R biocbuild:admin /Library/Frameworks/R.framework/Resources/library
+    - name: chown -R {{ machine.user.name }}:admin /Library/Frameworks/R.framework/Resources/library
     - require:
       - cmd: install_R
 
 install_biocmanager:
   cmd.run:
     - name: Rscript -e "install.packages('BiocManager', repos='https://cran.r-project.org'); library(BiocManager); BiocManager::install(ask=FALSE)"
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: fix_library_permissions 
 
@@ -43,7 +43,7 @@ install_biocmanager:
 install_cran_{{ pkg }}:
   cmd.run:
     - name: Rscript -e "install.packages('{{ pkg }}', repos='https://cran.r-project.org')"
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: install_R
 {% endfor %}
@@ -52,7 +52,7 @@ install_cran_{{ pkg }}:
 install_biocmanager_devel:
   cmd.run:
     - name: Rscript -e "library(BiocManager); BiocManager::install(version='devel', ask=FALSE)" 
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: install_R
 {% endif %}
@@ -61,7 +61,7 @@ install_biocmanager_devel:
 install_bioc_{{ pkg }}:
   cmd.run:
     - name: Rscript -e "library(BiocManager); BiocManager::install('{{ pkg }}')"
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: install_R
 {% endfor %}
@@ -69,7 +69,7 @@ install_bioc_{{ pkg }}:
 check_rtrackerlayer_statically_linked:
   cmd.run:
     - name: otool -L /Library/Frameworks/R.framework/Resources/library/rtracklayer/libs/rtracklayer.so
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: install_bioc_rtracklayer
 
@@ -98,7 +98,7 @@ add_cairo_hack_for_polygon_edge_not_found:
 attempt_install_difficult_package_{{ pkg }}:
   cmd.run:
     - name: Rscript -e "install.packages('{{ pkg }}', repos='https://cran.r-project.org')"
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - unless:
       - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
     - require:
@@ -107,7 +107,7 @@ attempt_install_difficult_package_{{ pkg }}:
 attempt_install_previous_version_of_{{ pkg }}:
   cmd.run:
     - name: Rscript -e "if (!('{{ pkg }}' %in% rownames(installed.packages()))) install.packages('{{ pkg }}', repos='https://cran.r-project.org/bin/macosx/{{ binary_path }}/{{ r.previous_version }}')"
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - unless:
       - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
     - require:
@@ -120,20 +120,20 @@ symlink_previous_version:
     - target: '{{ r.version[2:] }}-{{ subpath }}'
     - cwd: /Library/Frameworks/R.framework/Versions
     - force: True
-    - user: biocbuild
+    - user: {{ machine.user.name }}
     - group: staff
 
 download_minimum_supported_macossdk:
   cmd.run:
     - name: curl -LO https://mac.r-project.org/sdk/MacOSX11.3.sdk.tar.xz
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - file: symlink_previous_version
 
 untar_macossdk:
   cmd.run:
-    - name: tar -xf {{ machine.user.home }}/biocbuild/Downloads/MacOSX11.3.sdk.tar.xz
-    - cwd: /Library/Developer/CommandLineTools/SDKs
+    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/MacOSX11.3.sdk.tar.xz
+    - cwd: /Library/Developer/CommandLineTools/SDKs 
     - group: wheel
     - require:
       - cmd: download_minimum_supported_macossdk

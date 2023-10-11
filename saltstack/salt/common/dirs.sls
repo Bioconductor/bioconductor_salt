@@ -6,27 +6,27 @@
 {%- for type in build.types %}
 make_{{ build.version }}_{{ type }}_directory:
   file.directory:
-    - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-{{ type }}/log
-    - user: biocbuild
-    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
+    - name: {{ machine.user.home }}/{{ machine.user.name }}/bbs-{{ build.version }}-{{ type }}/log
+    - user: {{ machine.user.name }}
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}{{ machine.user.name }}{% endif %}
     - makedirs: True
     - replace: False
 {%- endfor %}
 
 make_{{ build.version }}_bioc_rdownloads:
   file.directory:
-    - name: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/rdownloads
-    - user: biocbuild
-    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
+    - name: {{ machine.user.home }}/{{ machine.user.name }}/bbs-{{ build.version }}-bioc/rdownloads
+    - user: {{ machine.user.name }}
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}{{ machine.user.name }}{% endif %}
     - makedirs: True
     - replace: False
 
 {% if machine.type == 'primary' %}
 make_public_html:
   file.directory:
-    - name: {{ machine.user.home }}/biocbuild/public_html
-    - user: biocbuild
-    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocbuild{% endif %}
+    - name: {{ machine.user.home }}/{{ machine.user.name }}/public_html
+    - user: {{ machine.user.name }}
+    - group: {% if grains['os'] == 'MacOS' %}staff{% else %}{{ machine.user.name }}{% endif %}
     - replace: False
 
 make_propagation_symlink:
@@ -89,7 +89,7 @@ make_{{ build_type }}_bin_macosx_big-sur-arm64_contrib:
 git_bioc_manifest:
   git.cloned:
     - name: {{ repo.manifest.github }}
-    - target: {{ machine.user.home }}/biocbuild/bbs-{{ build.version }}-bioc/{{ repo.manifest.name }}
-    - user: biocbuild 
+    - target: {{ machine.user.home }}/{{ machine.user.name }}/bbs-{{ build.version }}-bioc/{{ repo.manifest.name }}
+    - user: {{ machine.user.name }}
     - branch: {{ repo.manifest.branch }}
 {%- endif %}

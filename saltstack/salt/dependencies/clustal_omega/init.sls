@@ -6,20 +6,20 @@
 download_clustal_omega:
   cmd.run:
     - name: curl -LO {{ machine.dependencies.clustal_omega }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - user: biocbuild
+    - cwd: /tmp
+    - user: {{ machine.user.name }}
 
 change_clustal_omega_permissions:
   cmd.run:
     - name: chmod +x {{ download }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: /tmp
     - require:
       - cmd: download_clustal_omega
 
 move_clustal_omega:
   cmd.run:
     - name: mv -i {{ download }} /usr/local/bin
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: /tmp
     - require:
       - cmd: change_clustal_omega_permissions
 
@@ -36,6 +36,6 @@ test_R_CMD_build_LowMACA_for_clustal_omega:
         git clone https://git.bioconductor.org/packages/LowMACA
         R CMD build LowMACA
     - cwd: /tmp
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - file: symlink_clustal_omega

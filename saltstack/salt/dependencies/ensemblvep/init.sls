@@ -54,7 +54,7 @@ create_symlinks_for_libhts.a:
 brew_install_htslib:
   cmd.run:
     - name: brew install htslib
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
 {%- endif %}
 
 install_perl_module_tabix:
@@ -77,7 +77,7 @@ remove_bio_directory:
 {% elif grains['os'] == 'MacOS' %}
 change_ensembl-vep_permissions:
   cmd.run:
-    - name: chown -R biocbuild:admin /usr/local/ensembl-vep
+    - name: chown -R {{ machine.user.name }}:admin /usr/local/ensembl-vep
     - require:
       - git: clone_ensemblvep
 {%- endif %}
@@ -102,7 +102,7 @@ test_R_CMD_build_{{ pkg }}:
         {{ r_path }}R CMD build {{ pkg }} 
         ls {{ pkg }}*.tar.gz | {{ r_path }}R CMD check --no-vignettes 
     - cwd: /tmp
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - file: append_ensemblvep_to_path
 {%- endfor %}

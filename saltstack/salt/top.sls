@@ -24,15 +24,17 @@ base:
     - dependencies.netcdf_hdf5                  # CRAN ncdf4, BioC mzR
     - dependencies.open_babel                   # BioC ChemmineOB
     - dependencies.viennarna                    # BioC GeneGA
-  '*':
+  'machine:type:(primary|secondary)':
+    - match: pillar
     - common.cronjobs
-    - dependencies.dotnet                       # BioC rmspc
-    - dependencies.ensemblvep                   # BioC ensemblVEP, MMAPPR2
-    - dependencies.immunespace                  # BioC ImmuneSpaceR
-    - dependencies.reticulate_python            # Bioc seqArchR
   'machine:type:primary':
     - match: pillar
     - webserver
   'machine:env:dev':
     - match: grain
     - common.bbs
+  '*':
+    - dependencies.dotnet                       # BioC rmspc
+    - dependencies.ensemblvep                   # BioC ensemblVEP, MMAPPR2
+    - dependencies.immunespace                  # BioC ImmuneSpaceR
+    - dependencies.reticulate_python            # Bioc seqArchR

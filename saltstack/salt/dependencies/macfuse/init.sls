@@ -8,8 +8,8 @@
 download_macfuse:
   cmd.run:
     - name: curl -LO {{ machine.dependencies.macfuse }}
-    - cwd:  {{ machine.user.home }}/biocbuild/Downloads
-    - user: biocbuild
+    - cwd: /tmp
+    - user: {{ machine.user.name }}
 
 install_macfuse:
   cmd.run:
@@ -17,13 +17,13 @@ install_macfuse:
         hdiutil attach {{ download }}
         installer -pkg /Volumes/Install macFUSE.pkg -target /
         hdiutil detach /Volumes/macFUSE
-    - cwd: {{ machine.user.home }}/biocbuild/Downloads
+    - cwd: /tmp
     - require:
       - cmd: download_macfuse
 
 test_install_bioc_Travel:
   cmd.run:
     - name: Rscript -e 'library(BiocManager); BiocManager::install("Travel", type="source")'
-    - runas: biocbuild
+    - runas: {{ machine.user.name }}
     - require:
       - cmd: install_macfuse
