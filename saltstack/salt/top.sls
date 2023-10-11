@@ -14,7 +14,7 @@ base:
     - dependencies.java                         # CRAN rJava
     - rlang.mac                                 # install R
     - dependencies.clustal_omega                # BioC LowMACA
-    - dependencies.cmake                        # CRAN nlopter
+    - dependencies.cmake                        # CRAN nloptr
     - dependencies.gsl                          # BioC GLAD
     - dependencies.glpk                         # BioC MMUPHin
     - dependencies.jags                         # BioC rjags
@@ -23,6 +23,7 @@ base:
     - dependencies.mysql                        # BioC ensemblVEP
     - dependencies.netcdf_hdf5                  # CRAN ncdf4, BioC mzR
     - dependencies.open_babel                   # BioC ChemmineOB
+    - dependencies.viennarna                    # BioC GeneGA
   'machine:type:(primary|secondary)':
     - match: pillar
     - common.cronjobs
@@ -36,5 +37,4 @@ base:
     - dependencies.dotnet                       # BioC rmspc
     - dependencies.ensemblvep                   # BioC ensemblVEP, MMAPPR2
     - dependencies.immunespace                  # BioC ImmuneSpaceR
-    - dependencies.viennarna                    # BioC GeneGA
     - dependencies.reticulate_python            # Bioc seqArchR

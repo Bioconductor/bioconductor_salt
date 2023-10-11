@@ -82,6 +82,10 @@ install_apt_pkgs:
   cmd.run:
     - name: DEBIAN_FRONTEND=noninteractive apt-get -y install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
 
+update_pip:
+  cmd.run:
+    - name: pip install --upgrade pip 
+
 install_pip_pkgs:
   cmd.run:
     - name: python3 -m pip install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/pip_*.txt | awk '/^[^#]/ {print $1}')
@@ -173,10 +177,6 @@ set_xvfb_display_env:
         ## Set DISPLAY environment variable for use with Xvfb.
         ## See /etc/init.d/xvfb for start / stop configuration.
         export DISPLAY=:1.0
-
-install_libcudart10.1:
-  pkg.installed:
-    - name: libcudart10.1
 
 # For installing Perl modules noninteractively
 add_PERL_MM_USE_DEFAULT_to_bashrc:

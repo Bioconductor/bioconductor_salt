@@ -1,4 +1,4 @@
-# Needed by CRAN nlopter
+# Needed by CRAN nloptr
 
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.cmake.split("/")[-1] %}

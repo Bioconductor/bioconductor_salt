@@ -142,16 +142,16 @@ symlink_minor_to_major_version:
   file.symlink:
     - name: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
     - target: MacOSX11.3.sdk
-    - cwd: /Library/Developer/CommandLineTools/SDKs 
+    - cwd: /Library/Developer/CommandLineTools/SDKs
     - group: wheel 
     - require:
       - cmd: untar_macossdk
 
 fix_gfortran_sdk_symlink:
   file.symlink:
-    - name: /opt/gfortrant/SDK 
+    - name: /opt/gfortran/SDK
     - target: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
-    - cwd: /opt/gfortran 
+    - cwd: /opt/gfortran
     - group: admin
     - require:
       - file: symlink_minor_to_major_version
