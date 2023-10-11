@@ -65,6 +65,10 @@ variable:
 
 ## Updating R
 
+Note: If macFuse is needed and it will be installed on the machine for the
+first time, you may need to enable kernel support for third party extensions.
+See https://github.com/macfuse/macfuse/wiki/Getting-Started.
+
 You may also run individual states, such as to update R. After configuring the
 `custom` file for your machine, run the `rlang` states for your machine.
 

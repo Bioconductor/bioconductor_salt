@@ -1,4 +1,6 @@
 # Needed for BioC Travel
+# May need to enable support for third party kernel extensions.
+# See https://github.com/macfuse/macfuse/wiki/Getting-Started
 
 {% set machine = salt["pillar.get"]("machine") %}
 {% set download = machine.dependencies.macfuse.split("/")[-1] %}

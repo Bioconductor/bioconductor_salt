@@ -178,10 +178,6 @@ set_xvfb_display_env:
         ## See /etc/init.d/xvfb for start / stop configuration.
         export DISPLAY=:1.0
 
-install_libcudart10.1:
-  pkg.installed:
-    - name: libcudart10.1
-
 # For installing Perl modules noninteractively
 add_PERL_MM_USE_DEFAULT_to_bashrc:
   file.append:
