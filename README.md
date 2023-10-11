@@ -92,10 +92,10 @@ run salt install via homebrew and pointing to the `HOMEBREW_PREFIX`:
 
     sudo env HOMEBREW_PREFIX=/opt/homebrew salt-call --local state.highstate
 
-### BBS-like Machine
+## Standalone Machine with BBS dependencies
 
-If `machine_type = 'standalone'` in `pillar/custom/init.sls`, the machine will
-be configured with the dependencies needed for the build system but without
+If `machine_type` equals `standalone` in `pillar/custom/init.sls`, the machine
+will be configured with the dependencies needed for the build system but without
 the set up necessary to perform the official builds. A standalone build might
 be sufficient for testing `R CMD INSTALL` `build` or `check`. It will also
 reduce the time necessary for configuration.
