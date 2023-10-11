@@ -13,6 +13,8 @@
    biocpush_authorized_key %}
 {% endif %}
 {% set build_user = 'biocbuild' %}
+{% else %}
+{% set build_user = grains['cwd'].split("/")[-1] %}
 {% endif %} 
 
 {%- if branch == 'release' %}

@@ -80,7 +80,7 @@ git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ machine.user.name }}
 
 install_apt_pkgs:
   cmd.run:
-    - name: apt-get -y install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
+    - name: DEBIAN_FRONTEND=noninteractive apt-get -y install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
 
 update_pip:
   cmd.run:
