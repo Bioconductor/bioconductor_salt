@@ -6,7 +6,6 @@
 {% set build = salt["pillar.get"]("build") %}
 {% set repo = salt["pillar.get"]("repo") %}
 {% set xquartz = machine.downloads.xquartz.split("/")[-1] %}
-{% set openssl = machine.downloads.openssl.split("/")[-1] %}
 {% set gfortran_download = machine.downloads.gfortran %}
 {% set gfortran = machine.downloads.gfortran.split("/")[-1] %}
 {%- if grains["osarch"] == "arm64" %}
@@ -226,7 +225,7 @@ brew_packages:
     - name: brew install {{ machine.brews }}
     - runas: {{ machine.user.name }}
 
-{%- for binary for machine.binaries %}
+{%- for binary in machine.binaries %}
 install_{{ binary }}:
   cmd.run:
     - name: |
