@@ -242,9 +242,15 @@ append_openssl_configurations_to_path:
     - require:
       - cmd: install_openssl
 
+fix_/usr/local_permissions:
+  cmd.run:
+    - name: |
+        chown -R {{ machine.user.name }}:admin /usr/local/*
+        chown -R root:wheel /usr/local/texlive
+
 install_pip_pkgs:
   cmd.run:
-    - name: python3 -m pip install $(cat {{ machine.user.home }}/{{ machine.user.name }}/{{ repo.bbs.name }}/Ubuntu-files/20.04/pip_*.txt | awk '/^[^#]/ {print $1}')
+    - name: python3 -m pip install $(cat {{ machine.user.home }}/{{ machine.user.name }}/{{ repo.bbs.name }}/Ubuntu-files/22.04/pip_*.txt | awk '/^[^#]/ {print $1}')
     - runas: {{ machine.user.name }}
 
 download_mactex:
