@@ -215,11 +215,6 @@ symlink_gfortran_sdk:
     - require:
       - file: export_gfortran_path
 
-fix_/usr/local_permissions_for_brewing:
-  cmd.run:
-    - name: |
-        chown -R {{ machine.user.name }}:admin /usr/local/*
-
 brew_packages:
   cmd.run:
     - name: brew install {{ machine.brews }}
@@ -241,12 +236,6 @@ append_openssl_configurations_to_path:
         export OPENSSL_LIBS="/opt/R/{{ subpath }}/lib/libssl.a /opt/R/{{ subpath }}/lib/libcrypto.a"
     - require:
       - cmd: install_openssl
-
-fix_/usr/local_permissions_for_binaries:
-  cmd.run:
-    - name: |
-        chown -R {{ machine.user.name }}:admin /usr/local/*
-        chown -R root:wheel /usr/local/texlive
 
 install_pip_pkgs:
   cmd.run:
@@ -296,6 +285,10 @@ fix_/usr/local_permissions:
     - require:
       - cmd: install_mactex
       - cmd: install_pandoc
+
+remove_chown-rootadmin:
+  file.absent:
+    - name: {{ machine.user.home }}/{{ machine.user.name }}/BBS/utils/chown-rootadmin
 
 run_chown-rootadmin:
   cmd.run:
