@@ -63,7 +63,6 @@ r:
     - Rmpfr
     - pdftools
     - av
-    - rgeos
     - sf
     - RcppAlgos
     - glpkAPI
@@ -76,3 +75,5 @@ r:
     - terra
     - PoissonBinomial
     - igraph
+    - redux
+    - qqconf
