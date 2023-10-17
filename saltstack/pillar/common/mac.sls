@@ -3,7 +3,11 @@ build:
     - bioc                  {# always required #}
 
 machine:
-  brews: xz pstree poppler
+  binaries:
+    - openssl
+    - pkgconfig
+    - xz
+  brews: pstree poppler
   dependencies:             {# For Bioc or CRAN packages #}
     arm64:
       dotnet: https://download.visualstudio.microsoft.com/download/pr/aa3b3150-80cb-4d30-87f8-dc36fa1dcf26/8ec9ff6836828175f1a6a60aefd4e63b/dotnet-runtime-6.0.13-osx-arm64.pkg
@@ -29,8 +33,6 @@ machine:
       pandoc: https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-macOS.pkg
     gfortran: https://github.com/R-macos/gcc-12-branch/releases/download/12.2-darwin-r0/gfortran-12.2-darwin20-r0-universal.tar.xz
     mactex: https://mirror.ctan.org/systems/mac/mactex/MacTeX.pkg
-    openssl: https://mac.r-project.org/bin/darwin20/arm64/openssl-1.1.1t-darwin.20-arm64.tar.xz
-    pkgconfig: https://mac.r-project.org/bin/darwin20/x86_64/pkgconfig-0.29.2-darwin.20-x86_64.tar.xz
     xquartz: https://github.com/XQuartz/XQuartz/releases/download/XQuartz-2.8.5/XQuartz-2.8.5.pkg
 r:
   cran:
