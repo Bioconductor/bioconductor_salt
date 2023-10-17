@@ -242,7 +242,7 @@ append_openssl_configurations_to_path:
     - require:
       - cmd: install_openssl
 
-fix_/usr/local_permissions:
+fix_/usr/local_permissions_for_binaries:
   cmd.run:
     - name: |
         chown -R {{ machine.user.name }}:admin /usr/local/*
