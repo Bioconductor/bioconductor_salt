@@ -226,26 +226,20 @@ brew_packages:
     - name: brew install {{ machine.brews }}
     - runas: {{ machine.user.name }}
 
-download_openssl_from_r-project:
+{%- for binary for machine.binaries %}
+install_{{ binary }}:
   cmd.run:
-    - name: curl -LO {{ machine.downloads.openssl }}
-    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
-    - runas: {{ machine.user.name }}
-
-install_openssl:
-  cmd.run:
-    - name: tar -xf {{ openssl }}
-    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
-    - require:
-      - cmd: download_openssl_from_r-project
+    - name: |
+        sudo Rscript -e "source('https://mac.R-project.org/bin/install.R'); install.libs('{{ binary }}')"
+{%- endfor %}
 
 append_openssl_configurations_to_path:
   file.append:
     - name: /etc/profile
     - text: |
         export PATH=$PATH:/opt/R/{{ subpath }}/bin
-        export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/R/arm64/lib/pkgconfig
-        export OPENSSL_LIBS="/opt/R/arm64/lib/libssl.a /opt/R/arm64/lib/libcrypto.a"
+        export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/R/{{ subpath }}/lib/pkgconfig
+        export OPENSSL_LIBS="/opt/R/{{ subpath }}/lib/libssl.a /opt/R/{{ subpath }}/lib/libcrypto.a"
     - require:
       - cmd: install_openssl
 

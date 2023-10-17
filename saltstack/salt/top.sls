@@ -15,13 +15,10 @@ base:
     - rlang.mac                                 # install R
     - dependencies.clustal_omega                # BioC LowMACA
     - dependencies.cmake                        # CRAN nloptr
-    - dependencies.gsl                          # BioC GLAD
-    - dependencies.glpk                         # BioC MMUPHin
     - dependencies.jags                         # BioC rjags
     - dependencies.macfuse                      # BioC Travel
     - dependencies.mono                         # BioC rawrr
     - dependencies.mysql                        # BioC ensemblVEP
-    - dependencies.netcdf_hdf5                  # CRAN ncdf4, BioC mzR
     - dependencies.open_babel                   # BioC ChemmineOB
     - dependencies.viennarna                    # BioC GeneGA
   'machine:type:(primary|secondary)':
