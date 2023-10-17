@@ -4,6 +4,7 @@ build:
 
 machine:
   binaries:
+    - gsl
     - openssl
     - pkgconfig
     - xz
@@ -12,14 +13,12 @@ machine:
     arm64:
       dotnet: https://download.visualstudio.microsoft.com/download/pr/aa3b3150-80cb-4d30-87f8-dc36fa1dcf26/8ec9ff6836828175f1a6a60aefd4e63b/dotnet-runtime-6.0.13-osx-arm64.pkg
       glpk: https://mac.r-project.org/bin/darwin20/arm64/glpk-5.0-darwin.20-arm64.tar.xz
-      gsl: https://mac.r-project.org/bin/darwin20/arm64/gsl-2.7-darwin.20-arm64.tar.xz
       hdf5: https://mac.r-project.org/bin/darwin20/arm64/hdf5-1.12.1-darwin.20-arm64.tar.xz
       java: https://download.java.net/java/GA/jdk21/fd2272bbf8e04c3dbaee13770090416c/35/GPL/openjdk-21_macos-aarch64_bin.tar.gz 
       netcdf: https://mac.r-project.org/bin/darwin20/arm64/netcdf-4.8.1-darwin.20-arm64.tar.xz
     intel:
       dotnet: https://download.visualstudio.microsoft.com/download/pr/2ef12357-499b-4a5b-a488-da45a5f310e6/fbe35c354bfb50934a976fc91c6d8d81/dotnet-runtime-6.0.13-osx-x64.pkg
       glpk: https://mac.r-project.org/bin/darwin20/x86_64/glpk-5.0-darwin.20-x86_64.tar.xz
-      gsl: https://mac.r-project.org/bin/darwin17/x86_64/gsl-2.7-darwin.17-x86_64.tar.xz
       hdf5: https://mac.r-project.org/bin/darwin17/x86_64/hdf5-1.12.1-darwin.17-x86_64.tar.xz
       java: https://download.java.net/java/GA/jdk21/fd2272bbf8e04c3dbaee13770090416c/35/GPL/openjdk-21_macos-x64_bin.tar.gz 
       netcdf: https://mac.r-project.org/bin/darwin17/x86_64/netcdf-4.8.1-darwin.17-x86_64.tar.xz
