@@ -21,12 +21,8 @@ export_openbabel.pc_to_PKG_CONFIG_PATH:
   file.append:
     - name: /etc/profile
     - text: export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/openbabel3/pkgconfig
-    - require:
-      - cmd: symlink_open_babel
 
 test_bioc_install_ChemmineOB:
   cmd.run:
     - name: Rscript -e 'library(BiocManager); BiocManager::install("ChemmineOB", type="source")'
     - runas: {{ machine.user.name }}
-    - require:
-      - cmd: symlink_open_babel
