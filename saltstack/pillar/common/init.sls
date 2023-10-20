@@ -45,7 +45,7 @@ machine:
   env: {{ environment }}
   slash: {{ slash }}
   ip: 127.0.1.1
-  cores: 8 {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
+  cores: {{ grains['num_cpus'] }}  {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}
   type: {% if machine_type != "" %}{{ machine_type }}{% else %}secondary{% endif %}
   create_users: {% if create_users is defined %}{{ create_users }}{% else %}True{% endif %}
   {%- if grains['os'] == 'Ubuntu' %}

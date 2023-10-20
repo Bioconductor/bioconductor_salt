@@ -7,7 +7,7 @@ base:
   'os:MacOS':
     - match: grain
     - common.mac
-  '(nebbiolo*|lconway*|merida*|kjohnson*)':
-    - common.cronjobs
   'nebbiolo*':
     - common.primary
+  'nebbiolo* or lconway* or merida* or kjohnson*':
+    - common.cronjobs
