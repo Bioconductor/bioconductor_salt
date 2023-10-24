@@ -120,7 +120,7 @@ symlink_previous_version:
     - target: '{{ r.version[2:] }}-{{ subpath }}'
     - cwd: /Library/Frameworks/R.framework/Versions
     - force: True
-    - user: {{ machine.user.name }}
+    - user: root
     - group: staff
 
 download_minimum_supported_macossdk:
@@ -134,6 +134,7 @@ untar_macossdk:
   cmd.run:
     - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/MacOSX11.3.sdk.tar.xz
     - cwd: /Library/Developer/CommandLineTools/SDKs 
+    - user: root
     - group: wheel
     - require:
       - cmd: download_minimum_supported_macossdk
@@ -143,6 +144,7 @@ symlink_minor_to_major_version:
     - name: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
     - target: MacOSX11.3.sdk
     - cwd: /Library/Developer/CommandLineTools/SDKs
+    - user: root
     - group: wheel 
     - require:
       - cmd: untar_macossdk
@@ -152,6 +154,7 @@ fix_gfortran_sdk_symlink:
     - name: /opt/gfortran/SDK
     - target: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
     - cwd: /opt/gfortran
+    - user: root
     - group: admin
     - require:
       - file: symlink_minor_to_major_version
