@@ -16,7 +16,7 @@ jobs:
       matrix:
         ubuntu: [jammy]
         platform: [linux/amd64]
-        cycle: [devel, release]
+        branch: [devel, release]
 
     name: Build container images for GHCR
     runs-on: ubuntu-latest
@@ -63,7 +63,7 @@ jobs:
         id: build
         uses: docker/build-push-action@v4
         with:
-          build-args: CYCLE=${{matrix.cycle}}
+          build-args: CYCLE=${{matrix.branch}}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ steps.vars.outputs.container }},push-by-digest=true,name-canonical=true,push=true
           platforms: ${{matrix.platform}}
