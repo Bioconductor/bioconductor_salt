@@ -28,14 +28,6 @@ set_dns_servers:
     - require:
       - cmd: change_hostname
 
-update:
-  cmd.run:
-    - name: |
-        softwareupdate -l
-        softwareupdate -ia --verbose
-    - require:
-      - cmd: set_dns_servers
-
 {%- if machine.create_users %}
 create_{{ machine.user.name }}:
   cmd.run:
