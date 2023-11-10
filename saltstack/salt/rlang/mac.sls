@@ -15,14 +15,14 @@ remove_old_r:
 get_R_pkg:
   cmd.run:
     - name: curl -O {{ r.download }}
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/tmp
     - require:
       - file: remove_old_r
 
 install_R:
   cmd.run:
     - name: installer -pkg {{ downloaded_file }} -target /
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/tmp
     - require:
       - cmd: get_R_pkg
 
@@ -126,13 +126,13 @@ symlink_previous_version:
 download_minimum_supported_macossdk:
   cmd.run:
     - name: curl -LO https://mac.r-project.org/sdk/MacOSX11.3.sdk.tar.xz
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/tmp
     - require:
       - file: symlink_previous_version
 
 untar_macossdk:
   cmd.run:
-    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/MacOSX11.3.sdk.tar.xz
+    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/tmp/MacOSX11.3.sdk.tar.xz
     - cwd: /Library/Developer/CommandLineTools/SDKs 
     - user: root
     - group: wheel
