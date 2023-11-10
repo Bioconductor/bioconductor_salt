@@ -102,13 +102,13 @@ git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ machine.user.name }}
 download_XQuartz:
   cmd.run:
     - name: curl -LO {{ machine.downloads.xquartz }}
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: /tmp
 
 install_XQuartz:
   cmd.run:
     - name: |
         installer -pkg {{ xquartz }} -target /
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: /tmp
     - require:
       - cmd: download_XQuartz
 
@@ -184,12 +184,12 @@ load_xvfb:
 download_gfortran:
   cmd.run:
     - name: curl -LO {{ gfortran_download }}
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: /tmp
     - runas: {{ machine.user.name }}
 
 install_gfortran:
   cmd.run:
-    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/{{ gfortran }} -C /
+    - name: tar -xf /tmp/{{ gfortran }} -C /
     - require:
       - cmd: download_gfortran
 
@@ -237,13 +237,13 @@ install_pip_pkgs:
 download_mactex:
   cmd.run:
     - name: curl -LO {{ machine.downloads.mactex }}
-    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: /tmp
     - runas: {{ machine.user.name }}
 
 install_mactex:
   cmd.run:
     - name: installer -pkg MacTeX.pkg -target /
-    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: /tmp
     - require:
       - cmd: download_mactex
 
@@ -258,13 +258,13 @@ install_pandoc:
 download_pandoc:
   cmd.run:
     - name: curl -LO {{ machine.downloads.intel.pandoc }}
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: /tmp
     - user: {{ machine.user.name }}
 
 install_pandoc:
   cmd.run:
     - name: installer -pkg {{ pandoc }} -target /
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
+    - cwd: /tmp
     - require:
       - cmd: download_pandoc
 {%- endif %}
@@ -286,7 +286,7 @@ run_chown-rootadmin:
   cmd.run:
     - name: gcc chown-rootadmin.c -o chown-rootadmin
     - runas: {{ machine.user.name }}
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/BBS/utils
+    - cwd: /tmp
     - require:
       - cmd: fix_/usr/local_permissions
 
