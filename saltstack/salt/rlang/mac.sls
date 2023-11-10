@@ -77,17 +77,6 @@ reconfigure_R_to_use_Java:
   cmd.run:
     - name: R CMD javareconf
 
-add_cairo_hack_for_polygon_edge_not_found:
-  file.replace:
-    - name: /Library/Frameworks/R.framework/Resources/library/grDevices/R/grDevices
-    - pattern: {{ 'local({' | regex_escape }}
-    - repl: |
-        local({
-            options(bitmapType="cairo")
-    - count: 1
-    - require:
-      - cmd: install_cran_Cairo
-
 {%- if grains["osarch"]== "arm64" %}
 {% set binary_path = "big-sur-arm64/contrib" %}
 {% else %}
