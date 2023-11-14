@@ -6,19 +6,16 @@ base:
     - rlang.linux                               # install R
     - dependencies.bibtex                       # BioC destiny
     - dependencies.libsbml_cflags_libsbml_libs  # BioC rsbml
-    - dependencies.xmlsimple                    # BioC LowMACA
   'os:MacOS':
     - match: grain
     - common.mac
     - common.dirs
     - dependencies.java                         # CRAN rJava
     - rlang.mac                                 # install R
-    - dependencies.clustal_omega                # BioC LowMACA
     - dependencies.cmake                        # CRAN nloptr
     - dependencies.jags                         # BioC rjags
     - dependencies.macfuse                      # BioC Travel
     - dependencies.mono                         # BioC rawrr
-    - dependencies.mysql                        # BioC ensemblVEP
     - dependencies.open_babel                   # BioC ChemmineOB
     - dependencies.viennarna                    # BioC GeneGA
   'machine:type:(primary|secondary)':
@@ -32,7 +29,5 @@ base:
     - common.bbs
   '*':
     - dependencies.dotnet                       # BioC rmspc
-    - dependencies.ensemblvep                   # BioC ensemblVEP, MMAPPR2
-    - dependencies.immunespace                  # BioC ImmuneSpaceR
     - dependencies.reticulate_python            # Bioc seqArchR
     - dependencies.quarto                       # Bioc BiocBook
