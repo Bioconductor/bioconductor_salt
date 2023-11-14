@@ -35,3 +35,4 @@ base:
     - dependencies.ensemblvep                   # BioC ensemblVEP, MMAPPR2
     - dependencies.immunespace                  # BioC ImmuneSpaceR
     - dependencies.reticulate_python            # Bioc seqArchR
+    - dependencies.quarto                       # Bioc BiocBook
