@@ -40,7 +40,6 @@ create_{{ machine.user.name }}:
         dscl . -passwd /Users/{{ machine.user.name }} {{ salt['environ.get']('BIOCBUILD_PASSWORD') }}
         dscl . -append /Groups/admin GroupMembership {{ machine.user.name }}
         cp -R /System/Library/User\ Template/English.lproj /Users/{{ machine.user.name }}
-        mkdir /Users/{{ machine.user.name }}/tmp
         chown -R {{ machine.user.name }}:staff /Users/{{ machine.user.name }}
     - unless:
       - dscl . list /Users | egrep {{ user.name }}
@@ -103,13 +102,13 @@ git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ machine.user.name }}
 download_XQuartz:
   cmd.run:
     - name: curl -LO {{ machine.downloads.xquartz }}
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/tmp
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
 
 install_XQuartz:
   cmd.run:
     - name: |
         installer -pkg {{ xquartz }} -target /
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/tmp
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_XQuartz
 
@@ -185,12 +184,12 @@ load_xvfb:
 download_gfortran:
   cmd.run:
     - name: curl -LO {{ gfortran_download }}
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/tmp
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - runas: {{ machine.user.name }}
 
 install_gfortran:
   cmd.run:
-    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/tmp/{{ gfortran }} -C /
+    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/{{ gfortran }} -C /
     - require:
       - cmd: download_gfortran
 
@@ -238,13 +237,13 @@ install_pip_pkgs:
 download_mactex:
   cmd.run:
     - name: curl -LO {{ machine.downloads.mactex }}
-    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/tmp
+    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - runas: {{ machine.user.name }}
 
 install_mactex:
   cmd.run:
     - name: installer -pkg MacTeX.pkg -target /
-    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/tmp
+    - cwd:  {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_mactex
 
@@ -259,13 +258,13 @@ install_pandoc:
 download_pandoc:
   cmd.run:
     - name: curl -LO {{ machine.downloads.intel.pandoc }}
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/tmp
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - user: {{ machine.user.name }}
 
 install_pandoc:
   cmd.run:
     - name: installer -pkg {{ pandoc }} -target /
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/tmp
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_pandoc
 {%- endif %}
