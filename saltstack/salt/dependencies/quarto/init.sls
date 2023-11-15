@@ -34,5 +34,5 @@ fix_/usr/local_permissions_quarto:
 
 test_quarto_install:
   cmd.run:
-    - name: Rscript -e 'install.packages("quarto", type="source", repos="https://cran.r-project.org")'
+    - name: {% if grains['os'] == 'Ubuntu' %}{{ machine.r_path }}{% endif %}Rscript -e 'install.packages("quarto", type="source", repos="https://cran.r-project.org")'
     - runas: {{ machine.user.name }}
