@@ -93,14 +93,19 @@ install_pip_pkgs:
 check_locale:
   locale.present:
     - name: en_US.UTF-8
+    - onlyif: ls /usr/share/i18n/locales
 
 change_date_to_24_hours:
   cmd.run:
     - name: "locale-gen 'en_GB'; update-locale LC_TIME='en_GB'"
+    - onchanges:
+      - locale: check_locale
 
 change_time_to_edt:
   cmd.run:
     - name: timedatectl set-timezone America/New_York
+    - onchanges:
+      - locale: check_locale
 
 # Set up Xvfb
 install_xvfb:
