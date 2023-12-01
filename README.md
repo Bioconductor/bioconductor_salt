@@ -1,7 +1,10 @@
 ## Salt to Configure a Linux or Mac for the BBS
 
-The available SaltStack formulas can be used to configure an Ubuntu or a
-MacOS machine.
+This repository contains the SaltStack formulas to configure an Ubuntu or a
+MacOS machine for the [Bioconductor Build System](https://github.com/Bioconductor/BBS).
+
+It also builds [BBS
+containers](https://github.com/Bioconductor/bioconductor_salt/pkgs/container/bioconductor_salt).
 
 ### Configuring for Ubuntu 22.04
 
