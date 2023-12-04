@@ -6,6 +6,7 @@
 {% set build = salt["pillar.get"]("build") %}
 {% set repo = salt["pillar.get"]("repo") %}
 
+{% if machine.type != "standalone" %}
 change_hostname:
   cmd.run:
     - name: echo {{ machine.name }} > /etc/hostname
@@ -16,6 +17,7 @@ change_host:
     - names:
       - {{ machine.name }}
     - clean: True
+{% endif %}
 
 {% if machine.create_users %}
 {% if machine.additional is defined %}
@@ -101,11 +103,13 @@ change_date_to_24_hours:
     - onchanges:
       - locale: check_locale
 
+{%- if machine.type != "standalone" %}
 change_time_to_edt:
   cmd.run:
     - name: timedatectl set-timezone America/New_York
     - onchanges:
       - locale: check_locale
+{%- endif %}
 
 # Set up Xvfb
 install_xvfb:
