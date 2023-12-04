@@ -27,7 +27,7 @@ sudo cp bioconductor_salt/saltstack/minion.d/minion.conf /etc/salt/minion
 
 sudo mv /srv/pillar/custom/release_standalone.sls /srv/pillar/custom/init.sls
 
-sudo salt-call --local state.highstate -l debug || true
+sudo salt-call --local state.highstate || true
 
 # Find R path and check that it works
 /home/biocbuild/bbs-*/R/bin/R --version > /tmp/rver
