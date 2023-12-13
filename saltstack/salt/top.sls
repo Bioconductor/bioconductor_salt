@@ -28,6 +28,5 @@ base:
     - match: grain
     - common.bbs
   '*':
-    - dependencies.dotnet                       # BioC rmspc
     - dependencies.reticulate_python            # Bioc seqArchR
     - dependencies.quarto                       # Bioc BiocBook
