@@ -56,6 +56,7 @@ test_R_CMD_build_rmspc:
   cmd.run:
     - name: |
         git clone https://git.bioconductor.org/packages/rmspc
+        Rscript -e "BiocManager::install('rmspc')"
         {{ r_path }}R CMD build rmspc
     - cwd: /tmp
     - runas: {{ machine.user.name }}
