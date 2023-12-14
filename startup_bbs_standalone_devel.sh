@@ -30,7 +30,7 @@ sudo mv /srv/pillar/custom/devel_standalone.sls /srv/pillar/custom/init.sls
 sudo salt-call --local state.highstate || true
 
 # Find R path and check that it works
-if ! /home/biocbuild/bbs-*/R/bin/R --version; then exit 1; fi
+if ! /home/biocbuild/bbs-*/R/bin/R --version > /tmp/rver; then exit 1; fi
 
 RPATH="$(echo /home/biocbuild/bbs-*/R/bin)"
 
