@@ -9,6 +9,7 @@ on:
 # Avoids Github UI bugs https://github.com/orgs/community/discussions/45969
 env:
   BUILDX_NO_DEFAULT_ATTESTATIONS: 1
+  BUILDKIT_STEP_LOG_MAX_SIZE: 50000000
 jobs:
   ghcrbuild:
     strategy:
