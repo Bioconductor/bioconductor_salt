@@ -76,7 +76,7 @@ jobs:
           cat << "EOF" > ${{matrix.ubuntu}}-${{matrix.platform}}-r.Dockerfile
           FROM ${{ steps.vars.outputs.container }}@${{ steps.build.outputs.digest }} as extract
           USER root
-          RUN mkdir /bioctmp && /bbs_r_start -e 'BiocManager::version()' | grep '\[1\]' | awk -F"'" '{print $2}' > /bioctmp/biocver && /bbs_r_start --version > /bioctmp/rver && cat /etc/os-release > /bioctmp/os-release
+          RUN mkdir /bioctmp && /bbs_r_start -e 'BiocManager::version()' | grep '\[1\]' | awk -F"'" '{print $2}' > /bioctmp/biocver && /bbs_r_start -e 'cat(paste(version$major, version$minor, sep = "."))' > /bioctmp/rver && cat /etc/os-release > /bioctmp/os-release
           FROM scratch as export
           COPY --from=extract /bioctmp/* /
           EOF
@@ -98,7 +98,7 @@ jobs:
         run: |
           cd ${{matrix.ubuntu}}-${{matrix.platform}}
           tar -xvf r.tar
-          echo rver=$(cat rver | awk 'NR==1{print $3}') >> $GITHUB_OUTPUT
+          echo rver=$(cat rver) >> $GITHUB_OUTPUT
           echo biocver=$(cat biocver) >> $GITHUB_OUTPUT
           echo osver=$(awk -F= '/VERSION_ID/ {gsub("\"", "", $2); print $2}' os-release) >> $GITHUB_OUTPUT
 
