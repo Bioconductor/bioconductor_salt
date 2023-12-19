@@ -5,5 +5,6 @@ USER biocbuild
 COPY . /home/biocbuild/bioconductor_salt
 WORKDIR /home/biocbuild
 RUN bash bioconductor_salt/startup_bbs_standalone_${CYCLE}.sh
-ENTRYPOINT ["/bbs_r_start"]
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["/bbs_r_start"]
 
