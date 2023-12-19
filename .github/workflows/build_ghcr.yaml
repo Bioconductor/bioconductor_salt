@@ -101,22 +101,25 @@ jobs:
           echo rver=$(cat rver) >> $GITHUB_OUTPUT
           echo biocver=$(cat biocver) >> $GITHUB_OUTPUT
           echo osver=$(awk -F= '/VERSION_ID/ {gsub("\"", "", $2); print $2}' os-release) >> $GITHUB_OUTPUT
+          BASEPREFIX=""
+          if [ 'devel' == 'devel' ]; then BASEPREFIX="devel-"; fi
+          echo baseprefix=$BASEPREFIX >> $GITHUB_OUTPUT
 
       - name: Export digest by ubuntu and r versions
         run: |
           digest="${{ steps.build.outputs.digest }}"
-          mkdir -p /tmp/digests/${{matrix.ubuntu}}
-          touch "/tmp/digests/${{matrix.ubuntu}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}
-          touch "/tmp/digests/${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
-          touch "/tmp/digests/${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.osver}}
-          touch "/tmp/digests/${{steps.versions.outputs.osver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}
-          touch "/tmp/digests/${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
-          touch "/tmp/digests/${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
 
       - name: Upload digests
         uses: actions/upload-artifact@v3
