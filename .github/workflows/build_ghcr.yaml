@@ -76,7 +76,7 @@ jobs:
           cat << "EOF" > ${{matrix.ubuntu}}-${{matrix.platform}}-r.Dockerfile
           FROM ${{ steps.vars.outputs.container }}@${{ steps.build.outputs.digest }} as extract
           USER root
-          RUN mkdir /bioctmp && /bbs_r_start -e 'BiocManager::version()' | grep '\[1\]' | awk -F"'" '{print $2}' > /bioctmp/biocver && /bbs_r_start -e 'cat(paste(version$major, version$minor, sep = "."))' > /bioctmp/rver && cat /etc/os-release > /bioctmp/os-release
+          RUN mkdir /bioctmp && /bbs_r_start -e 'BiocManager::version()' | grep '\[1\]' | awk -F"'" '{print $2}' > /bioctmp/biocver && /bbs_r_start --slave -e 'cat(paste(version$major, version$minor, sep = "."))' > /bioctmp/rver && cat /etc/os-release > /bioctmp/os-release
           FROM scratch as export
           COPY --from=extract /bioctmp/* /
           EOF
