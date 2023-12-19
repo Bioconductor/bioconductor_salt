@@ -102,7 +102,7 @@ jobs:
           echo biocver=$(cat biocver) >> $GITHUB_OUTPUT
           echo osver=$(awk -F= '/VERSION_ID/ {gsub("\"", "", $2); print $2}' os-release) >> $GITHUB_OUTPUT
           BASEPREFIX=""
-          if [ '${{matrix.ubuntu}}' == 'devel' ]; then BASEPREFIX="devel-"; fi
+          if [ '${{matrix.branch}}' == 'devel' ]; then BASEPREFIX="devel-"; fi
           echo baseprefix=$BASEPREFIX >> $GITHUB_OUTPUT
 
       - name: Export digest by ubuntu and r versions
