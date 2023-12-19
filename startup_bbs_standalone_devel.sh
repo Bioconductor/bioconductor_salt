@@ -43,6 +43,9 @@ echo "$RPATH/R \"\$@\"" | sudo tee -a /bbs_r_start
 sudo chown biocbuild /bbs_r_start
 sudo chmod +x /bbs_r_start
 
+sudo ln -s /home/biocbuild/bbs-*-bioc/R/bin/R /usr/bin/R
+sudo ln -s /home/biocbuild/bbs-*-bioc/R/bin/Rscript /usr/bin/Rscript
+
 # Cleanup
 # rm -rf /srv /etc/salt
 # sudo apt-get -y purge salt-minion

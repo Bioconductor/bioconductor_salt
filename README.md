@@ -3,8 +3,33 @@
 This repository contains the SaltStack formulas to configure an Ubuntu or a
 MacOS machine for the [Bioconductor Build System](https://github.com/Bioconductor/BBS).
 
-It also builds [BBS
+It also builds [BBS-like
 containers](https://github.com/Bioconductor/bioconductor_salt/pkgs/container/bioconductor_salt).
+
+### Simulating the BBS Ubuntu environment in a container
+We are experimentally building and publishing containers under the name `ghcr.io/bioconductor/bioconductor_salt`,
+which can be used to mimic a BBS-like linux environment, in hopes of easing reproducibility and interactive debugging
+of the BBS environment for package developers.
+We currently offer containers for both `release` and `devel` Bioconductor versions with Ubuntu `jammy` (`22.04`).
+Container tags with various version pinnings can be used to acquire a particular environment, following the schema
+`[ubuntu_version]-bioc-[bioc_version]-r-[r_version]` eg `jammy-bioc-3.18-r-4.3.2` or `22.04-bioc-3.18-r-4.3.2`, where
+each level is optional. For example, one could use tag `jammy-bioc-3.18` or `22.04-bioc-3.18` to get the latest 3.18,
+regardless of R version, or even simply `jammy`/`22.04` to get the latest release container.
+`devel-` will prefix all devel container tags, followed by the same schema described above.
+
+All containers will use the R command if no command is specified. Below are some examples for running the container.
+```
+# Interactive R session
+docker run -it ghcr.io/bioconductor/bioconductor_salt:jammy
+# is equivalent to
+docker run -it ghcr.io/bioconductor/bioconductor_salt:jammy R
+
+# Bash shell
+docker run -it ghcr.io/bioconductor/bioconductor_salt:jammy bash
+
+# Rscript
+docker run -it ghcr.io/bioconductor/bioconductor_salt:jammy "Rscript --version"
+```
 
 ### Configuring for Ubuntu 22.04
 
