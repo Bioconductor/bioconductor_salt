@@ -107,8 +107,8 @@ jobs:
           echo osver=$(awk -F= '/VERSION_ID/ {gsub("\"", "", $2); print $2}' os-release) >> $GITHUB_OUTPUT
           BASEPREFIX=""
           if [ '${{matrix.branch}}' == 'devel' ]; then BASEPREFIX="devel-"; fi
-          if [ '${{matrix.base.name}}' != 'jammy' ]; then NAMEDPREFIX="${BASEPREFIX}${{matrix.base.name}}-"; fi
-          BASEPREFIX=$(echo "$NAMEDPREFIX" | sed 's/-jammy//')
+          NAMEDPREFIX="${BASEPREFIX}${{matrix.base.name}}"
+          BASEPREFIX=$(echo "$NAMEDPREFIX" | sed 's/-\?jammy//')
           echo baseprefix=$BASEPREFIX >> $GITHUB_OUTPUT
           echo namedprefix=$NAMEDPREFIX >> $GITHUB_OUTPUT
 
