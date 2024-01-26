@@ -121,12 +121,12 @@ jobs:
           touch "/tmp/digests/${{steps.versions.outputs.namedprefix}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
           mkdir -p /tmp/digests/${{steps.versions.outputs.namedprefix}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
           touch "/tmp/digests/${{steps.versions.outputs.namedprefix}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
 
       - name: Upload digests
         uses: actions/upload-artifact@v3
