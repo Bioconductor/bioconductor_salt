@@ -86,7 +86,7 @@ reconfigure_R_to_use_Java:
 {%- for pkg in r.difficult_pkgs %}
 attempt_install_difficult_package_{{ pkg }}:
   cmd.run:
-    - name: Rscript -e "install.packages('{{ pkg }}', repos='https://cran.r-project.org')"
+    - name: Rscript -e "options(timeout=180); install.packages('{{ pkg }}', repos='https://cran.r-project.org')"
     - runas: {{ machine.user.name }}
     - unless:
       - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
@@ -95,7 +95,7 @@ attempt_install_difficult_package_{{ pkg }}:
 
 attempt_install_previous_version_of_{{ pkg }}:
   cmd.run:
-    - name: Rscript -e "if (!('{{ pkg }}' %in% rownames(installed.packages()))) install.packages('{{ pkg }}', repos='https://cran.r-project.org/bin/macosx/{{ binary_path }}/{{ r.previous_version }}')"
+    - name: Rscript -e "options(timeout=180); if (!('{{ pkg }}' %in% rownames(installed.packages()))) install.packages('{{ pkg }}', repos='https://cran.r-project.org/bin/macosx/{{ binary_path }}/{{ r.previous_version }}')"
     - runas: {{ machine.user.name }}
     - unless:
       - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
