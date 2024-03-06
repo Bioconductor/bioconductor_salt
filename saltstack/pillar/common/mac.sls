@@ -1,6 +1,8 @@
 build:
   types:
     - bioc                  {# always required #}
+    - bioc-longtests
+    - workflows
 
 machine:
   binaries:
