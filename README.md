@@ -61,11 +61,18 @@ poll for the master periodically.
 
 ### Configuring a Mac
 
-1. On the build machine, install Saltstack with `homebrew`
-and clone this repository:
+1. On the build machine, install Saltstack by downloading the file corresponding
+to your OS at
+https://docs.saltproject.io/salt/install-guide/en/latest/topics/install-by-operating-system/macos.html.
+
+For example
+
     ```
-    brew install saltstack
+    curl -LO https://repo.saltproject.io/salt/py3/macos/latest/salt-3007.0-py3-x86_64.pkg
+    sudo installer -verbose -pkg salt-3007.0-py3-x86_64.pkg -target /
     ```
+
+Log out and log back in then check if `salt-call` is available with `which salt-call`.
 
 2. Copy `saltstack/minion.d/mac.minion.conf` to `/etc/salt/minion`.
 
@@ -118,11 +125,6 @@ Confirm that your version of R has been updated
 
     vagrant@nebbiolo2-dev:~$ /home/biocbuild/bbs-3.15-bioc/R/bin/R --version
     R Under development (unstable) (2021-11-16 r81199) -- "Unsuffered Consequences"
-
-Note: Saltstack doesn't officially support Apple Silicon. However, we can still
-run salt install via homebrew and pointing to the `HOMEBREW_PREFIX`:
-
-    sudo env HOMEBREW_PREFIX=/opt/homebrew salt-call --local state.highstate
 
 ## Standalone Machine with BBS dependencies
 
