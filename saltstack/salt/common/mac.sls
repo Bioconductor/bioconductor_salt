@@ -20,7 +20,7 @@ change_hostname:
     - name: |
         scutil --set ComputerName {{ machine.name }}
         scutil --set LocalHostName {{ machine.name }}
-        scutil --set HostName {{machine.name }}.bioconductor.org
+        scutil --set HostName {{machine.name }}
 
 set_dns_servers:
   cmd.run:
