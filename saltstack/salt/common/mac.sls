@@ -207,6 +207,12 @@ symlink_gfortran_sdk:
     - require:
       - file: export_gfortran_path
 
+brew_install:
+  cmd.run:
+    - name: NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    - unless: which brew
+    - runas: {{ machine.user.name }}
+
 brew_packages:
   cmd.run:
     - name: brew install {{ machine.brews }}
