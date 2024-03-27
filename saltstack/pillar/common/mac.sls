@@ -11,7 +11,7 @@ machine:
     - openssl
     - pkgconfig
     - xz
-  brews: pstree poppler
+  brews: pstree
   dependencies:             {# For Bioc or CRAN packages #}
     arm64:
       dotnet: https://download.visualstudio.microsoft.com/download/pr/aa3b3150-80cb-4d30-87f8-dc36fa1dcf26/8ec9ff6836828175f1a6a60aefd4e63b/dotnet-runtime-6.0.13-osx-arm64.pkg
