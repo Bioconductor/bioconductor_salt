@@ -15,7 +15,7 @@ install_macfuse:
   cmd.run:
     - name: |
         hdiutil attach {{ download }}
-        installer -pkg /Volumes/Install macFUSE.pkg -target /
+        installer -pkg "/Volumes/macFUSE/Install macFUSE.pkg" -target /
         hdiutil detach /Volumes/macFUSE
     - cwd: /tmp
     - require:
