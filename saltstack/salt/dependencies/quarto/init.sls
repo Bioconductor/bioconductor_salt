@@ -21,7 +21,7 @@ install_quarto:
 install_quarto:
   cmd.run:
     - name: installer -pkg {{ quarto }}.pkg -target /
-    - cwd: /{{ machine.user.name }}/Downloads
+    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_quarto
 
