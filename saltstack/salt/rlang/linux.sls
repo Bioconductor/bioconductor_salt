@@ -66,7 +66,7 @@ make_R_directory:
 
 configure_R:
   cmd.run:
-    - name: {{ bbs--bioc }}/rdownloads/{{ r.version }}.r$(cat /tmp/R_SVN_REVISION)/configure --enable-R-shlib
+    - name: {{ bbs-bioc }}/rdownloads/{{ r.version }}.r$(cat /tmp/R_SVN_REVISION)/configure --enable-R-shlib
     - cwd: {{ bbs_bioc }}/R
     - runas: {{ machine.user.name }}
 
