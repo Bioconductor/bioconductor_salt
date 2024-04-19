@@ -10,28 +10,6 @@
 {% set download = download_url.split("/")[-1] %}
 {%- endif %}
 
-{%- if machine.r_path is defined %}
-{% set r_path = machine.r_path %}
-{% else %}
-{% set r_path = '' %}
-{%- endif %}
-
-{%- if grains['os'] == 'Ubuntu' %}
-install_dotnet:
-  cmd.run:
-    - name: curl -LO {{ machine.dependencies.dotnet }} && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
-    - cwd: /tmp
-    - runas: root
-
-apt_update:
-  cmd.run:
-    - name: apt-get update
-
-install_aspnetcore-runtime:
-  pkg.installed:
-    - pkgs:
-      - aspnetcore-runtime-6.0
-{% elif grains['os'] == 'MacOS' %}
 download_dotnet:
   cmd.run:
     - name: curl -LO {{ download_url }}
@@ -44,11 +22,10 @@ install_dotnet:
     - cwd: /tmp
     - require:
       - cmd: download_dotnet
-{%- endif %}
 
 install_rmspc_dependencies:
   cmd.run:
-    - name: {{ r_path }}Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
+    - name: Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
     - require:
       - cmd: install_dotnet
 
@@ -57,7 +34,7 @@ test_R_CMD_build_rmspc:
     - name: |
         git clone https://git.bioconductor.org/packages/rmspc
         Rscript -e "BiocManager::install('rmspc')"
-        {{ r_path }}R CMD build rmspc
+        R CMD build rmspc
     - cwd: /tmp
     - runas: {{ machine.user.name }}
     - require:

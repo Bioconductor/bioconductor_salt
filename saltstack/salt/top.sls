@@ -18,6 +18,7 @@ base:
     - dependencies.mono                         # BioC rawrr
     - dependencies.open_babel                   # BioC ChemmineOB
     - dependencies.viennarna                    # BioC GeneGA
+    - dependencies.dotnet                       # Bioc rmspc
   'machine:type:(primary|secondary)':
     - match: pillar
     - common.cronjobs
