@@ -14,7 +14,6 @@ base:
     - rlang.mac                                 # install R
     - dependencies.cmake                        # CRAN nloptr
     - dependencies.jags                         # BioC rjags
-    - dependencies.macfuse                      # BioC Travel
     - dependencies.mono                         # BioC rawrr
     - dependencies.open_babel                   # BioC ChemmineOB
     - dependencies.viennarna                    # BioC GeneGA
