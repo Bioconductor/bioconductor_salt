@@ -3,7 +3,7 @@
 {% set r = salt["pillar.get"]("r") %}
 {% set tarball = r.download.split("/")[-1] %}
 {% set extracted_directory = r.download.split("/")[-1][:-7].split("_")[0] %}
-{% set bbs_bioc = machine.user.home ~ "/" ~ machine.user.name ~ "/bbs-" ~ build.version ~ "-bioc" %}
+{% set bbs_bioc = machine.user.home ~ "/" ~ machine.user.name ~ "/bbs-" ~ "%.2f" | format(build.version) ~ "-bioc" %}
 
 get_R_tarball:
   cmd.run:
