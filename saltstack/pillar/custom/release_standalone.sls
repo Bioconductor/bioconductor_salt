@@ -3,7 +3,7 @@
 {% set branch = 'release' %} {# Use 'release' or 'devel' #}
 {% set version = '3.18' %}
 {% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
-{% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.3.2.tar.gz' %}
+{% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.3.3.tar.gz' %}
 {% set r_version = 'R-4.3' %}
 {% set r_previous_version = 'R-4.2' %}
 {% set cycle = 'patch' %} {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
