@@ -107,6 +107,13 @@ jobs:
 
       - name: Export digest by ubuntu and r versions
         run: |
+          R_VER_EXPECTED=$(curl https://bioconductor.org/config.yaml | yq e '.r_ver_for_bioc_ver."${{steps.versions.outputs.biocver}}"')
+          R_VER_FOUND="${{steps.versions.outputs.rver}}"
+          R_FOUND_MAJOR_MINOR=${R_VER_FOUND%.*}
+          if [ "$R_FOUND_MAJOR_MINOR" != "$R_VER_EXPECTED" ]; then
+            echo "Mismatched versions found '$R_VER_FOUND' and expected '$R_VER_EXPECTED'"
+            exit 1
+          fi
           digest="${{ steps.build.outputs.digest }}"
           mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}
           touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}/${digest#sha256:}"
