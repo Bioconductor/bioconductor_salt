@@ -28,8 +28,6 @@
 
 {# Bioc package dependencies #}
 
-{% set immunespace_pwd = '' %}              {# Need for ImmuneSpaceR #}
-
 {# Add users and groups #}
 
 {# Add more groups and users using the same pattern below

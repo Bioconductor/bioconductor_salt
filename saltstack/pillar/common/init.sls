@@ -1,6 +1,6 @@
 {% from '../custom/init.sls' import branch, version, environment,
    r_download, r_version, r_previous_version, cycle, name,
-   immunespace_pwd, create_users, machine_type %}
+   create_users, machine_type %}
 
 {% if machine_type == 'standalone' %}
 {# Assuming salt is run is /Users/a_user or /home/a_user, take the last
@@ -101,9 +101,3 @@ repo:
     name: manifest
     github: https://git.bioconductor.org/admin/manifest
     branch: {{ current_branch }}
-
-{# Bioc package dependencies #}
-
-immunespace:
-  login: bioc@immunespace.org
-  pwd: {{ immunespace_pwd }}
