@@ -6,6 +6,7 @@ base:
     - rlang.linux                               # install R
     - dependencies.bibtex                       # BioC destiny
     - dependencies.libsbml_cflags_libsbml_libs  # BioC rsbml
+    - common.python_modules
   'os:MacOS':
     - match: grain
     - common.mac
