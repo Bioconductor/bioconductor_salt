@@ -13,6 +13,16 @@ create_virtualenv:
   cmd.run:
     - name: {{ bbs_bioc }}/R/bin/Rscript -e "BiocManager::install('reticulate'); reticulate::py_config()"
     - runas: {{ machine.user.name }}
+
+export_virtualenvs_to_PATH:
+  file.append:
+    - name: /home/biocbuild/.profile
+    - text: export PATH="$HOME/.virtualenvs/r-reticulate/bin:$PATH"
+    - runas: {{ machine.user.name }}
+
+install_pip_pkgs_into_venv:
+  cmd.run:
+    - name: .virtualenvs/r-reticulate/bin/pip3 install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/pip_*.txt | awk '/^[^#]/ {print $1}')
 {% else %}
 update_pip:
   cmd.run:
