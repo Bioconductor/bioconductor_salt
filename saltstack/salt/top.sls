@@ -19,6 +19,7 @@ base:
     - dependencies.open_babel                   # BioC ChemmineOB
     - dependencies.viennarna                    # BioC GeneGA
     - dependencies.dotnet                       # Bioc rmspc
+    - dependencies.reticulate_python            # Bioc seqArchR
   'machine:type:(primary|secondary)':
     - match: pillar
     - common.cronjobs
@@ -29,5 +30,4 @@ base:
     - match: grain
     - common.bbs
   '*':
-    - dependencies.reticulate_python            # Bioc seqArchR
     - dependencies.quarto                       # Bioc BiocBook
