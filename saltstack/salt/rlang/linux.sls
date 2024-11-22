@@ -94,7 +94,7 @@ run_R-fix-flags.sh:
 
 install_biocmanager:
   cmd.run:
-    - name: {{ bbs_bioc }}/R/bin/Rscript -e "install.packages('BiocManager', repos='https://cran.r-project.org'); library(BiocManager); BiocManager::install(ask=FALSE)"
+    - name: {{ bbs_bioc }}/R/bin/Rscript -e "install.packages('BiocManager', repos='{{ r.cran_mirror }}'); library(BiocManager); BiocManager::install(ask=FALSE)"
     - runas: {{ machine.user.name }}
 
 {%- if build.cycle == 'devel' %}

@@ -1,5 +1,5 @@
 {% from '../custom/init.sls' import branch, version, environment,
-   r_download, r_version, r_previous_version, cycle, name,
+   r_download, r_version, r_previous_version, cran_mirror, cycle, name,
    create_users, machine_type %}
 
 {% if machine_type == 'standalone' %}
@@ -91,6 +91,7 @@ r:
   download: {{ r_download }}
   version: {{ r_version }}
   previous_version: {{ r_previous_version }}
+  cran_mirror: {{ cran_mirror }}
 
 repo:
   bbs:

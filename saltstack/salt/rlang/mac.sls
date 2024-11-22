@@ -34,7 +34,7 @@ fix_library_permissions:
 
 install_biocmanager:
   cmd.run:
-    - name: Rscript -e "install.packages('BiocManager', repos='https://cran.r-project.org'); library(BiocManager); BiocManager::install(ask=FALSE)"
+    - name: Rscript -e "install.packages('BiocManager', repos='{{ r.cran_mirror }}'); library(BiocManager); BiocManager::install(ask=FALSE)"
     - runas: {{ machine.user.name }}
     - require:
       - cmd: fix_library_permissions 
@@ -42,7 +42,7 @@ install_biocmanager:
 {%- for pkg in r.cran %}
 install_cran_{{ pkg }}:
   cmd.run:
-    - name: Rscript -e "install.packages('{{ pkg }}', repos='https://cran.r-project.org')"
+    - name: Rscript -e "install.packages('{{ pkg }}', repos='{{ r.cran_mirror }}')"
     - runas: {{ machine.user.name }}
     - require:
       - cmd: install_R
@@ -88,8 +88,8 @@ reconfigure_R_to_use_Java:
 attempt_install_difficult_packages_{{ i }}:
   cmd.run:
     - name: |
-        Rscript -e "options(timeout=180); install.packages(setdiff(c('{{ r.difficult_pkgs|join("','") }}'), rownames(installed.packages())), repos='https://cran.r-project.org')"
-        Rscript -e "options(timeout=180); install.packages(setdiff(c('{{ r.difficult_pkgs|join("','") }}'), rownames(installed.packages())), contriburl='https://cran.r-project.org/bin/macosx/{{ binary_path }}/{{ r.previous_version }}')"
+        Rscript -e "options(timeout=180); install.packages(setdiff(c('{{ r.difficult_pkgs|join("','") }}'), rownames(installed.packages())), repos='{{ r.cran_mirror }}')"
+        Rscript -e "options(timeout=180); install.packages(setdiff(c('{{ r.difficult_pkgs|join("','") }}'), rownames(installed.packages())), contriburl='{{ r.cran_mirror }}/bin/macosx/{{ binary_path }}/{{ r.previous_version }}')"
     - runas: {{ machine.user.name }}
     - require:
       - cmd: install_R
