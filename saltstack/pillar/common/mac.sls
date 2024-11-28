@@ -19,7 +19,7 @@ machine:
     intel:
       dotnet: https://download.visualstudio.microsoft.com/download/pr/8583970d-ca62-4053-9b25-01c2d2742062/8a5c9a04863a80655f483d67c3725255/dotnet-runtime-6.0.29-osx-x64.pkg
       java: https://download.java.net/java/GA/jdk21/fd2272bbf8e04c3dbaee13770090416c/35/GPL/openjdk-21_macos-x64_bin.tar.gz 
-    cmake: https://github.com/Kitware/CMake/releases/download/v3.23.0/cmake-3.23.0-macos-universal.dmg
+    cmake: https://github.com/Kitware/CMake/releases/download/v3.31.1/cmake-3.31.1-macos-universal.tar.gz
     jags: https://cfhcable.dl.sourceforge.net/project/mcmc-jags/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg
     quarto: https://github.com/quarto-dev/quarto-cli/releases/download/v1.4.553/quarto-1.4.553-macos.pkg 
     viennarna: https://www.tbi.univie.ac.at/RNA/download/osx/macosx/ViennaRNA-2.5.0-MacOSX.dmg
