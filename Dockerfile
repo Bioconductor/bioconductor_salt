@@ -4,7 +4,7 @@ RUN useradd -ms /bin/bash biocbuild && apt update -qq && apt install sudo system
 USER biocbuild
 COPY . /home/biocbuild/bioconductor_salt
 WORKDIR /home/biocbuild
-RUN bash bioconductor_salt/startup_bbs_standalone_${CYCLE}.sh
+RUN DEBIAN_FRONTEND="noninteractive" bash bioconductor_salt/startup_bbs_standalone_${CYCLE}.sh
 
 FROM ubuntu:jammy as final
 COPY --from=build / /
