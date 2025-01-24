@@ -26,7 +26,7 @@ machine:
   downloads:                {# For BBS #}
     intel:
       pandoc: https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-macOS.pkg
-    gfortran: https://mac.r-project.org/tools/gfortran-14.2-universal.pkg
+    gfortran: https://github.com/R-macos/gcc-14-branch/releases/download/gcc-14.2-darwin-r2.1/gfortran-14.2-darwin20-r2-universal.tar.xz
     mactex: https://mirror.ctan.org/systems/mac/mactex/MacTeX.pkg
     xquartz: https://github.com/XQuartz/XQuartz/releases/download/XQuartz-2.8.5/XQuartz-2.8.5.pkg
 r:
