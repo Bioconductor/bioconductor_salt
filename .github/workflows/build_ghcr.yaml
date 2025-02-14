@@ -4,8 +4,8 @@ on:
   push:
     paths:
       - "**/Dockerfile"
-  schedule:
-    - cron: '0 0 */2 * *'
+#  schedule:
+#    - cron: '0 0 */2 * *'
 # Avoids Github UI bugs https://github.com/orgs/community/discussions/45969
 env:
   BUILDX_NO_DEFAULT_ATTESTATIONS: 1
