@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ubuntu: [jammy]
+        ubuntu: [noble]
         platform: [linux/amd64]
         branch: [devel, release]
 
@@ -144,7 +144,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ubuntu: [jammy]
+        ubuntu: [noble]
     steps:
       - name: Download digests devel
         uses: actions/download-artifact@v4
