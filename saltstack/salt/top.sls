@@ -20,6 +20,7 @@ base:
     - dependencies.viennarna                    # BioC GeneGA
     - dependencies.dotnet                       # Bioc rmspc
     - dependencies.reticulate_python            # Bioc seqArchR
+    - dependencies.rustup                       # Bioc CellBarcode
   'machine:type:(primary|secondary)':
     - match: pillar
     - common.cronjobs
