@@ -2,5 +2,5 @@
 
 curl_rustup_sh:
   cmd.run:
-    - name: curl https://sh.rustup.rs -sSf | sh
+    - name: curl https://sh.rustup.rs -sSf | sh -s -- -y
     - runas: biocbuild
