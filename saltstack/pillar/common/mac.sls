@@ -14,10 +14,10 @@ machine:
   brews: pstree
   dependencies:             {# For Bioc or CRAN packages #}
     arm64:
-      dotnet: https://download.visualstudio.microsoft.com/download/pr/99a222a4-b8fb-4d19-a91a-a69aeaf9ba06/fdd439f0dc45cb1357b03a30e2bc8f98/dotnet-runtime-6.0.29-osx-arm64.pkg
+      dotnet: https://download.visualstudio.microsoft.com/download/pr/c17c9c8a-11dc-41b4-975f-89b5b101a0e3/dbefaaf56c7388afb76cc96c76a13316/dotnet-runtime-9.0.3-osx-arm64.pkg
       java: https://download.java.net/java/GA/jdk21/fd2272bbf8e04c3dbaee13770090416c/35/GPL/openjdk-21_macos-aarch64_bin.tar.gz 
     intel:
-      dotnet: https://download.visualstudio.microsoft.com/download/pr/8583970d-ca62-4053-9b25-01c2d2742062/8a5c9a04863a80655f483d67c3725255/dotnet-runtime-6.0.29-osx-x64.pkg
+      dotnet: https://download.visualstudio.microsoft.com/download/pr/e59ade14-21cb-4303-8875-69373a17234c/fdd434f76c113afae01211b02470c302/dotnet-runtime-9.0.3-osx-x64.pkg
       java: https://download.java.net/java/GA/jdk21/fd2272bbf8e04c3dbaee13770090416c/35/GPL/openjdk-21_macos-x64_bin.tar.gz 
     cmake: https://github.com/Kitware/CMake/releases/download/v3.31.1/cmake-3.31.1-macos-universal.tar.gz
     jags: https://cfhcable.dl.sourceforge.net/project/mcmc-jags/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg

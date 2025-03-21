@@ -10,6 +10,7 @@
 {% set download = download_url.split("/")[-1] %}
 {%- endif %}
 
+{%- if grains["os"] == "MacOS" %}
 download_dotnet:
   cmd.run:
     - name: curl -LO {{ download_url }}
@@ -22,7 +23,15 @@ install_dotnet:
     - cwd: /tmp
     - require:
       - cmd: download_dotnet
+{% else %}
+add_backports_repository:
+  pkgrepo.managed:
+    - name: ppa:dotnet/backports
 
+install_dotnet:
+  pkg.installed:
+    - aspnetcore-runtime-9.0
+{%- endif %}
 install_rmspc_dependencies:
   cmd.run:
     - name: Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
