@@ -17,7 +17,7 @@ download_dotnet:
     - cwd: /tmp
     - runas: {{ machine.user.name }}
 
-install_dotnet_via_installer:
+install_dotnet:
   cmd.run:
     - name: installer -pkg {{ download }} -target /
     - cwd: /tmp
@@ -28,13 +28,15 @@ add_backports_repository:
   pkgrepo.managed:
     - name: ppa:dotnet/backports
 
-install_dotnet_via_apt:
+install_dotnet:
   pkg.installed:
     - aspnetcore-runtime-9.0
 {%- endif %}
 install_rmspc_dependencies:
   cmd.run:
     - name: Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
+    - require:
+      - cmd: install_dotnet
 
 test_R_CMD_build_rmspc:
   cmd.run:
