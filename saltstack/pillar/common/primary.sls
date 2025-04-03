@@ -6,4 +6,3 @@ build:
     - workflows
     - books
     - bioc-longtests
-    - bioc-mac-arm64
