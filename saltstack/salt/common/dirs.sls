@@ -43,7 +43,7 @@ make_{{ build_type }}_src_contrib:
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
-    - dir_mode: 774
+    - dir_mode: 775
     - recurse:
       - user
       - group
@@ -55,7 +55,7 @@ make_{{ build_type }}_bin_macosx_big-sur-x86_64_contrib:
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
-    - dir_mode: 774
+    - dir_mode: 775
     - recurse:
       - user
       - group
@@ -67,7 +67,7 @@ make_{{ build_type }}_bin_windows_contrib:
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
-    - dir_mode: 774
+    - dir_mode: 775
     - recurse:
       - user
       - group
@@ -79,7 +79,7 @@ make_{{ build_type }}_bin_macosx_big-sur-arm64_contrib:
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
-    - dir_mode: 774
+    - dir_mode: 775
     - recurse:
       - user
       - group
