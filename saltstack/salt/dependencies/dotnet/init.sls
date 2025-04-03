@@ -39,7 +39,7 @@ install_dotnet:
 {%- endif %}
 install_rmspc_dependencies:
   cmd.run:
-    - name: {{ bbs_bioc }}/R/bin/Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
+    - name: {{ r_path }}R/bin/Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
     - require:
       - cmd: install_dotnet
 
