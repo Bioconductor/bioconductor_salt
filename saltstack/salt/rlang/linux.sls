@@ -88,7 +88,7 @@ make_site-library:
 
 run_R-fix-flags.sh:
   cmd.run:
-    - name: {{ machine.user.home }}/{{ machine.user.name }}/BBS/utils/R-fix-flags.sh
+    - name: {{ machine.user.home }}/{{ machine.user.name }}/BBS/utils/R-fix-flags.sh -y
     - cwd: {{ bbs_bioc }}/R/etc
     - runas: {{ machine.user.name }}
 
