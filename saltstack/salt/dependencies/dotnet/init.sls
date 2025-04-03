@@ -8,6 +8,11 @@
 {% set download_url = machine.dependencies.intel.dotnet %}
 {%- endif %}
 {% set download = download_url.split("/")[-1] %}
+{% set r_path = "" %}
+{% else %}
+{% set machine = salt["pillar.get"]("machine") %}
+{% set build = salt["pillar.get"]("build") %}
+{% set r_path  = machine.user.home ~ "/" ~ machine.user.name ~ "/bbs-" ~ "%.2f" | format(build.version) ~ "-bioc/" %}
 {%- endif %}
 
 {%- if grains["os"] == "MacOS" %}
@@ -34,7 +39,7 @@ install_dotnet:
 {%- endif %}
 install_rmspc_dependencies:
   cmd.run:
-    - name: Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
+    - name: {{ bbs_bioc }}/R/bin/Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
     - require:
       - cmd: install_dotnet
 
@@ -42,8 +47,8 @@ test_R_CMD_build_rmspc:
   cmd.run:
     - name: |
         git clone https://git.bioconductor.org/packages/rmspc
-        Rscript -e "BiocManager::install('rmspc')"
-        R CMD build rmspc
+        {{ r_path }}R/bin/Rscript -e "BiocManager::install('rmspc')"
+        {{ r_path }}R CMD build rmspc
     - cwd: /tmp
     - runas: {{ machine.user.name }}
     - require:
