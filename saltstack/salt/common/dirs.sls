@@ -49,9 +49,9 @@ make_{{ build_type }}_src_contrib:
       - group
       - mode
 
-make_{{ build_type }}_bin_macosx_contrib:
+make_{{ build_type }}_bin_macosx_big-sur-x86_64_contrib:
   file.managed:
-    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build_version }}/{{ build_type|replace('-', '/') }}/bin/macosx/contrib/{{ r.version[2:] }}/PACKAGES
+    - name: {{ machine.user.home }}/biocpush/PACKAGES/{{ build_version }}/{{ build_type|replace('-', '/') }}/bin/macosx/big-sur-x86_64/contrib/{{ r.version[2:] }}/PACKAGES
     - user: biocpush
     - group: {% if grains['os'] == 'MacOS' %}staff{% else %}biocpush{% endif %}
     - makedirs: True
