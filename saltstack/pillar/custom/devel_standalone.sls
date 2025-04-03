@@ -1,7 +1,7 @@
 {# Custom Settings #}
 
 {% set branch = 'devel' %} {# Use 'release' or 'devel' #}
-{% set version = '3.22' %}
+{% set version = '3.21' %}
 {% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
 {% set r_download = 'https://stat.ethz.ch/R/daily/R-devel.tar.gz' %}
 {% set r_version = 'R-4.5' %}
