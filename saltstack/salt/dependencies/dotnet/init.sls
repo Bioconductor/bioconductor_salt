@@ -30,7 +30,7 @@ add_backports_repository:
 
 install_dotnet:
   pkg.installed:
-    - aspnetcore-runtime-9.0
+    - name: aspnetcore-runtime-9.0
 {%- endif %}
 install_rmspc_dependencies:
   cmd.run:
