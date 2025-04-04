@@ -1,7 +1,6 @@
 build:
   types:
     - bioc                  {# always required #}
-    - bioc-mac-arm64
     - bioc-longtests
     - books
     - data-annotation
