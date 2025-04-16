@@ -1,9 +1,9 @@
 {# Custom Settings #}
 
 {% set branch = 'devel' %} {# Use 'release' or 'devel' #}
-{% set version = '3.21' %}
+{% set version = '3.22' %}
 {% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
-{% set r_download = 'https://cran.r-project.org/src/base-prerelease/R-beta_2025-04-02_r88102.tar.gz' %}
+{% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.5.0.tar.gz' %}
 {% set r_version = 'R-4.5' %}
 {% set r_previous_version = 'R-4.4' %}
 {% set cran_mirror = 'https://cloud.r-project.org/' %}
