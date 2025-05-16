@@ -34,7 +34,7 @@ fix_library_permissions:
 
 install_biocmanager:
   cmd.run:
-    - name: Rscript -e "install.packages('BiocManager', repos='https://cran.r-project.org'); library(BiocManager); BiocManager::install(ask=FALSE)"
+    - name: Rscript -e "install.packages('BiocManager', repos='{{ r.cran_mirror }}'); library(BiocManager); BiocManager::install(ask=FALSE)"
     - runas: {{ machine.user.name }}
     - require:
       - cmd: fix_library_permissions 
@@ -42,7 +42,7 @@ install_biocmanager:
 {%- for pkg in r.cran %}
 install_cran_{{ pkg }}:
   cmd.run:
-    - name: Rscript -e "install.packages('{{ pkg }}', repos='https://cran.r-project.org')"
+    - name: Rscript -e "install.packages('{{ pkg }}', repos='{{ r.cran_mirror }}')"
     - runas: {{ machine.user.name }}
     - require:
       - cmd: install_R
@@ -77,31 +77,23 @@ reconfigure_R_to_use_Java:
   cmd.run:
     - name: R CMD javareconf
 
-{%- if grains["osarch"]== "arm64" %}
+{%- if grains["osarch"] == "arm64" %}
 {% set binary_path = "big-sur-arm64/contrib" %}
 {% else %}
 {% set binary_path = "contrib" %}
 {% endif %}
 
-{%- for pkg in r.difficult_pkgs %}
-attempt_install_difficult_package_{{ pkg }}:
+{# Run twice as additional packages may be available after the second installation attempt #}
+{% for i in range(1, 3) %}
+attempt_install_difficult_packages_{{ i }}:
   cmd.run:
-    - name: Rscript -e "install.packages('{{ pkg }}', repos='https://cran.r-project.org')"
+    - name: |
+        Rscript -e "options(timeout=180); install.packages(setdiff(c('{{ r.difficult_pkgs|join("','") }}'), rownames(installed.packages())), repos='{{ r.cran_mirror }}')"
+        Rscript -e "options(timeout=180); install.packages(setdiff(c('{{ r.difficult_pkgs|join("','") }}'), rownames(installed.packages())), contriburl='{{ r.cran_mirror }}/bin/macosx/{{ binary_path }}/{{ r.previous_version }}')"
     - runas: {{ machine.user.name }}
-    - unless:
-      - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
     - require:
       - cmd: install_R
-
-attempt_install_previous_version_of_{{ pkg }}:
-  cmd.run:
-    - name: Rscript -e "if (!('{{ pkg }}' %in% rownames(installed.packages()))) install.packages('{{ pkg }}', repos='https://cran.r-project.org/bin/macosx/{{ binary_path }}/{{ r.previous_version }}')"
-    - runas: {{ machine.user.name }}
-    - unless:
-      - ls /Library/Frameworks/R.framework/Resources/library | egrep {{ pkg }}
-    - require:
-      - cmd: install_R
-{%- endfor %}
+{% endfor %}
 
 symlink_previous_version:
   file.symlink:

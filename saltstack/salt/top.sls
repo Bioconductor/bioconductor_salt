@@ -6,6 +6,7 @@ base:
     - rlang.linux                               # install R
     - dependencies.bibtex                       # BioC destiny
     - dependencies.libsbml_cflags_libsbml_libs  # BioC rsbml
+    - common.python_modules
   'os:MacOS':
     - match: grain
     - common.mac
@@ -14,10 +15,12 @@ base:
     - rlang.mac                                 # install R
     - dependencies.cmake                        # CRAN nloptr
     - dependencies.jags                         # BioC rjags
-    - dependencies.macfuse                      # BioC Travel
     - dependencies.mono                         # BioC rawrr
     - dependencies.open_babel                   # BioC ChemmineOB
     - dependencies.viennarna                    # BioC GeneGA
+    - dependencies.dotnet                       # Bioc rmspc
+    - dependencies.reticulate_python            # Bioc seqArchR
+    - dependencies.rustup                       # Bioc CellBarcode
   'machine:type:(primary|secondary)':
     - match: pillar
     - common.cronjobs
@@ -28,5 +31,4 @@ base:
     - match: grain
     - common.bbs
   '*':
-    - dependencies.reticulate_python            # Bioc seqArchR
     - dependencies.quarto                       # Bioc BiocBook

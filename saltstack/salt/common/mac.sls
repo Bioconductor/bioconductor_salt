@@ -20,7 +20,7 @@ change_hostname:
     - name: |
         scutil --set ComputerName {{ machine.name }}
         scutil --set LocalHostName {{ machine.name }}
-        scutil --set HostName {{machine.name }}.bioconductor.org
+        scutil --set HostName {{machine.name }}
 
 set_dns_servers:
   cmd.run:
@@ -207,10 +207,25 @@ symlink_gfortran_sdk:
     - require:
       - file: export_gfortran_path
 
+brew_install:
+  cmd.run:
+    - name: NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    - runas: {{ machine.user.name }}
+    - unless: which brew
+
+brew_add_to_path:
+  cmd.run:
+    - name: |
+        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/biocbuild/.bash_profile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    - require:
+      - cmd: brew_install
+
 brew_packages:
   cmd.run:
     - name: brew install {{ machine.brews }}
     - runas: {{ machine.user.name }}
+    - onlyif: which brew
 
 {%- for binary in machine.binaries %}
 install_{{ binary }}:

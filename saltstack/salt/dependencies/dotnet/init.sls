@@ -8,30 +8,14 @@
 {% set download_url = machine.dependencies.intel.dotnet %}
 {%- endif %}
 {% set download = download_url.split("/")[-1] %}
-{%- endif %}
-
-{%- if machine.r_path is defined %}
-{% set r_path = machine.r_path %}
+{% set r_path = "" %}
 {% else %}
-{% set r_path = '' %}
+{% set machine = salt["pillar.get"]("machine") %}
+{% set build = salt["pillar.get"]("build") %}
+{% set r_path  = machine.user.home ~ "/" ~ machine.user.name ~ "/bbs-" ~ "%.2f" | format(build.version) ~ "-bioc/" %}
 {%- endif %}
 
-{%- if grains['os'] == 'Ubuntu' %}
-install_dotnet:
-  cmd.run:
-    - name: curl -LO {{ machine.dependencies.dotnet }} && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb
-    - cwd: /tmp
-    - runas: root
-
-apt_update:
-  cmd.run:
-    - name: apt-get update
-
-install_aspnetcore-runtime:
-  pkg.installed:
-    - pkgs:
-      - aspnetcore-runtime-6.0
-{% elif grains['os'] == 'MacOS' %}
+{%- if grains["os"] == "MacOS" %}
 download_dotnet:
   cmd.run:
     - name: curl -LO {{ download_url }}
@@ -44,11 +28,18 @@ install_dotnet:
     - cwd: /tmp
     - require:
       - cmd: download_dotnet
-{%- endif %}
+{% else %}
+add_backports_repository:
+  pkgrepo.managed:
+    - name: ppa:dotnet/backports
 
+install_dotnet:
+  pkg.installed:
+    - name: aspnetcore-runtime-9.0
+{%- endif %}
 install_rmspc_dependencies:
   cmd.run:
-    - name: {{ r_path }}Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
+    - name: {{ r_path }}R/bin/Rscript -e "BiocManager::install(c('processx', 'GenomicRanges', 'stringr'), force=TRUE)"
     - require:
       - cmd: install_dotnet
 
@@ -56,7 +47,7 @@ test_R_CMD_build_rmspc:
   cmd.run:
     - name: |
         git clone https://git.bioconductor.org/packages/rmspc
-        Rscript -e "BiocManager::install('rmspc')"
+        {{ r_path }}R/bin/Rscript -e "BiocManager::install('rmspc')"
         {{ r_path }}R CMD build rmspc
     - cwd: /tmp
     - runas: {{ machine.user.name }}
