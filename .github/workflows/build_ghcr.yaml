@@ -15,9 +15,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ubuntu: [noble]
         platform: [linux/amd64]
         branch: [devel, release]
+        base: 
+          - {image: "ubuntu:noble", name: "noble"}
+          - {image: "nvcr.io/nvidia/cuda:12.9.0-devel-ubuntu24.04", name: "nvidia-noble"}
 
     name: Build container images for GHCR
     runs-on: ubuntu-latest
@@ -35,7 +37,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ matrix.ubuntu }}
+            type=raw,value=${{ matrix.base.name }}
 
       - name: Extract container name without tag
         id: vars
@@ -64,7 +66,9 @@ jobs:
         id: build
         uses: docker/build-push-action@v5
         with:
-          build-args: CYCLE=${{matrix.branch}}
+          build-args: |
+            CYCLE=${{matrix.branch}}
+            BASE_IMAGE=${{matrix.base.image}}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ steps.vars.outputs.container }},push-by-digest=true,name-canonical=true,push=true
           platforms: ${{matrix.platform}}
@@ -72,8 +76,8 @@ jobs:
 
       - name: Prepare Dockerfile to extract R version with emulator
         run: |
-          mkdir -p ${{matrix.ubuntu}}-${{matrix.platform}}
-          cat << "EOF" > ${{matrix.ubuntu}}-${{matrix.platform}}-r.Dockerfile
+          mkdir -p ${{matrix.base.image}}-${{matrix.platform}}
+          cat << "EOF" > ${{matrix.base.image}}-${{matrix.platform}}-r.Dockerfile
           FROM ${{ steps.vars.outputs.container }}@${{ steps.build.outputs.digest }} as extract
           USER root
           RUN mkdir /bioctmp && /bbs_r_start -e 'BiocManager::version()' | grep '\[1\]' | awk -F"'" '{print $2}' > /bioctmp/biocver && /bbs_r_start --slave -e 'cat(paste(version$major, version$minor, sep = "."))' > /bioctmp/rver && cat /etc/os-release > /bioctmp/os-release
@@ -84,26 +88,29 @@ jobs:
       - name: Build and push container image to ghcr
         uses: docker/build-push-action@v5
         with:
-          file: ${{matrix.ubuntu}}-${{matrix.platform}}-r.Dockerfile
+          file: ${{matrix.base.image}}-${{matrix.platform}}-r.Dockerfile
           context: .
           push: false
           load: false
           provenance: false
-          outputs: type=tar,dest=${{matrix.ubuntu}}-${{matrix.platform}}/r.tar
+          outputs: type=tar,dest=${{matrix.base.image}}-${{matrix.platform}}/r.tar
           tags: ${{ steps.meta.outputs.tags }}-r
           platforms: ${{ matrix.platform }}
 
       - name: Extract rversion
         id: versions
         run: |
-          cd ${{matrix.ubuntu}}-${{matrix.platform}}
+          cd ${{matrix.base.image}}-${{matrix.platform}}
           tar -xvf r.tar
           echo rver=$(cat rver) >> $GITHUB_OUTPUT
           echo biocver=$(cat biocver) >> $GITHUB_OUTPUT
           echo osver=$(awk -F= '/VERSION_ID/ {gsub("\"", "", $2); print $2}' os-release) >> $GITHUB_OUTPUT
           BASEPREFIX=""
           if [ '${{matrix.branch}}' == 'devel' ]; then BASEPREFIX="devel-"; fi
+          NAMEDPREFIX="${BASEPREFIX}${{matrix.base.name}}"
+          BASEPREFIX=$(echo "$NAMEDPREFIX" | sed 's/-\?jammy//')
           echo baseprefix=$BASEPREFIX >> $GITHUB_OUTPUT
+          echo namedprefix=$NAMEDPREFIX >> $GITHUB_OUTPUT
 
       - name: Export digest by ubuntu and r versions
         run: |
@@ -115,18 +122,18 @@ jobs:
             exit 1
           fi
           digest="${{ steps.build.outputs.digest }}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{matrix.ubuntu}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
-          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
-          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.namedprefix}}
+          touch "/tmp/digests/${{steps.versions.outputs.namedprefix}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.namedprefix}}-bioc-${{steps.versions.outputs.biocver}}
+          touch "/tmp/digests/${{steps.versions.outputs.namedprefix}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.namedprefix}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
+          touch "/tmp/digests/${{steps.versions.outputs.namedprefix}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}/${digest#sha256:}"
+          mkdir -p /tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}
+          touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
 
       - name: Upload digests
         uses: actions/upload-artifact@v4
