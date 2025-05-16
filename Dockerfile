@@ -7,7 +7,7 @@ COPY . /home/biocbuild/bioconductor_salt
 WORKDIR /home/biocbuild
 RUN DEBIAN_FRONTEND="noninteractive" bash bioconductor_salt/startup_bbs_standalone_${CYCLE}.sh
 
-FROM ${BASE_IMAGE AS final
+FROM ${BASE_IMAGE} AS final
 COPY --from=build / /
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["/bbs_r_start"]
