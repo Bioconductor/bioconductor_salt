@@ -80,7 +80,7 @@ git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ machine.user.name }}
     - target: {{ machine.user.home }}/{{ machine.user.name }}/{{ repo.bbs.name }}
     - user: {{ machine.user.name }}
 
-{%- if grains["gpus:vendor"] == "nvidia" %}
+{%- if machine.gpu %}
 {% for pkg_type in ["optional_compile_R", "cran", "bioc"] %}
 install_{{ pkg_type }}_pkgs:
   cmd.run:

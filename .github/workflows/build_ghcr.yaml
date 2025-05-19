@@ -69,6 +69,7 @@ jobs:
           build-args: |
             CYCLE=${{matrix.branch}}
             BASE_IMAGE=${{matrix.base.image}}
+            NAME=${{matrix.base.name}}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ steps.vars.outputs.container }},push-by-digest=true,name-canonical=true,push=true
           platforms: ${{matrix.platform}}
