@@ -80,9 +80,26 @@ git_clone_{{ repo.bbs.name }}_to_{{ machine.user.home }}/{{ machine.user.name }}
     - target: {{ machine.user.home }}/{{ machine.user.name }}/{{ repo.bbs.name }}
     - user: {{ machine.user.name }}
 
+{%- if grains["gpus:vendor"] == "nvidia" %}
+{% for pkg_type in ["optional_compile_R", "cran", "bioc"] %}
+install_{{ pkg_type }}_pkgs:
+  cmd.run:
+    - name: DEBIAN_FRONTEND=noninteractive apt-get -y install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_{{ pkg_type }}.txt | awk '/^[^#]/ {print $1}')
+{%- endfor %}
+
+install_pkgs_for_gpu:
+  pkg.installed:
+    - pkgs:
+      - pandoc
+      - texlive-latex-base
+      - texlive-fonts-extra
+      - libthrust-dev
+      - libcub-dev
+{%- else %}
 install_apt_pkgs:
   cmd.run:
     - name: DEBIAN_FRONTEND=noninteractive apt-get -y install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
+{%- endif %}
 
 check_locale:
   locale.present:
