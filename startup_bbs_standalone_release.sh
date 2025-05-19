@@ -26,7 +26,7 @@ sudo cp -r bioconductor_salt/saltstack/salt /srv
 sudo cp -r bioconductor_salt/saltstack/pillar /srv
 sudo cp bioconductor_salt/saltstack/minion.d/minion.conf /etc/salt/minion
 
-if [ "${1}" -eq "nvidia-noble" ]; then
+if [ "${1}" = "nvidia-noble" ]; then
 	opt="_gpu"
 else
 	opt=""
