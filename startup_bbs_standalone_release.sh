@@ -18,8 +18,8 @@ sudo service salt-minion stop
 sudo systemctl disable salt-minion
 
 # Assumes the repository has already been cloned to the working directory
-cd ~
-git clone -b apt-pkgs-for-gpu https://github.com/Bioconductor/bioconductor_salt
+# cd ~
+# git clone -b standalone https://github.com/Bioconductor/bioconductor_salt
 
 # Set up bioconductor's saltstack
 sudo cp -r bioconductor_salt/saltstack/salt /srv
