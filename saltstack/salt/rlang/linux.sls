@@ -5,16 +5,13 @@
 {% set extracted_directory = r.download.split("/")[-1][:-7].split("_")[0] %}
 {% set bbs_bioc = machine.user.home ~ "/" ~ machine.user.name ~ "/bbs-" ~ "%.2f" | format(build.version) ~ "-bioc" %}
 
-get_R_tarball:
-  cmd.run:
-    - name: curl -L {{ r.download }} -o {{ bbs_bioc }}/rdownloads/{{ tarball }}
-    - creates: {{ bbs_bioc }}/rdownloads/{{ r.version }}.tar.gz
-
-fix_permissions_ownership_R_tarball:
+get_R_tarball: 
   file.managed:
     - name: {{ bbs_bioc }}/rdownloads/{{ tarball }}
+    - source: {{ r.download }}
     - user: {{ machine.user.name }}
     - group: {{ machine.user.name }}
+    - skip_verify: True
 
 R_tarball_extracted:
   archive.extracted:
