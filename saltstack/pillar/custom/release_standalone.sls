@@ -11,3 +11,4 @@
 {% set name = 'bbs-machine' %}
 {% set create_users = False %}
 {% set machine_type = 'standalone' %}
+{% set gpu = False %}

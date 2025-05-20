@@ -26,7 +26,13 @@ sudo cp -r bioconductor_salt/saltstack/salt /srv
 sudo cp -r bioconductor_salt/saltstack/pillar /srv
 sudo cp bioconductor_salt/saltstack/minion.d/minion.conf /etc/salt/minion
 
-sudo mv /srv/pillar/custom/devel_standalone.sls /srv/pillar/custom/init.sls
+if [ "${1}" = "nvidia-noble" ]; then
+	opt="_gpu"
+else
+	opt=""
+fi
+
+sudo mv /srv/pillar/custom/devel_standalone${opt}.sls /srv/pillar/custom/init.sls
 
 sudo salt-call --local state.highstate || true
 
