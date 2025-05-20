@@ -5,15 +5,17 @@
 {% if machine_type == 'standalone' %}
 {# Assuming salt is run is /Users/a_user or /home/a_user, take the last
    directory as the user name #}
-{% set build_user = grains['cwd'].split("/")[-1] %}
-{% else %}
+{% set build_user = grains['cwd'].split("/")[-1] or 'biocbuild' %}
+{% endif %}
+
+{% if build_user == 'biocbuild' %}
+{% endif %}
+
 {% if create_users %}
 {% from '../custom/init.sls' import biocbuild_password, biocbuild_key,
    biocbuild_authorized_key, biocpush_password, biocpush_key,
    biocpush_authorized_key %}
 {% endif %}
-{% set build_user = 'biocbuild' %}
-{% endif %} 
 
 {%- if branch == 'release' %}
 {% set current_branch = 'RELEASE_' ~ version.replace(".", "_") %}

@@ -19,6 +19,12 @@ change_host:
     - clean: True
 {% endif %}
 
+make_user_{{ machine.user.name }}:
+  user.present:
+    - name: {{ machine.user.name }}
+    - home: {{ machine.user.home }}/{{ machine.user.name }}
+    - shell: {{ machine.user.shell }}
+
 {% if machine.create_users %}
 {% if machine.additional is defined %}
 {% set groups = machine.groups + machine.additional.groups %}
@@ -95,7 +101,7 @@ install_pkgs_for_gpu:
       - texlive-fonts-extra
       - libthrust-dev
       - libcub-dev
-{%- else %}
+{% else %}
 install_apt_pkgs:
   cmd.run:
     - name: DEBIAN_FRONTEND=noninteractive apt-get -y install $(cat /home/{{ machine.user.name }}/{{ repo.bbs.name }}/{{ grains["os"] }}-files/{{ grains["osrelease"] }}/apt_*.txt | awk '/^[^#]/ {print $1}')
