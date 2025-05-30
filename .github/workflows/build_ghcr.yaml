@@ -139,7 +139,7 @@ jobs:
       - name: Upload digests
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ matrix.branch }}-${{ github.run_id }}
+          name: digests-${{ matrix.branch }}-${{ matrix.base.name }}-${{ github.run_id }}
           path: /tmp/digests/**
           if-no-files-found: error
           retention-days: 1
@@ -154,16 +154,28 @@ jobs:
       matrix:
         ubuntu: [noble]
     steps:
-      - name: Download digests devel
+      - name: Download digests devel nobel
         uses: actions/download-artifact@v4
         with:
-          name: digests-devel-${{ github.run_id }}
+          name: digests-devel-noble-${{ github.run_id }}
           path: /tmp/digests-devel
 
-      - name: Download digests release
+      - name: Download digests devel nvidia-nobel
         uses: actions/download-artifact@v4
         with:
-          name: digests-release-${{ github.run_id }}
+          name: digests-devel-nvidia-noble-${{ github.run_id }}
+          path: /tmp/digests-devel
+
+      - name: Download digests release noble
+        uses: actions/download-artifact@v4
+        with:
+          name: digests-release-noble-${{ github.run_id }}
+          path: /tmp/digests-release
+
+      - name: Download digests release nvidia-noble
+        uses: actions/download-artifact@v4
+        with:
+          name: digests-release-nvidia-noble-${{ github.run_id }}
           path: /tmp/digests-release
 
       - run: mkdir -p /tmp/digests && mv /tmp/digests-devel/* /tmp/digests/ && mv /tmp/digests-release/* /tmp/digests/
