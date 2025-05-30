@@ -8,9 +8,6 @@
 {% set build_user = grains['cwd'].split("/")[-1] or 'biocbuild' %}
 {% endif %}
 
-{% if build_user == 'biocbuild' %}
-{% endif %}
-
 {% if create_users %}
 {% from '../custom/init.sls' import biocbuild_password, biocbuild_key,
    biocbuild_authorized_key, biocpush_password, biocpush_key,
