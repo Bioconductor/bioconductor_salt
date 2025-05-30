@@ -198,7 +198,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ matrix.ubuntu }}
+            type=raw,value=${{ matrix.base.name }}
 
       - name: Extract container name without tag
         id: vars
