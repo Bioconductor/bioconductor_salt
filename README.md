@@ -7,29 +7,46 @@ It also builds [BBS-like
 containers](https://github.com/Bioconductor/bioconductor_salt/pkgs/container/bioconductor_salt).
 
 ### Simulating the BBS Ubuntu environment in a container
-We are experimentally building and publishing containers under the name `ghcr.io/bioconductor/bioconductor_salt`,
+
+We are building and publishing containers under the name `ghcr.io/bioconductor/bioconductor_salt`,
 which can be used to mimic a BBS-like linux environment, in hopes of easing reproducibility and interactive debugging
 of the BBS environment for package developers.
-We currently offer containers for both `release` and `devel` Bioconductor versions with Ubuntu `jammy` (`22.04`).
+
+We currently offer containers for both `release` and `devel` Bioconductor versions with Ubuntu `noble` (`24.04`).
 Container tags with various version pinnings can be used to acquire a particular environment, following the schema
-`[ubuntu_version]-bioc-[bioc_version]-r-[r_version]` eg `jammy-bioc-3.18-r-4.3.2` or `22.04-bioc-3.18-r-4.3.2`, where
-each level is optional. For example, one could use tag `jammy-bioc-3.18` or `22.04-bioc-3.18` to get the latest 3.18,
-regardless of R version, or even simply `jammy`/`22.04` to get the latest release container.
+`[ubuntu_version]-bioc-[bioc_version]-r-[r_version]` eg `noble-bioc-3.22-r-4.5.0` or `24.04-bioc-3.22-r-4.5.0, where
+each level is optional. For example, one could use tag `noble-bioc-3.22` or `24.04-bioc-3.22` to get the latest 3.22,
+regardless of R version, or even simply `noble`/`24.04` to get the latest release container.
 `devel-` will prefix all devel container tags, followed by the same schema described above.
 
 All containers will use the R command if no command is specified. Below are some examples for running the container.
 ```
 # Interactive R session
-docker run -it ghcr.io/bioconductor/bioconductor_salt:jammy
+docker run -it ghcr.io/bioconductor/bioconductor_salt:noble
 # is equivalent to
-docker run -it ghcr.io/bioconductor/bioconductor_salt:jammy R
+docker run -it ghcr.io/bioconductor/bioconductor_salt:noble R
 
 # Bash shell
-docker run -it ghcr.io/bioconductor/bioconductor_salt:jammy bash
+docker run -it ghcr.io/bioconductor/bioconductor_salt:noble bash
 
 # Rscript
-docker run -it ghcr.io/bioconductor/bioconductor_salt:jammy "Rscript --version"
+docker run -it ghcr.io/bioconductor/bioconductor_salt:noble "Rscript --version"
 ```
+
+We are also experimentally building BBS-like containers based on Nvidia
+containers, which can be run as
+
+```
+docker run --gpus all -it ghcr.io/bioconductor/bioconductor_salt:devel-nvidia-noble R
+```
+
+#### Note for containers with an Nvidia base
+
+This software contains source code provided by NVIDIA Corporation.
+
+These containers are subject to
+https://developer.download.nvidia.com/licenses/NVIDIA_Deep_Learning_Container_License.pdf.
+
 
 ### Configuring for Ubuntu 22.04
 
