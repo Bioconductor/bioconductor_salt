@@ -48,7 +48,7 @@ These containers are subject to
 https://developer.download.nvidia.com/licenses/NVIDIA_Deep_Learning_Container_License.pdf.
 
 
-### Configuring for Ubuntu 22.04
+### Configuring for Ubuntu 24.04
 
 1. On the build machine, install the Salt minion and clone this repository:
     ```
