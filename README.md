@@ -138,11 +138,6 @@ Update any related variables, such as `r_version`. To perform the update, run
 
     sudo salt-call --local state.apply rlang.linux
 
-Confirm that your version of R has been updated
-
-    vagrant@nebbiolo2-dev:~$ /home/biocbuild/bbs-3.15-bioc/R/bin/R --version
-    R Under development (unstable) (2021-11-16 r81199) -- "Unsuffered Consequences"
-
 ## Standalone Machine with BBS dependencies
 
 If `machine_type` equals `standalone` in `pillar/custom/init.sls`, the machine
@@ -150,87 +145,3 @@ will be configured with the dependencies needed for the build system but without
 the set up necessary to perform the official builds. A standalone build might
 be sufficient for testing `R CMD INSTALL` `build` or `check`. It will also
 reduce the time necessary for configuration.
-
-Note: R will be along the `bbs-<version>-bioc/R/bin/R` path. For example, if
-the current version is 3.18 then the path will be `bbs-3.18-bioc/R/bin/R`
-
-## Salted Vagrant
-
-### Requirements
-
-* [Vagrant](https://vagrantup.com)
-
-### Salted Vagrant Quick Start
-
-1. Install Vagrant.
-
-2. Configure the settings in the `Vagrantfile` for your system.
-
-3. Copy `saltstack/pillar/custom/example.sls` to
-   `saltstack/pillar/custom/init.sls` and edit the settings for
-   your build system. Any added pillars in this file can overwrite
-   other pillar values.
-
-4. To start the VM from the repository. This step will take time if
-   it is the first time.
-
-    ```
-    vagrant up
-    ```
-
-5. To access the VM
-
-    ```
-    vagrant ssh
-    ```
-
-   You will start as the `vagrant` user in the vagrant directory.
-
-6. Before running any builds, you should change the `BBS` configuration for
-   your system. If the variable `environment` is set to `dev` in the pillar,
-   the BBS will automatically be configured.
-
-   Set the number of `cores` on your system. The build process requires
-   a lot of resources and power.
-
-7. Add the builds you wish to test to the `BBS/BBSreportutils.py` function
-   `display_propagation_status` to prevent propagation.
-
-8. You can `vagrant halt` to stop the VM or `vagrant destroy` to remove it.
-
-### Running builds in Vagrant
-
-After the VM is running and Salt has reached a high state, you can run a build;
-however, you may want to edit file in the manifest for the packages you want to
-build. You should include the package and its dependencies. The following example
-assumes you're running 3.14 software builds.
-
-    sudo su - biocbuild
-    cd ~/bbs-3.14-bioc/manifest
-    # edit /home/biocbuild/bbs-3.14-bioc/manifest/software.txt
-    # prerun of build
-    cd /home/biocbuild/BBS/3.14/bioc/`hostname` && ./prerun.sh
-    >>/home/biocbuild/bbs-3.14-bioc/log/`hostname`-`date +\%Y\%m\%d`-prerun.log 2>&1
-    # Run of build
-    cd /home/biocbuild/BBS/3.14/bioc/`hostname` && ./run.sh
-    >>/home/biocbuild/bbs-3.14-bioc/log/`hostname`-`date +\%Y\%m\%d`-run.log 2>&1
-    # Postrun of build
-    cd /home/biocbuild/BBS/3.14/bioc/`hostname` && ./postrun.sh
-    >>/home/biocbuild/bbs-3.14-bioc/log/`hostname`-`date +\%Y\%m\%d`-postrun.log 2>&1
-
-    # You may want to check the log of each section; for example
-    tail -f ~/bbs-3.14-bioc/log/nebbiolo2-20211022-run.log
-
-See `https://github.com/Bioconductor/BBS/blob/master/Doc/Prepare-Ubuntu-20.04-HOWTO.md`
-for more information on builds.
-
-## Notes
-
-- When using the VM, access the `biocbuild` user with `sudo su - biocbuild`
-  to preserve environmental variables.
-- The prerun script will attempt to update the `manifest`, so you should
-  update your `manifest` repository first then edit the file corresponding to
-  the build you plan run.
-- You may want to increase the memory in the Vagrantfile if you plan to build
-  several packages.
-- Still having issues installing Bioc package `MMAPPR2`.
