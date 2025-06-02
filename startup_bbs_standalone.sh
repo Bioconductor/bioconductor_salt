@@ -59,6 +59,9 @@ sudo chmod +x /bbs_r_start
 sudo ln -s /home/biocbuild/bbs-*-bioc/R/bin/R /usr/bin/R
 sudo ln -s /home/biocbuild/bbs-*-bioc/R/bin/Rscript /usr/bin/Rscript
 
+# Change permissions for volumes
+sudo chown -R biocbuild:biocbuild /home/biocbuild/.cache /home/biocbuild/BBS /home/biocbuild/bbs-*
+
 # Cleanup
 # rm -rf /srv /etc/salt
 # sudo apt-get -y purge salt-minion
