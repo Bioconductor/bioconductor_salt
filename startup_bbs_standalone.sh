@@ -53,14 +53,14 @@ sudo echo "export PATH='$PATH:$RPATH'" | sudo tee -a /etc/bash.bashrc
 sudo echo "#!/bin/bash" | sudo tee /bbs_r_start
 sudo echo "$RPATH/R \"\$@\"" | sudo tee -a /bbs_r_start
 
+# Change permissions for volumes
+sudo echo "sudo chown -R biocbuild:biocbuild /home/biocbuild" | sudo tee -a /bbs_r_start
+
 sudo chown biocbuild /bbs_r_start
 sudo chmod +x /bbs_r_start
 
 sudo ln -s /home/biocbuild/bbs-*-bioc/R/bin/R /usr/bin/R
 sudo ln -s /home/biocbuild/bbs-*-bioc/R/bin/Rscript /usr/bin/Rscript
-
-# Change permissions for volumes
-sudo chown -R biocbuild:biocbuild /home/biocbuild/.cache /home/biocbuild/BBS /home/biocbuild/bbs-*
 
 # Cleanup
 # rm -rf /srv /etc/salt
