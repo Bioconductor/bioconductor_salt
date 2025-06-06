@@ -101,6 +101,7 @@ install_pkgs_for_gpu:
       - texlive-fonts-extra
       - libthrust-dev
       - libcub-dev
+      - rsync
 {% else %}
 install_apt_pkgs:
   cmd.run:

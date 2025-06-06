@@ -26,13 +26,19 @@ sudo cp -r bioconductor_salt/saltstack/salt /srv
 sudo cp -r bioconductor_salt/saltstack/pillar /srv
 sudo cp bioconductor_salt/saltstack/minion.d/minion.conf /etc/salt/minion
 
-if [ "${1}" = "nvidia-noble" ]; then
+if [ "${1}" = "devel" ]; then
+	cycle="devel"
+else
+	cycle="release"
+fi
+
+if [ "${2}" = "nvidia-noble" ]; then
 	opt="_gpu"
 else
 	opt=""
 fi
 
-sudo mv /srv/pillar/custom/devel_standalone${opt}.sls /srv/pillar/custom/init.sls
+sudo mv /srv/pillar/custom/${cycle}_standalone${opt}.sls /srv/pillar/custom/init.sls
 
 sudo salt-call --local state.highstate || true
 
@@ -46,6 +52,9 @@ sudo echo "export PATH='$PATH:$RPATH'" | sudo tee -a /etc/bash.bashrc
 
 sudo echo "#!/bin/bash" | sudo tee /bbs_r_start
 sudo echo "$RPATH/R \"\$@\"" | sudo tee -a /bbs_r_start
+
+# Change permissions for volumes
+sudo echo "sudo chown -R biocbuild:biocbuild /home/biocbuild" | sudo tee -a /bbs_r_start
 
 sudo chown biocbuild /bbs_r_start
 sudo chmod +x /bbs_r_start

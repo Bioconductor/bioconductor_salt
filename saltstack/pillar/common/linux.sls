@@ -1,6 +1,7 @@
 build:
   types:
     - bioc                  {# always required #}
+    - bioc-gpu
     - bioc-longtests
     - books
     - data-annotation
