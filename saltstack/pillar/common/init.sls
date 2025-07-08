@@ -6,6 +6,8 @@
 {# Assuming salt is run is /Users/a_user or /home/a_user, take the last
    directory as the user name #}
 {% set build_user = grains['cwd'].split("/")[-1] or 'biocbuild' %}
+{% else %}
+{% set build_user = 'biocbuild' %}
 {% endif %}
 
 {% if create_users %}
