@@ -32,3 +32,4 @@ base:
     - common.bbs
   '*':
     - dependencies.quarto                       # Bioc BiocBook
+    - dependencies.basilisk                     # Set basilisk cache location
