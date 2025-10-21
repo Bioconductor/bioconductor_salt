@@ -15,7 +15,7 @@ def run():
     config['export_RETICULATE_PYTHON'] = {
         'file.append': [
             {'name': '/etc/profile'},
-            {'text': f"export RETICULATE_PYTHON='{python_path}'"}
+            {'text': f"export RETICULATE_USE_MANAGED_VENV='yes'"}
         ],
     }
 
