@@ -15,10 +15,10 @@ machine:
   dependencies:             {# For Bioc or CRAN packages #}
     arm64:
       dotnet: https://download.visualstudio.microsoft.com/download/pr/c17c9c8a-11dc-41b4-975f-89b5b101a0e3/dbefaaf56c7388afb76cc96c76a13316/dotnet-runtime-9.0.3-osx-arm64.pkg
-      java: https://download.java.net/java/GA/jdk21/fd2272bbf8e04c3dbaee13770090416c/35/GPL/openjdk-21_macos-aarch64_bin.tar.gz 
+      java: https://download.java.net/java/GA/jdk25.0.1/2fbf10d8c78e40bd87641c434705079d/8/GPL/openjdk-25.0.1_macos-aarch64_bin.tar.gz
     intel:
       dotnet: https://download.visualstudio.microsoft.com/download/pr/e59ade14-21cb-4303-8875-69373a17234c/fdd434f76c113afae01211b02470c302/dotnet-runtime-9.0.3-osx-x64.pkg
-      java: https://download.java.net/java/GA/jdk21/fd2272bbf8e04c3dbaee13770090416c/35/GPL/openjdk-21_macos-x64_bin.tar.gz 
+      java: https://download.java.net/java/GA/jdk25.0.1/2fbf10d8c78e40bd87641c434705079d/8/GPL/openjdk-25.0.1_macos-x64_bin.tar.gz
     cmake: https://github.com/Kitware/CMake/releases/download/v3.31.1/cmake-3.31.1-macos-universal.tar.gz
     jags: https://cfhcable.dl.sourceforge.net/project/mcmc-jags/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg
     quarto: https://github.com/quarto-dev/quarto-cli/releases/download/v1.8.25/quarto-1.8.25-macos.pkg
