@@ -78,7 +78,7 @@ reconfigure_R_to_use_Java:
     - name: R CMD javareconf
 
 {%- if grains["osarch"] == "arm64" %}
-{% set binary_path = "big-sur-arm64/contrib" %}
+{% set binary_path = "sonoma-arm64/contrib" %}
 {% else %}
 {% set binary_path = "contrib" %}
 {% endif %}
@@ -106,14 +106,14 @@ symlink_previous_version:
 
 download_minimum_supported_macossdk:
   cmd.run:
-    - name: curl -LO https://mac.r-project.org/sdk/MacOSX11.3.sdk.tar.xz
+    - name: curl -LO https://mac.r-project.org/sdk/MacOSX14.4.sdk.tar.xz
     - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - file: symlink_previous_version
 
 untar_macossdk:
   cmd.run:
-    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/MacOSX11.3.sdk.tar.xz
+    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/MacOSX14.4.sdk.tar.xz
     - cwd: /Library/Developer/CommandLineTools/SDKs 
     - user: root
     - group: wheel
@@ -122,8 +122,8 @@ untar_macossdk:
 
 symlink_minor_to_major_version:
   file.symlink:
-    - name: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
-    - target: MacOSX11.3.sdk
+    - name: /Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk
+    - target: MacOSX14.4.sdk
     - cwd: /Library/Developer/CommandLineTools/SDKs
     - user: root
     - group: wheel 
@@ -133,7 +133,7 @@ symlink_minor_to_major_version:
 fix_gfortran_sdk_symlink:
   file.symlink:
     - name: /opt/gfortran/SDK
-    - target: /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
+    - target: /Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk
     - cwd: /opt/gfortran
     - user: root
     - group: admin
@@ -144,7 +144,7 @@ export_minimum_build_in_profile:
   file.append:
     - name: /etc/profile
     - text: |
-        export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
-        export MACOSX_DEPLOYMENT_TARGET=11.0
+        export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk
+        export MACOSX_DEPLOYMENT_TARGET=14.0
     - require:
       - file: fix_gfortran_sdk_symlink
