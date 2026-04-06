@@ -104,36 +104,43 @@ symlink_previous_version:
     - user: root
     - group: staff
 
-download_minimum_supported_macossdk:
-  cmd.run:
-    - name: curl -LO https://mac.r-project.org/sdk/MacOSX14.4.sdk.tar.xz
-    - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
-    - require:
-      - file: symlink_previous_version
+{# SDKs must be downloaded from https://developer.apple.com and placed in the
+   user's Downloads directory. If found, salt will untar, install, and symlink.
+   If not found, or if not on macOS, these steps are skipped gracefully. #}
 
 untar_macossdk:
   cmd.run:
-    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/MacOSX14.4.sdk.tar.xz
-    - cwd: /Library/Developer/CommandLineTools/SDKs 
+    - name: tar -xf {{ machine.user.home }}/{{ machine.user.name }}/Downloads/MacOSX26.2.sdk.tar.xz
+    - cwd: /Library/Developer/CommandLineTools/SDKs
     - user: root
     - group: wheel
+    - onlyif:
+      - test -f {{ machine.user.home }}/{{ machine.user.name }}/Downloads/MacOSX26.2.sdk.tar.xz
     - require:
-      - cmd: download_minimum_supported_macossdk
+      - file: symlink_previous_version
+
+warn_sdk_missing:
+  test.show_notification:
+    - text: "MacOSX26.2.sdk.tar.xz not found in Downloads — skipping SDK install"
+    - onfail:
+      - cmd: untar_macossdk
 
 symlink_minor_to_major_version:
   file.symlink:
-    - name: /Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk
-    - target: MacOSX14.4.sdk
+    - name: /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk
+    - target: MacOSX26.2.sdk
     - cwd: /Library/Developer/CommandLineTools/SDKs
     - user: root
-    - group: wheel 
+    - group: wheel
+    - onlyif:
+      - test -d /Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk
     - require:
       - cmd: untar_macossdk
 
 fix_gfortran_sdk_symlink:
   file.symlink:
     - name: /opt/gfortran/SDK
-    - target: /Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk
+    - target: /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk
     - cwd: /opt/gfortran
     - user: root
     - group: admin
@@ -144,7 +151,7 @@ export_minimum_build_in_profile:
   file.append:
     - name: /etc/profile
     - text: |
-        export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk
+        export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk
         export MACOSX_DEPLOYMENT_TARGET=14.0
     - require:
       - file: fix_gfortran_sdk_symlink
