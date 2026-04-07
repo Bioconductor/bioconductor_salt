@@ -7,7 +7,7 @@
 {% set sdk_version = "26.2" %}
 {%- else %}
 {% set subpath = "x86_64" %}
-{% set sdk_version = "14.4" %}
+{% set sdk_version = "13.3" %}
 {%- endif %}
 
 remove_old_r:
