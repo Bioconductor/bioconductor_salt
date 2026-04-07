@@ -98,7 +98,7 @@ attempt_install_difficult_packages_{{ i }}:
 symlink_previous_version:
   file.symlink:
     - name: /Library/Frameworks/R.framework/Versions/{{ r.previous_version[2:] }}
-    - target: '{{ r.version[2:] }}-{{ subpath }}'
+    - target: '{{ r.version[2:] }}'
     - cwd: /Library/Frameworks/R.framework/Versions
     - force: True
     - user: root
