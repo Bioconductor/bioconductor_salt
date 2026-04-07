@@ -5,9 +5,11 @@
 {%- if grains["osarch"] == "arm64" %}
 {% set subpath = "arm64" %}
 {% set sdk_version = "26.2" %}
+{% set mdt = "14.0" %}
 {%- else %}
 {% set subpath = "x86_64" %}
 {% set sdk_version = "13.3" %}
+{% set mdt = "11.0" %}
 {%- endif %}
 
 remove_old_r:
@@ -154,6 +156,6 @@ export_minimum_build_in_profile:
     - name: /etc/profile
     - text: |
         export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX{{ sdk_version[:-2] }}.sdk
-        export MACOSX_DEPLOYMENT_TARGET=14.0
+        export MACOSX_DEPLOYMENT_TARGET={{ mdt }}
     - require:
       - file: fix_gfortran_sdk_symlink
