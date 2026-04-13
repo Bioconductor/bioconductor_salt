@@ -2,7 +2,6 @@
 
 {% set branch = 'devel' %} {# Use 'release' or 'devel' #}
 {% set version = '3.24' %}
-{% set environment = 'dev' %} {# Use 'dev' or 'prod' #}
 {% set r_download = 'https://cran.r-project.org/src/base-prerelease/R-beta_2026-04-12_r89874.tar.gz' %}
 {% set r_version = 'R-4.6' %}
 {% set r_previous_version = 'R-4.5' %}
