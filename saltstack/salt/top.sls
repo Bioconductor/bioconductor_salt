@@ -27,9 +27,7 @@ base:
   'machine:type:primary':
     - match: pillar
     - webserver
-  'machine:env:dev':
-    - match: grain
-    - common.bbs
   '*':
+    - common.bbs
     - dependencies.quarto                       # Bioc BiocBook
     - dependencies.basilisk                     # Set basilisk cache location

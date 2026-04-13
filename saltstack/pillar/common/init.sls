@@ -1,6 +1,5 @@
-{% from '../custom/init.sls' import branch, version, environment,
-   r_download, r_version, r_previous_version, cran_mirror, cycle, name,
-   create_users, machine_type, gpu %}
+{% from '../custom/init.sls' import branch, version, r_download, r_version,
+   r_previous_version, cran_mirror, cycle, name, create_users, machine_type, gpu %}
 
 {% if machine_type == 'standalone' %}
 {# Assuming salt is run is /Users/a_user or /home/a_user, take the last
@@ -44,7 +43,6 @@ build:
 machine:
   name: {{ name }}
   gpu: {{ gpu }}
-  env: {{ environment }}
   slash: {{ slash }}
   ip: 127.0.1.1
   cores: {{ grains['num_cpus'] }}  {# to find out available cores, run cat /proc/cpuinfo | grep processor | wc -l #}

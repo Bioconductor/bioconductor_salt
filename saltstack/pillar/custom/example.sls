@@ -2,7 +2,6 @@
 
 {% set branch = 'release' %}                {# Use 'release' or 'devel' #}
 {% set version = '3.14' %}                  {# Bioc version #}
-{% set environment = 'dev' %}               {# Use 'dev' or 'prod' #}
 {% set cycle = 'patch' %}                   {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
 {% set name = 'nebbiolo2' %}                {# nebbiolo1 for 3.15, nebbiolo2 for 3.14 #}
 
