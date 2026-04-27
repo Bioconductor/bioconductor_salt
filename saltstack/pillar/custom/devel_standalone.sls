@@ -2,7 +2,7 @@
 
 {% set branch = 'devel' %} {# Use 'release' or 'devel' #}
 {% set version = '3.24' %}
-{% set r_download = 'https://cran.r-project.org/src/base-prerelease/R-rc_2026-04-17_r89917.tar.gz' %}
+{% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.6.0.tar.gz' %}
 {% set r_version = 'R-4.6' %}
 {% set r_previous_version = 'R-4.5' %}
 {% set cran_mirror = 'https://cloud.r-project.org/' %}
