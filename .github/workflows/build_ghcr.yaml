@@ -110,7 +110,6 @@ jobs:
           if [ '${{matrix.branch}}' == 'devel' ]; then BASEPREFIX="devel-"; fi
           NAMEDPREFIX="${BASEPREFIX}${{matrix.base.name}}"
           BASEPREFIX=$(echo "$NAMEDPREFIX" | sed 's/-\?noble//')
-          BASEPREFIX="${BASEPREFIX#-}"   # <-- strip a leftover leading hyphen, if any
           echo baseprefix=$BASEPREFIX >> $GITHUB_OUTPUT
           echo namedprefix=$NAMEDPREFIX >> $GITHUB_OUTPUT
 
