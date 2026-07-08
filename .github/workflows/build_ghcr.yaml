@@ -29,7 +29,7 @@ jobs:
         with:
           verbose: true
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Extract metadata for container image
         id: meta
