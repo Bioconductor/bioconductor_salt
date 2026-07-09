@@ -33,7 +33,7 @@ jobs:
 
       - name: Extract metadata for container image
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
@@ -56,7 +56,7 @@ jobs:
           platforms: ${{matrix.platform}}
 
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -64,7 +64,7 @@ jobs:
 
       - name: Build and push container image to ghcr
         id: build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           build-args: |
             CYCLE=${{matrix.branch}}
@@ -87,7 +87,7 @@ jobs:
           EOF
 
       - name: Build and push container image to ghcr
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v7
         with:
           file: ${{matrix.base.image}}-${{matrix.platform}}-r.Dockerfile
           context: .
@@ -137,7 +137,7 @@ jobs:
           touch "/tmp/digests/${{steps.versions.outputs.baseprefix}}-${{steps.versions.outputs.osver}}-bioc-${{steps.versions.outputs.biocver}}-r-${{steps.versions.outputs.rver}}/${digest#sha256:}"
 
       - name: Upload digests
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: digests-${{ matrix.branch }}-${{ matrix.base.name }}-${{ github.run_id }}
           path: /tmp/digests/**
@@ -186,7 +186,7 @@ jobs:
           platforms: ${{matrix.platform}}
 
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -194,7 +194,7 @@ jobs:
 
       - name: Extract metadata for container image
         id: meta
-        uses: docker/metadata-action@v6.2.0
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
