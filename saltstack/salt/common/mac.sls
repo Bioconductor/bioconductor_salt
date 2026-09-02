@@ -9,8 +9,10 @@
 {% set gfortran_download = machine.downloads.gfortran %}
 {% set gfortran = machine.downloads.gfortran.split("/")[-1] %}
 {%- if grains["osarch"] == "arm64" %}
+{% set pandoc = machine.downloads.arm64.pandoc %}
 {% set subpath = "arm64" %}
 {%- else %}
+{% set pandoc = machine.downloads.intel.pandoc %}
 {% set subpath = "x86_64" %}
 {%- endif %}
 
@@ -262,14 +264,6 @@ install_mactex:
     - require:
       - cmd: download_mactex
 
-{%- if grains["osarch"]== "arm64" %}
-install_pandoc:
-  cmd.run:
-    - name: brew install pandoc
-    - runas: {{ machine.user.name }}
-{% else %}
-{% set pandoc = machine.downloads.intel.pandoc.split("/")[-1] %}
-
 download_pandoc:
   cmd.run:
     - name: curl -LO {{ machine.downloads.intel.pandoc }}
@@ -282,7 +276,6 @@ install_pandoc:
     - cwd: {{ machine.user.home }}/{{ machine.user.name }}/Downloads
     - require:
       - cmd: download_pandoc
-{%- endif %}
 
 fix_/usr/local_permissions:
   cmd.run:

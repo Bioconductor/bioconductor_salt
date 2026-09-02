@@ -24,8 +24,10 @@ machine:
     quarto: https://github.com/quarto-dev/quarto-cli/releases/download/v1.8.25/quarto-1.8.25-macos.pkg
     viennarna: https://www.tbi.univie.ac.at/RNA/download/osx/macosx/ViennaRNA-2.5.0-MacOSX.dmg
   downloads:                {# For BBS #}
+    arm64:
+      pandoc: https://github.com/jgm/pandoc/releases/download/3.11/pandoc-3.11-arm64-macOS.pkg
     intel:
-      pandoc: https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-macOS.pkg
+      pandoc: https://github.com/jgm/pandoc/releases/download/3.11/pandoc-3.11-x86_64-macOS.pkg
     gfortran: https://github.com/R-macos/gcc-14-branch/releases/download/gcc-14.2-darwin-r2.1/gfortran-14.2-darwin20-r2-universal.tar.xz
     mactex: https://mirror.ctan.org/systems/mac/mactex/MacTeX.pkg
     xquartz: https://github.com/XQuartz/XQuartz/releases/download/XQuartz-2.8.5/XQuartz-2.8.5.pkg
