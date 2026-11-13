@@ -1,10 +1,10 @@
 {# Custom Settings #}
 
 {% set branch = 'devel' %} {# Use 'release' or 'devel' #}
-{% set version = '3.24' %}
-{% set r_download = 'https://cran.r-project.org/src/base/R-4/R-4.6.1.tar.gz' %}
-{% set r_version = 'R-4.6' %}
-{% set r_previous_version = 'R-4.5' %}
+{% set version = '3.25' %}
+{% set r_download = 'https://stat.ethz.ch/R/daily/R-devel.tar.gz' %}
+{% set r_version = 'R-4.7' %}
+{% set r_previous_version = 'R-4.6' %}
 {% set cran_mirror = 'https://cloud.r-project.org/' %}
 {% set cycle = 'devel' %} {# Use 'devel' for Spring to Fall, 'patch' for Fall to Spring #}
 {% set name = 'bbs-machine' %}
